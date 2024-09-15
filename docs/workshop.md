@@ -43,8 +43,9 @@ All the **code** in this tutorial can be found here:
 [Building a Medallion Architecture on Fabric Real-Time Intelligence](<https://github.com/microsoft/FabConRTITutorial/>)  
 
 ### Duration
-- Lab 2-3 hours (section 8).
-- Each section is accompanied with technical explanation of the Fabric Real-Time Intelligence component being used
+- Workshop 5-6 hours.
+- Each section is accompanied with technical explanation of the Fabric Real-Time Intelligence component being used.
+- Without the accompanied explanation, lab can be completed in 1-2 hours.
 - **TO BE CHANGED** [pre-reqs](<https://moaw.dev/workshop/?src=gh%3Amicrosoft%2FFabricRTIWorkshop%2Fmain%2Fdocs%2F&step=6>) 30-45 minutes (section 7, recommend provisioning trial tenant prior if necessary).
 
 ### Original Creators
@@ -60,23 +61,19 @@ This workshop/tutorial was originally written by the following authors and is av
 - [Johan Ludvig Brattås](<https://www.linkedin.com/in/johanludvig/>), Data Platform MVP
 - [Matt Gordon](<https://www.linkedin.com/in/sqlatspeed/>), Data Platform MVP
 
-### Feedback - Contributing
-- Rate this lab or give us feedback to improve using this short [Eval](<https://forms.office.com/r/xhW3GAtAhi>). Scan this QR Code to open the evaluation form on your phone.
-
-![QR Code](assets/QRCodeLabEval-Small.png "QR Code")
-
-- If you'd like to contribute to this lab, report a bug or issue, please feel free to submit a Pull-Request to the [GitHub repo](<https://github.com/microsoft/FabricRTIWorkshop/>) for us to review or [submit Issues](<https://github.com/microsoft/FabricRTIWorkshop/issues>) you encounter.
+### Contributing
+- If you'd like to contribute to this lab, report a bug or issue, please feel free to submit a Pull-Request to the [GitHub repo](<https://github.com/microsoft/FabConRTITutorial/>) for us to review or [submit Issues](<https://github.com/microsoft/FabConRTITutorial/issues>) you encounter.
 
 
 ---
 
 ## Fabric Real-Time Intelligence
 
-Let's cover the key-features and how we plan to use them for our architecture.
+Let's cover the key-features of Real-Time Intelligence and how we plan to use them for our architecture.
 
 ### Eventstreams
 - Eventstreams allows us to bring real-time events (including Kafka endpoints) into Fabric, transform them, and then route them to various destinations without writing any code (no-code).
-- In this solution, Clicks and Impressions events are ingested from an Eventstream into the `events` table.
+- In this solution, Clicks and Impressions events are ingested from an Eventstream into the respective 'BronzeClicks' and 'BronzeImpressions' tables.
 - Enhanced capabilities allows us to source data into Eventstreams from Azure Event Hubs, IoT Hubs, Azure SQL Database (CDC), PostgreSQL Database (CDC), MySQL Database (CDC), Azure Cosmos Database (CDC), Google Cloud Pub/Sub, Amazon Kinesis Data Streams, Confluent Cloud Kafka, Azure Blog Storage events, Fabric Workspace Item events, Sample data or Custom endpoint (Custom App).
 - Feature [documentation](<https://learn.microsoft.com/fabric/real-time-analytics/event-streams/overview>).
 
@@ -84,11 +81,11 @@ Let's cover the key-features and how we plan to use them for our architecture.
 - Shortcuts enable the creation of a live connections between OneLake and data sources, whether internal or external to Azure. This allows us to retrieve data from these locations as if they were seamlessly integrated into Microsoft Fabric.
 - A shortcut is a schema entity that references data stored external to a KQL database in your cluster. In Lakehouse(s), Eventhouse(s), or KQL Databases it's possible to create shortcuts referencing internal locations within Microsoft Fabric, ADLS Gen2, Spark Notebooks, AWS S3 storage accounts, or Microsoft Dataverse.
 - By enabling us to reference different storage locations, OneLake's Shortcuts provides a unified source of truth for all our data, within the Microsoft Fabric environment and ensures clarity regarding the origin of our data.
-- In this solution, the `Product` and `ProductCategory` SQL tables are defined as external tables using shortcuts. Meaning the data is not copied but served from the SQL database itself. Shortcuts allow data to remain stored in outside of Fabric, yet presented via Fabric as a central location.
+- In this solution, the `Product` and `ProductCategory` delta tables in OneLake are defined as external tables using shortcuts. Meaning the data is not copied but served from the OneLake itself. Shortcuts allow data to remain stored in outside of Fabric, yet presented via Fabric as a central location.
 - Feature [documentation](<https://learn.microsoft.com/fabric/real-time-analytics/onelake-shortcuts?tabs=onelake-shortcut>).
 
 ### Eventhouse
-- An Eventhouse can host multiple KQL Databases for easier management. It will store relational data from an operational SQL database, leverage shortcuts and automate transformations in real-time. Eventhouses are **specifically tailored** to time-based, streaming or batch events with structured, semi-structured, and unstructured data.
+- An Eventhouse can host multiple KQL Databases for easier management. It will store events data from the Eventstream, leverage shortcuts and automate transformations in real-time. Eventhouses are **specifically tailored** to time-based, streaming or batch events with structured, semi-structured, and unstructured data.
 - An Eventhouse is the best place to store streaming data in Fabric. It provides a highly scalable analytics system with built-in Machine Learning capabilities for discrete analytics over highly-granular data. It's useful for any scenario that includes event-based data, for example, telemetry and log data, time series and IoT data, security and compliance logs, or financial records. 
 - Eventhouse's support Kusto Query Language (KQL) queries, T-SQL queries and Python. The data is automatically made available in delta-parquet format and can be easily accessed from Notebooks for more advanced transformations. 
 - Feature [documentation](<https://learn.microsoft.com/fabric/real-time-intelligence/eventhouse>).
@@ -114,10 +111,10 @@ Let's cover the key-features and how we plan to use them for our architecture.
 ### Kusto Query Language (KQL)
 - KQL is also known as the language of the cloud. It's available in many other services such as Microsoft Sentinel, Azure Monitor, Azure Resource Graph and Microsoft Defender. The code-name **Kusto** engine was invented by 4 engineers from the Power BI team over 10 years ago and has been implemented across all Microsoft services including Github Copilot, LinkedIn, Azure, Office 365, and XBOX.
 - KQL queries are easy to write, read and edit. The language is most commonly used to analyze logs, sign-on events, application traces, diagnostics, signals, metrics and much more. Supports multi-statement queries, relational operators such as filters (where clauses), union, joins aggregations to produce a tabular output. It allows the ability to simply pipe (|) additional commands for ad-hoc analytics without needing to re-write entire queries. It has similarities to PowerShell, Excel functions, LINQ, function SQL, and OS Shell (Bash). It supports DML statements, DDL statements (referred to as Control Commands), built-in machine learning operators for forecasting & anomaly detection, plus more... including in-line Python & R-Lang.
-- In this solution, KQL commands will be automatically written by the Get Data UI wizard when configuring the Eventhouse KQL Database destination in the Eventstream. These commands will create the `events` table and JSON mapping. Secondly, the control commands will be issued in a database script that automate creation of additional schema items such as Tables, Shortcuts, Functions, Policies and Materialized-Views.
+- In this solution, KQL commands will be automatically created and executed by eventstream to ingest data when configuring the Eventhouse KQL Database destination in the Eventstream. These commands will create the respective 'bronze' tables. Secondly, the control commands will be issued in a database script that automate creation of additional schema items such as Tables, Shortcuts, Functions, Policies and Materialized-Views.
 - Feature [documentation](<https://learn.microsoft.com/azure/data-explorer/kusto/query/>).
 
-### Real-time Dashboards
+### Real-Time Dashboards
 </div>
 <img src=assets/RTAMenu.png alt="RTA Menu" width="850" height="175">
 
@@ -142,3 +139,5 @@ Let's cover the key-features and how we plan to use them for our architecture.
 - Copilot for Real-Time Intelligence is an advanced AI tool designed to help you explore your data and extract valuable insights. You can input questions about your data, which are then automatically translated into Kusto Query Language (KQL) queries. Copilot streamlines the process of analyzing data for both experienced KQL users and citizen data scientists.
 - Feature [documentation](<https://learn.microsoft.com/fabric/get-started/copilot-real-time-intelligence>).
 ![Copilot](assets/Copilot.png "Fabric Copilot in KQL Queryset")
+
+---
