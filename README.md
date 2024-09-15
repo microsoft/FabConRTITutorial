@@ -1,10 +1,12 @@
-# ⚙️ moaw-workshop-basic
+# Build Fabric Real-Time Intelligence solution in a Day
 
-This repository contains a simple starter template for creating a [MOAW](https://moaw.dev) workshop.
+This repository contains artifacts created to deliver Microsoft Fabric Real-Time Intelligence solution in a day workshop cum tutorial. This workshop can be accessed on the MOAW (Mother of All Workshops) portal.
 
-This template includes the following:
-- Built-in MOAW workshop documentation, located in the `docs` folder.
-- A `.devcontainer` folder for setting up the workshop environment.
+To get started, proceeed to the MOAW:
+- Add the aka ms link
+- Add the link to workshop.md doc
+
+Please contact the authors at add the link to the speaker contact doc page.
 
 ## How to use this template
 
