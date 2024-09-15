@@ -141,3 +141,118 @@ Let's cover the key-features of Real-Time Intelligence and how we plan to use th
 ![Copilot](assets/Copilot.png "Fabric Copilot in KQL Queryset")
 
 ---
+
+# The e-commerce store   
+
+The e-commerce store database entities are:  
+- **Product:** the product catalogue. 
+- **ProductCategory:** the product categories.  
+- **events:** a click or impression event.   
+  - An **impression event** is logged when a product appears in the search results.
+![Impressions](assets/store1.png)  
+  - A **click event** is logged when the product is clicked and the customer has viewed the details.  
+![Clicks](assets/store2.png)  
+
+Photo by <a href="https://unsplash.com/@himiwaybikes?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Himiway Bikes</a> on <a href="https://unsplash.com/photos/black-and-gray-motorcycle-parked-beside-brown-wall-Gj5PXw1kM6U?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>.  
+Photo by <a href="https://unsplash.com/@headaccessories?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">HEAD Accessories</a> on <a href="https://unsplash.com/photos/silver-and-orange-head-lamp-9uISZprJdXU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>.  
+Photo by <a href="https://unsplash.com/@jxk?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Jan Kopřiva</a> on <a href="https://unsplash.com/photos/a-close-up-of-a-helmet-with-sunglasses-on-it-CT6AScSsQQM?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>.
+  
+
+---
+
+### Components of Fabric's Real-Time Intelligence
+![RTIComponents](assets/RTIComponents.png "Components of Fabric's Real-Time Intelligence")
+Real-Time Intelligence allows organizations to ingest, process, analyze, ask questions over your data using natural language, transform and automatically act on data. All with a central hub (Real-Time Hub) to easily access and visualize all internal and external, first- and third-party streaming data. 
+
+Using Real-Time Intelligence enables faster, more accurate decision-making and accelerated time to insight.
+
+### Lab Architecture
+![Architectural Diagram](assets/architecture.png "Architecture Diagram")
+Now with Data Activator (Reflex), we can also set alerts on Real-time Dashboards to send a message in Teams with conditional thresholds or even more advanced actions. 
+
+---
+
+# Data schema
+
+### Data flow
+![MRD](assets/mrd.png)  
+
+
+### Tables
+| Table| Origin     | Description|
+|------|------------|------------|
+| **BronzeClicks**|Eventhouse table|Streaming events representing the product being seen or clicked by the customer. Will be streamed into Fabric Eventhouse from an eventstream. We'll use a Fabric Notebook to simulate and push synthetic data (fake data) into an endpoint.|
+| **BronzeImpressions**|Eventhouse table|Streaming events representing the product being seen or clicked by the customer. Will be streamed into Fabric Eventhouse from an eventstream. We'll use a Fabric Notebook to simulate and push synthetic data (fake data) into an endpoint.|
+| **SilverClicks**|EventHouse table|Table created based on an update policy with **transformed data**.|
+| **SilverImpressions**|EventHouse table|Table created based on an update policy with **transformed data**.|
+
+
+### External Tables
+| Table| Origin     | Description|
+|------|------------|------------|
+| **Product**|**Shortcut** to OneLake delta table|Products, including descriptions and prices.|
+| **ProductCategory**|**Shortcut** to OneLake delta table|Product category.|
+
+### Functions
+| Function| Description|
+|------------|------------|
+|**expandClickpath**|Expands JSON array of dictonaries to transform into strongly typed columns.|
+|**expandRelatedProducts**|Expands JSON array of dictonaries to transform into strongly typed columns|
+
+
+### Materialized-Views
+| View | Origin     | Description|
+|------|------------|------------|
+| **ToBeDefined**|Eventhouse silver table|Materialized view showing only the **latest** changes in the source table showing how to handle duplicate or updated records.|
+| **ToBeDefined**|Eventhouse silver table|Materialized view showing only the **latest** changes in the source table showing how to handle duplicate or updated records.|
+
+
+---
+
+# Pre-requisites
+- Recommended material to review (at least one) prior to this lab, however it's not required:
+  - [Write your first query with Kusto](<https://aka.ms/learn.kql>)
+  - [Implement a Real-Time Intelligence Solution Tutorial](<https://learn.microsoft.com/fabric/real-time-intelligence/tutorial-introduction>)
+- To complete the lab you **must** have access to a [Microsoft Fabric](<https://www.microsoft.com/microsoft-fabric/getting-started>) workspace with at least Contributor permissions.
+
+### Fabric tenant and capacity for the tutorial
+For the purpose of this tutorial, speakers/proctors will provide a tenant with capacity for you to build your solution.
+
+
+---
+
+# Building the platform
+## 1. Login to Lab Environment
+
+<div class="info" data-title="Note">
+  
+> Do **not** use an InPrivate browser window. Recommend using a Personal browser window to successfully run this lab.
+</div>
+
+1. Proceed to [app.fabric.microsoft.com](<https://app.fabric.microsoft.com/>). 
+2. Login with provided credentials, if a trial fabric tenant was previously setup (reference Pre-reqs). You may also choose to run the lab in your own Fabric Tenant if you already have one.
+3. Click **Real-Time Intelligence**.
+![Fabric Home](assets/FabricHome.png "Real-Time Intelligence")
+
+## 2. Fabric Workspace 
+1. Click **Workspaces** on the left menu and open the Fabric Workspace **designated** to your login by the Fabric Trial Tenant.
+2. (Optional) If using your own Fabric Tenant, create a new workspace for this lab. 
+![alt text](assets/fabrta0.png)
+
+## 3. Create a new Eventhouse  
+1. Create an Eventhouse called "RTAdemo".  
+![alt text](assets/fabrta1.png)
+![alt text](assets/fabrta2.png)
+
+<div class="info" data-title="Note">
+  
+> The [Eventhouse](<https://learn.microsoft.com/en-us/fabric/real-time-intelligence/eventhouse>) is designed to handle real-time data streams efficiently, which lets organizations ingest, process, and analyze data in near real-time. Eventhouses are particularly useful for scenarios where **timely insights are crucial**. Eventhouses are **specifically tailored** to time-based, streaming events with multiple data formats. This data is automatically indexed and partitioned based on ingestion time.
+</div>
+
+## 4. Create a new Eventstream 
+In this section we will be streaming events (impressions and clicks events) generated by a notebook. The events will be streamed into an eventstream and consumed by our Eventhouse KQL Database.
+![alt text](assets/fabrta73.png)
+
+1. Create an Eventstream called "RTADemoEventStream".  
+![alt text](assets/fabrta3.png)
+![alt text](assets/fabrta4.png)
