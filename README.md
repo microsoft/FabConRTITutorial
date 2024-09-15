@@ -8,30 +8,6 @@ To get started, proceeed to the MOAW:
 
 Please contact the authors at add the link to the speaker contact doc page.
 
-## How to use this template
-
-### Initial setup
-
-1. Select the `Use this template` button on GitHub to create a new repository from this template.
-2. Name your repository and select `Create repository from template`.
-
-### Creating your workshop
-
-From this point, you can start creating your workshop content in the `main` branch.
-The following are some of the steps you can take to customize your workshop:
-- Update the `docs` folder with your workshop content. See this [link](https://moaw.dev/workshop/create-workshop/?step=2#edit-the-workshop-metadata) for more information on how to author your workshop content.
-- Update the `.devcontainer` folder with your workshop environment.
-
-To make it easier to edit your workshop docs, you can use the [MOAW CLI](https://github.com/microsoft/moaw/tree/main/packages/cli):
-
-- Run `moaw serve` to preview your workshop content locally, with live reload.
-- Run `moaw link docs/workshop.md` once your workshop is complete to generate a shareable link to your workshop.
-
-## All MOAW templates
-
-- [moaw-workshop-basic](https://github.com/sinedied/moaw-workshop-basic): A basic template for creating a MOAW workshop, only containing the workshop documentation and devcontainer setup.
-- [moaw-workshop-advanced](https://github.com/sinedied/moaw-workshop-advanced): A more advanced template for creating a MOAW workshop from a complete project repository. In addition to the workshop documentation and devcontainer setup, it includes template scripts to create one or more packages and setup the initial project structure.
-
 ## Contributing
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a
