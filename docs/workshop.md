@@ -288,7 +288,120 @@ In this section we will be streaming events (impressions and clicks events) gene
 
 ![alt text](assets/fabrta73.png)
 
-1. Create an Eventstream called "WebEventsStream_ES".  
+1. Create an Eventstream called "WebEventsStream_ES". Check the box "Enhanced Capabilities".
    ![alt text](assets/fabrta3.png)
+   ![alt text](assets/fabrta4.png)
 
-![alt text](assets/fabrta4.png)
+2. Click on "Use Custom Endpoint". This will create an event hub connected to the Eventstream. Provide the source name as "WebEventsCustomSource" or as you prefer. 
+![alt text](assets/fabrta5.png)
+3. Click on "Add".
+![alt text](assets/fabrta74.png)
+4. Click on "Publish".
+4. Click on the Eventstream source - Custom Endpoint to get the "Event hub name" and "Connection string-primary key". We need these values to send the events from our Notebook.  
+5. Click on "Keys".
+6. Click the copy icon next to the **Event hub name** to copy it to a notepad.
+![alt text](assets/fabrta8.png)
+7. Click the view icon at the end of the **Connection string** (primary or secondary) to see it.
+8. Then, click the copy icon at the end of **Connection string** to copy it to a notepad. It must be visible in order to copy it.
+
+<div class="info" data-title="Note">
+  
+>   Eventstreams Custom-Endpoint/Custom-App sources also provide **Kafka** endpoints where data can be pushed to.
+</div>
+
+![KafkaEndpoint](assets/KafkaEndpoint.png)
+
+## 5. Import Data Generator Notebook
+1. Import the notebook file [Generate_synthetic_web_events.ipynb](<https://github.com/microsoft/FabricRTIWorkshop/blob/main/notebooks/Generate%20synthetic%20events.ipynb>) to generate events using streaming.
+2. From GitHub, click the "Download raw file" icon on the top right.
+3. Then proceed to import the notebook file to your Fabric workspace.
+![alt text](assets/fabrta8.1.png)
+![alt text](assets/fabrta8.2.png)
+
+
+## 6. Run the notebook
+1. DO NOT use an InPrivate browser window. Recommend using a Personal browser window for the Notebook session to connect & run successfully.
+2. Open the "Generate synthetic events" notebook in your Fabric Workspace. 
+3. Paste your `eventHubConnString` value and `eventHubNameevents` value using the values your copied from the previous step - Eventstream keys.
+![alt text](assets/fabrta9.png)
+4. Click **Run all** at the top left to start generating streaming events. 
+5. Wait a few minutes for the first code cell to finish and it will proceed to next code cells automatically.
+6. Scroll down to the last code cell and it should begin to print the generated synthetic events in JSON format.
+![Notebook Success](assets/NotebookSuccess.png)
+
+
+## 7. Define destination in the Eventstream
+1. Open the Eventstream in your Fabric Workspace.
+2. Select "New Destination" - KQL Database.  
+![alt text](assets/fabrta17.png)
+3. Select your workspace and the KQL Database we created called "RTADemo".
+![alt text](assets/fabrta18.png)
+5. Create a new table in our KQL Database called `events`.
+![alt text](assets/fabrta19.png)
+6. You will see a sample of the **streaming** data showing CLICK and IMPRESSION events, click Finish and Close.
+![alt text](assets/fabrta20.png)
+![alt text](assets/fabrta21.png)
+7. You should see the Eventstream destination is in mode "Ingesting" or "Streaming". You may need to click Publish prior and the Refresh button. 
+![alt text](assets/fabrta22.png)
+8. (Optional) The **Real-Time Hub** menu icon on the left, provides a simple way to **Get Events** from several sources and samples. 
+![RealTimeHubSources](assets/RealTimeHubSources.png "Real-Time Hub sources")
+
+## 8. Accessing your Eventhouse data in a Lakehouse
+This feature is also called "one logical copy" and it automatically allows KQL Database tables to be accessed from a Lakehouse, Notebooks, etc in delta-parquet format via OneLake.
+- When activated it will constantly copy the KQL data to your Fabric OneLake in delta format. It allows you to query KQL Database tables as delta tables using Spark or SQL endpoint on the Lakehouse. We recommend enabling this feature "before" we load the more data into our KQL Database. Also, consider this feature can be enabled/disabled per table if necessary. You can read more about this feature here: [Announcing Delta Lake support in Real-Time Intelligence KQL Database](<https://support.fabric.microsoft.com/blog/announcing-delta-support-in-real-time-analytics-kql-db?ft=All>).
+
+![alt text](assets/fabrta70.png)
+
+### Here's how to set this up
+1. Open your Eventhouse.
+2. Select your KQL Database.
+3. Click on the pencil icon next to OneLake availability in the Database details pane. Click the toggle to activate it and click Done.
+![alt text](assets/fabrta61.png)
+
+![alt text](assets/fabrta62.png)
+5. Click the `events` table on the left and activate "OneLake Availability" for the table itself as well, because this table was created prior to enabling OneLake availability for the database.
+
+<div class="info" data-title="Note">
+  
+>   Newly created tables will automatically inherit the "OneLake availability" setting from the Database level. 
+</div>
+
+7. Create new Lakehouse called "RTADemoLakehouse" in your workspace.
+![alt text](assets/fabrta64.png)
+8. If your Lakehouse is using the Schemas then expand Tables, right-click dbo schema & select "New table shortcut". If Schemas do not appear under Tables, then click on "Get data" drop down, choose **New shortcut**.
+9. ![alt text](assets/fabrta65.png)
+10. Select Microsoft OneLake.
+![alt text](assets/fabrta66.png)
+11. Select the "events" table in our Eventhouse KQL Database and click "Next". 
+
+<div class="info" data-title="Note">
+  
+> You may return to this step to create additional shortcuts, after running the [createAll.kql](<https://github.com/microsoft/FabricRTIWorkshop/blob/main/kql/createAll.kql>) database script which will create the additional tables. For now, you may proceed by selecting just the "events" table.
+</div>
+
+![alt text](assets/LakeShortcut1.png)
+
+10. Click "Create".
+![alt text](assets/LakeShortcut2.png)
+
+12. Now you will have the Eventhouse KQL Database tables available in your Lakehouse. This also works across workspaces. You can query them like any other Lakehouse table.
+![alt text](assets/fabrta69.png)
+
+
+## 9. Build the KQL DB schema
+In this section we will create all the tables, functions, materialized-views, and enable update policies and in our Eventhouse KQL Database. Two of the tables (product and productCategory) are shortcuts to our SQL Database and the data is NOT being copied into our KQL Database.
+![alt text](assets/fabrta71.png)
+
+1. Open the RTADemo KQL Database in the Eventhouse of your Fabric Workspace.
+2. Click on "Explore your Data".  
+![alt text](assets/fabrta25.png)
+3. Open the [createAll.kql](<https://github.com/microsoft/FabricRTIWorkshop/blob/main/kql/createAll.kql>) file in GitHub and click copy icon at the top right to copy the entire file content.
+4. Replace all on the "Explore your data" by deleting lines 1-19 and paste the contents of the createAll.kql file.  
+5. Click Run
+![alt text](assets/fabrta27.png)
+7. Click Save as KQL queryset, name it "createAll".
+8. You can add additional tabs in the KQL Queryset to add new queries.
+9. Your tables, functions, shortcuts and materialized views should appear on the database pane on the left.
+![alt text](assets/fabrta28.png)
+9. (Optional) While on the KQL Database details screen you may explore additional **Real-Time Intelligence Samples** by clicking the **drop-drop next to Get data** and selecting a desired sample. These samples give you the ability to learn more. 
+![EventhouseSamples](assets/EventhouseSamples.png "Real-Time Intelligence Samples")
