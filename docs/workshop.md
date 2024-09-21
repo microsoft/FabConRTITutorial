@@ -364,9 +364,11 @@ In this section we will be streaming events (impressions and clicks events) gene
 30. Create a new table in our KQL Database called `BronzeImpressions`. Click "Save".
 31. Click on "Publish".
 32. After a few minutes, you should see the ClickEventStore and ImpressionEventStore node changing to mode "Streaming".
+
 ![alt text](assets/fabrta77.png)
 
 In the end your Eventstream toplogy should appear as shown in the image below.
+
 ![alt text](assets/fabrta76.png)
 
 
