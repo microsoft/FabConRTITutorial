@@ -274,7 +274,7 @@ For the purpose of this tutorial, speakers/proctors will provide a tenant with c
 
 ### 3. Create a new Eventhouse
 
-1. Create an Eventhouse called "RTAdemo".  
+1. Create an Eventhouse called "WebEvents_EH".  
    ![alt text](assets/fabrta1.png)
    ![alt text](assets/fabrta2.png)
 
@@ -288,7 +288,7 @@ In this section we will be streaming events (impressions and clicks events) gene
 
 ![alt text](assets/fabrta73.png)
 
-1. Create an Eventstream called "RTADemoEventStream".  
+1. Create an Eventstream called "WebEventsStream_ES".  
    ![alt text](assets/fabrta3.png)
 
 ![alt text](assets/fabrta4.png)
