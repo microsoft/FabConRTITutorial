@@ -275,12 +275,11 @@ For the purpose of this tutorial, speakers/proctors will provide a tenant with c
 ### 3. Create a new Eventhouse
 
 1. Create an Eventhouse called "WebEvents_EH".  
-   ![alt text](assets/fabrta1.png)
-   ![alt text](assets/fabrta2.png)
 
-| :notebook:**Note**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **The [Eventhouse](https://learn.microsoft.com/en-us/fabric/real-time-intelligence/eventhouse) is designed to handle real-time data streams efficiently, which lets organizations ingest, process, and analyze data in near real-time. Eventhouses are particularly useful for scenarios where **timely insights are crucial**. Eventhouses are **specifically tailored** to time-based, streaming events with multiple data formats. This data is automatically indexed and partitioned based on ingestion time.** |
+<div class="info" data-title="Note">
+  
+> The [Eventhouse](<https://learn.microsoft.com/en-us/fabric/real-time-intelligence/eventhouse>) is designed to handle real-time data streams efficiently, which lets organizations ingest, process, and analyze data in near real-time. Eventhouses are particularly useful for scenarios where **timely insights are crucial**. Eventhouses are **specifically tailored** to time-based, streaming events with multiple data formats. This data is automatically indexed and partitioned based on ingestion time.
+</div>
 
 ### 4. Create a new Eventstream
 
@@ -289,11 +288,8 @@ In this section we will be streaming events (impressions and clicks events) gene
 ![alt text](assets/fabrta73.png)
 
 1. Create an Eventstream called "WebEventsStream_ES". Check the box "Enhanced Capabilities".
-   ![alt text](assets/fabrta3.png)
-   ![alt text](assets/fabrta4.png)
 
 2. Click on "Use Custom Endpoint". This will create an event hub connected to the Eventstream. Provide the source name as "WebEventsCustomSource" or as you prefer. 
-![alt text](assets/fabrta5.png)
 3. Click on "Add".
 ![alt text](assets/fabrta74.png)
 4. Click on "Publish".
@@ -309,7 +305,6 @@ In this section we will be streaming events (impressions and clicks events) gene
 >   Eventstreams Custom-Endpoint/Custom-App sources also provide **Kafka** endpoints where data can be pushed to.
 </div>
 
-![KafkaEndpoint](assets/KafkaEndpoint.png)
 
 ## 5. Import Data Generator Notebook
 1. Import the notebook file [Generate_synthetic_web_events.ipynb](<https://github.com/microsoft/FabConRTITutorial/blob/461275d54917670ee996bf85c780290061a35ff2/notebook/Generate_synthetic_web_events.ipynb>) to generate events using streaming.
@@ -330,7 +325,7 @@ In this section we will be streaming events (impressions and clicks events) gene
 ![Notebook Success](assets/NotebookSuccess.png)
 
 
-## 7. Define destination in the Eventstream
+## 7. Define Eventstream topology
 1. Open the Eventstream in your Fabric Workspace.
 2. Click on "Edit".
 ![alt text](assets/fabrta75.png)
