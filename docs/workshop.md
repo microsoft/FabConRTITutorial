@@ -312,7 +312,7 @@ In this section we will be streaming events (impressions and clicks events) gene
 ![KafkaEndpoint](assets/KafkaEndpoint.png)
 
 ## 5. Import Data Generator Notebook
-1. Import the notebook file [Generate_synthetic_web_events.ipynb](<https://github.com/microsoft/FabricRTIWorkshop/blob/main/notebooks/Generate%20synthetic%20events.ipynb>) to generate events using streaming.
+1. Import the notebook file [Generate_synthetic_web_events.ipynb](<https://github.com/microsoft/FabConRTITutorial/blob/461275d54917670ee996bf85c780290061a35ff2/notebook/Generate_synthetic_web_events.ipynb>) to generate events using streaming.
 2. From GitHub, click the "Download raw file" icon on the top right.
 3. Then proceed to import the notebook file to your Fabric workspace.
 ![alt text](assets/fabrta8.1.png)
@@ -321,8 +321,8 @@ In this section we will be streaming events (impressions and clicks events) gene
 
 ## 6. Run the notebook
 1. DO NOT use an InPrivate browser window. Recommend using a Personal browser window for the Notebook session to connect & run successfully.
-2. Open the "Generate synthetic events" notebook in your Fabric Workspace. 
-3. Paste your `eventHubConnString` value and `eventHubNameevents` value using the values your copied from the previous step - Eventstream keys.
+2. Open the "Generate_synthetic_web_events" notebook in your Fabric Workspace. 
+3. Paste your `Event hub name` value and `Event hub Connection String Primary Key` value using the values your copied from the previous step - Eventstream keys.
 ![alt text](assets/fabrta9.png)
 4. Click **Run all** at the top left to start generating streaming events. 
 5. Wait a few minutes for the first code cell to finish and it will proceed to next code cells automatically.
@@ -332,19 +332,44 @@ In this section we will be streaming events (impressions and clicks events) gene
 
 ## 7. Define destination in the Eventstream
 1. Open the Eventstream in your Fabric Workspace.
-2. Select "New Destination" - KQL Database.  
-![alt text](assets/fabrta17.png)
-3. Select your workspace and the KQL Database we created called "RTADemo".
-![alt text](assets/fabrta18.png)
-5. Create a new table in our KQL Database called `events`.
-![alt text](assets/fabrta19.png)
-6. You will see a sample of the **streaming** data showing CLICK and IMPRESSION events, click Finish and Close.
-![alt text](assets/fabrta20.png)
-![alt text](assets/fabrta21.png)
-7. You should see the Eventstream destination is in mode "Ingesting" or "Streaming". You may need to click Publish prior and the Refresh button. 
-![alt text](assets/fabrta22.png)
-8. (Optional) The **Real-Time Hub** menu icon on the left, provides a simple way to **Get Events** from several sources and samples. 
-![RealTimeHubSources](assets/RealTimeHubSources.png "Real-Time Hub sources")
+2. Click on "Edit".
+![alt text](assets/fabrta75.png)
+3. Select "Transform events or add Destination" - Filter.  
+4. Click on the pencil icon the Filter node.
+5. Provide "ClickEventsFilter" as the Operation name.
+6. Choose "eventType" in the drop down for Select a field to filter on.
+7. Choose "equals" as the condition
+8. Type "CLICK" in the taxt box. Note: "CLICK" is in ALL CAPS.
+9. Click on "Save".
+10. Click on "+" sign next to the ClickEventsFilter node and choose "Stream".
+11. Enter the name as "ClickEventsStream".
+12. Click on "+" sign next to the ClickEventsStream node and choose "Eventhouse".
+13. Provide "ClickEventStore" as the Destination name.
+14. Select your workspace, Eventhouse that we created called "WebEvents_EH" and KQL Database of the same name.
+15. Create a new table in our KQL Database called `BronzeClicks`. Click "Save".
+16. Click on "+" sign next to the WebEventsStream_ES node and choose "Filter".
+17. Delete the connection between this new filter node and ClickEventsFilter node.
+18. Connect the output of WebEventsStream_ES node to the input of ClickEventsFilter node.
+19. Click on the pencil icon of the new Filter node.
+20. Provide "ImpressionEventsFilter" as the Operation name.
+21. Choose "eventType" in the drop down for Select a field to filter on.
+22. Choose "equals" as the condition
+23. Type "IMPRESSION" in the taxt box. Note: "IMPRESSION" is in ALL CAPS.
+24. Click on "Save".
+25. Click on "+" sign next to the ImpressionEventsFilter node and choose "Stream".
+26. Enter the name as "ImpressionEventsStream".
+27. Click on "+" sign next to the ImpressionEventsStream node and choose "Eventhouse".
+28. Provide "ImpressionEventStore" as the Destination name.
+29. Select your workspace, Eventhouse that we created called "WebEvents_EH" and KQL Database of the same name.
+30. Create a new table in our KQL Database called `BronzeImpressions`. Click "Save".
+31. Click on "Publish".
+32. After a few minutes, you should see the ClickEventStore and ImpressionEventStore node changing to mode "Streaming".
+![alt text](assets/fabrta77.png)
+
+In the end your Eventstream toplogy should appear as shown in the image below.
+![alt text](assets/fabrta76.png)
+
+
 
 ## 8. Accessing your Eventhouse data in a Lakehouse
 This feature is also called "one logical copy" and it automatically allows KQL Database tables to be accessed from a Lakehouse, Notebooks, etc in delta-parquet format via OneLake.
