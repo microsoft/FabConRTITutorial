@@ -208,6 +208,7 @@ Using Real-Time Intelligence enables faster, more accurate decision-making and a
 ## Lab Architecture
 
 ![Architectural Diagram](assets/architecture.png "Architecture Diagram")
+
 Now with Data Activator (Reflex), we can also set alerts on Real-time Dashboards to send a message in Teams with conditional thresholds or even more advanced actions.
 
 ---
@@ -255,7 +256,10 @@ Now with Data Activator (Reflex), we can also set alerts on Real-time Dashboards
 - Recommended material to review (at least one) prior to this lab, however it's not required:
   - [Write your first query with Kusto](https://aka.ms/learn.kql)
   - [Implement a Real-Time Intelligence Solution Tutorial](https://learn.microsoft.com/fabric/real-time-intelligence/tutorial-introduction)
-- To complete the lab you **must** have access to a [Microsoft Fabric](https://www.microsoft.com/microsoft-fabric/getting-started) workspace with at least Contributor permissions.
+
+| :heavy_exclamation_mark: **Important**                                                                                                                                                |
+| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **To complete the lab you **must** have access to a [Microsoft Fabric](https://www.microsoft.com/microsoft-fabric/getting-started) workspace with at least Contributor permissions.** |
 
 ### Fabric tenant and capacity for the tutorial
 
@@ -263,24 +267,30 @@ For the purpose of this tutorial, speakers/proctors will provide a tenant with c
 
 ---
 
-# Building the platform
+## Building the platform
 
-## 1. Login to Lab Environment
+### 1. Login to Lab Environment
 
-<div class="info" data-title="Note">
-  
-> Do **not** use an InPrivate browser window. Recommend using a Personal browser window to successfully run this lab.
-</div>
+| :heavy_exclamation_mark: **Important**                                                                                  |
+| :---------------------------------------------------------------------------------------------------------------------- |
+| **Do **not** use an InPrivate browser window. Recommend using a Personal browser window to successfully run this lab.** |
 
-1. Proceed to [app.fabric.microsoft.com](https://app.fabric.microsoft.com/).
+1. Open [app.fabric.microsoft.com](https://app.fabric.microsoft.com/) in your browser.
+
+   ![FabricURL](assets/image_task01_step01.png "Fabric URL")
+
 2. Login with provided credentials, if a trial fabric tenant was previously setup (reference Pre-reqs). You may also choose to run the lab in your own Fabric Tenant if you already have one.
+
 3. Click **Real-Time Intelligence**.
-   ![Fabric Home](assets/FabricHome.png "Real-Time Intelligence")
+
+   ![Fabric Home](assets/image_task01_step03.png "Real-Time Intelligence")
 
 ## 2. Fabric Workspace
 
 1. Click **Workspaces** on the left menu and open the Fabric Workspace **designated** to your login by the Fabric Trial Tenant.
+
 2. (Optional) If using your own Fabric Tenant, create a new workspace for this lab.
+
    ![alt text](assets/fabrta0.png)
 
 ## 3. Create a new Eventhouse
