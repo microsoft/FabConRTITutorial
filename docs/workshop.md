@@ -238,19 +238,20 @@ Now with Data Activator (Reflex), we can also set alerts on Real-time Dashboards
 | **Product**         | **Shortcut** to OneLake delta table | Products, including descriptions and prices. |
 | **ProductCategory** | **Shortcut** to OneLake delta table | Product category.                            |
 
-### Functions
+### Transformation Functions
 
 | Function                  | Description                                                                 |
 | ------------------------- | --------------------------------------------------------------------------- |
 | **expandClickpath**       | Expands JSON array of dictonaries to transform into strongly typed columns. |
 | **expandRelatedProducts** | Expands JSON array of dictonaries to transform into strongly typed columns  |
 
-### Materialized-Views
+### Functions as Views
 
 | View            | Origin                  | Description                                                                                                                   |
 | --------------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **ToBeDefined** | Eventhouse silver table | Materialized view showing only the **latest** changes in the source table showing how to handle duplicate or updated records. |
-| **ToBeDefined** | Eventhouse silver table | Materialized view showing only the **latest** changes in the source table showing how to handle duplicate or updated records. |
+| **SocialMediaCampaignClickstream** | Eventhouse gold function | Function showing clickstream originating due to social media campaigns |
+| **SearchMediaCampaignClickstream** | Eventhouse gold function | Function showing clickstream originating due to campaigns on search engines |
+| **EmailCampaignClickstream** | Eventhouse gold function | Function showing clickstream originating due to email campaigns |
 
 ---
 
@@ -259,10 +260,23 @@ Now with Data Activator (Reflex), we can also set alerts on Real-time Dashboards
 - Recommended material to review (at least one) prior to this lab, however it's not required:
   - [Write your first query with Kusto](https://aka.ms/learn.kql)
   - [Implement a Real-Time Intelligence Solution Tutorial](https://learn.microsoft.com/fabric/real-time-intelligence/tutorial-introduction)
+  - To complete the lab you **must** have access to a [Microsoft Fabric](<https://www.microsoft.com/microsoft-fabric/getting-started>) workspace with at least Contributor permissions.
 
-| :heavy_exclamation_mark: **Important**                                                                                                                                                |
-| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **To complete the lab you **must** have access to a [Microsoft Fabric](https://www.microsoft.com/microsoft-fabric/getting-started) workspace with at least Contributor permissions.** |
+### Trial Tenant for the Lab
+If you need a new Trial Tenant to complete the lab, suggest to register a new Outlook.com email and follow these steps:
+1. [Provision Fabric Trial Tenant](<https://github.com/microsoft/FabricRTIWorkshop/tree/main/trialtenant>) - see document and powershell script to setup a lab admin.
+   - 25 workspaces with access to 25 logins will be created automatically (one workspace per user).
+   - Participants should create items in the workspace designated to their own login.
+   - If more than 25 accounts are necessary, additional Trial Tenants can be provisioned by repeating this process again. Also, participants can share the lab credentials and use folders in their workspaces. 
+3. [Office 365 E5 Trial](<https://blog.fabric.microsoft.com/blog/accessing-microsoft-fabric-for-developers-startups-and-enterprises>). ⚠️ Make sure to disable recurring billing, otherwise your credit card will be charged for Office E5.
+4. The "LabAdmin" credential should be used by the lab proctor.
+5. The "LabAdmin" can have the pre-built lab items for Lab Users 01-24 to reference as a cheat-sheet. To do so, grant Users 01-24 viewer permission to the "LabAdmin" workspace.
+![WorkspaceManageAccess](assets/WorkspaceManageAccess.png "Workspace Manage Access")
+
+### Enable Real-Time Dashboards (preview)
+1. While logged in as Tenant Admin or Capacity Admin to Fabric, click the gear icon on the top right of the  page to open Admin Portal. Note, the "LabAdmin" account will have access to enable this for the Trial Tenant described above.
+2. In the [Tenant Settings](<https://app.fabric.microsoft.com/admin-portal/tenantSettings?experience=kusto>), search for "dashboards", click the toggle to **Enabled**, click **Apply**.
+![EnableRTDashboards](assets/EnableRTDashboards.png "Enable Real-Time Dashboards")
 
 ### Fabric tenant and capacity for the tutorial
 
@@ -274,9 +288,10 @@ For the purpose of this tutorial, speakers/proctors will provide a tenant with c
 
 ### 1. Login to Lab Environment
 
-| :heavy_exclamation_mark: **Important**                                                                                  |
-| :---------------------------------------------------------------------------------------------------------------------- |
-| **Do **not** use an InPrivate browser window. Recommend using a Personal browser window to successfully run this lab.** |
+<div class="info" data-title="Note">
+  
+> Do **not** use an InPrivate browser window. Recommend using a Personal browser window to successfully run this lab.
+</div>
 
 1. Open [app.fabric.microsoft.com](https://app.fabric.microsoft.com/) in your browser.
 
@@ -291,10 +306,7 @@ For the purpose of this tutorial, speakers/proctors will provide a tenant with c
 ### 2. Fabric Workspace
 
 1. Click **Workspaces** on the left menu and open the Fabric Workspace **designated** to your login by the Fabric Trial Tenant.
-
-| :notebook: **Note**                                                                  |
-| :----------------------------------------------------------------------------------- |
-| **(Optional) If using your own Fabric Tenant, create a new workspace for this lab.** |
+2. (Optional) If using your own Fabric Tenant, create a new workspace for this lab. 
 
 1. To create a new Workspace click on **Workspaces** in the left pane and then click on **+ New Workspace** in the popup window.
 
@@ -304,9 +316,9 @@ For the purpose of this tutorial, speakers/proctors will provide a tenant with c
 
    ![alt text](assets/image_task02_step02.png)
 
-   | :notebook: **Note**                                                                                                                                                                         |
-   | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-   | **If the name that you would like to use for your workspace is still available this will be shown below the input box for **Name**. Workspace Names have to be unique in a Fabric tenant.** |
+  <div class="info" data-title="Note">
+  > If the name that you would like to use for your workspace is still available this will be shown below the input box for **Name**. Workspace Names have to be unique in a Fabric tenant.
+  </div>
 
 3. Check if the option **Trial** is checked. If so click on **Apply**.
 
