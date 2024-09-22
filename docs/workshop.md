@@ -617,7 +617,7 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
 ### 9. Setting up the Lakehouse
 
-In this task we will set up the Lakehouse that will contain additional information for our usecase and in which we will also save the data from the datastreams to archive them.
+In this task we will set up the Lakehouse that will contain additional information for our usecase and in which we will also make the data from the KQL Database accessible through the lakehouse.
 
 1. Go to the folder [**ref_data**](../ref_data/) in the Github repo and download the **products.csv** and **productcategory.csv** files on your computer.
 
@@ -647,23 +647,48 @@ After our lakehouse has been created the overview page of the lakehouse will be 
 
    ![alt text](assets/image_task10_step02.png)
 
-| :information_source: **Information**                                                                  |
-| :---------------------------------------------------------------------------------------------------- |
-| **To select the two files at once you can just hold the key **STRG** while you click the two files.** |
+   | :information_source: **Information**                                                                  |
+   | :---------------------------------------------------------------------------------------------------- |
+   | **To select the two files at once you can just hold the key **STRG** while you click the two files.** |
 
-3. After the files have been uploaded, browse the "Files" folder.
+3. In the popin window **Upload files** click on the button **Upload**. Now the files will be uploaded.
 
-4. Select the "..." context menu for each file and choose "Load to tables".
+   ![alt text](assets/image_task10_step03.png)
 
-5. Retain all the default values and click "Load".
+4. To check that the files have been uploaded successfully, click on the folder **Files** in the pane **Explorer**. You should see the files in the list **Files** in the right part of the window.
 
-Ensure that both the files products.csv and productcategory.csv are available as delta tables in your lakehouse. Eventually, your lakehouse should appear as follows.
+   ![alt text](assets/image_task10_step04.png)
 
-![alt text](assets/fabrta78.png)
+5. Next we have to create delta tables in our Lakehouse from the files we uploaded. To do this access the context menu by clicking on the three dots (**...**). Select **Load to tables** from the context menu.
 
-### Accessing Eventhouse data from the lakehouse
+   ![alt text](assets/image_task10_step05.png)
 
-8. If your Lakehouse is using the Schemas then expand Tables, right-click dbo schema & select "New table shortcut". If Schemas do not appear under Tables, then click on "Get data" drop down, choose **New shortcut**.
+   In the submenu click on **New table**
+
+   ![alt text](assets/image_task10_step05b.png)
+
+6. Retain all default values and click on the button **Load**.
+
+   ![alt text](assets/image_task10_step06.png)
+
+   | :information_source: **Information**                                                                     |
+   | :------------------------------------------------------------------------------------------------------- |
+   | **This steps have to be executed for the file productcategory.csv as well as for the file product.csv.** |
+
+7. Ensure that both files **products.csv** and **productcategory.csv** are available as delta tables in your lakehouse. Your lakehouse should look like this:
+
+   ![alt text](assets/image_task10_step07.png)
+
+### 11. Accessing Eventhouse data from the lakehouse
+
+In this task we will make the Eventhouse tables form the KQL Database available in our Lakehouse. This will be accomplished by creating _shortcuts_.
+
+1. If your Lakehouse is using the Schemas then expand Tables, right-click dbo schema & select "New table shortcut". If Schemas do not appear under Tables, then click on "Get data" drop down, choose **New shortcut**.
+
+| :information_source: **Information**       |
+| :----------------------------------------- |
+| **If your Lakehouse is using Shemas you ** |
+
 9. ![alt text](assets/fabrta65.png)
 10. Select Microsoft OneLake.
     ![alt text](assets/fabrta66.png)
