@@ -2,16 +2,15 @@
 
 published: true                        # Optional. Set to true to publish the workshop (default: false)
 type: workshop                          # Required.
-title: Building a Medallion Architecture using MS Fabric Real-Time Intelligence               # Required. Full title of the workshop
-short_title: Real-Time Intelligence Tutorial    # Optional. Short title displayed in the header
-description: In this technical workshop, you will build a complete analytics platform for streaming & batching data.   # Required.
+title: Building Fabric Real-Time Intelligence solution in a day               # Required. Full title of the workshop
+short_title: Fabric Real-Time Intelligence Tutorial    # Optional. Short title displayed in the header
+description: In this technical workshop, you will build a complete analytics platform with streaming data using Microsoft Fabric Real-Time Intelligence components and other features of Microsoft Fabric. This is a proctor led worksop in which each section is accompanied by a technical overview of Fabric RTI components.   # Required.
 level: intermediate                         # Required. Can be 'beginner', 'intermediate' or 'advanced'
 authors:                                # Required. You can add as many authors as needed      
   - Microsoft Fabric Real-Time Intelligence
 contacts:                               # Required. Must match the number of authors
   - https://aka.ms/fabricblog
-video_url: https://youtube.com/watch?v=hkChU3KMZaE             # Optional. Link to a video of the workshop
-duration_minutes: 120                    # Required. Estimated duration in minutes
+duration_minutes: 360                    # Required. Estimated duration in minutes
 audience: students, pro devs, analysts            # Optional. Audience of the workshop (students, pro devs, etc.)
 tags: fabric, kql, realtime, intelligence, event, stream, sql, data, analytics, kusto, medallion, dashboard, reflex, activator         # Required. Tags for filtering and searching
 
@@ -26,15 +25,16 @@ This workshop will walk you through the process of building an end-to-end [Real-
 You will learn how to:
 
 - Build a web traffic analytics solution using Fabric Real-Time Intelligence.
-- **TO BE CHANGED** Use Fabric shortcuts & Data Factory pipelines to get data from operational DBs like SQL Server (with AdventureWorksLT sample data).
+- Use Fabric shortcuts to query data without move or copy(with AdventureWorksLT sample data).
 - Stream events into Fabric Eventhouse via Eventstream & leverage OneLake availability.
 - Create real-time data transformations in Fabric Eventhouse through the power of Kusto Query Language (KQL) & Fabric Copilot.
-- Create real-time visualizations using Real-Time Dashboards and automate actions.
+- Create real-time visualizations using Real-Time Dashboards.
+- Build Reflex actions and alerts on the streaming data.
 
 See what real customers like [McLaren](https://www.linkedin.com/posts/shahdevang_if-you-missed-flavien-daussys-story-at-build-activity-7199013652681633792-3hdp), [Dener Motorsports](https://customers.microsoft.com/en-us/story/1751743814947802722-dener-motorsport-producose-ltd-azure-service-fabric-other-en-brazil), [Elcome](https://customers.microsoft.com/en-us/story/1770346240728000716-elcome-microsoft-copilot-consumer-goods-en-united-arab-emirates), [Seair Exim Solutions](https://customers.microsoft.com/en-us/story/1751967961979695913-seair-power-bi-professional-services-en-india) & [One NZ](https://customers.microsoft.com/en-us/story/1736247733970863057-onenz-powerbi-telecommunications-en-new-zealand) are saying.
 
 All the **code** in this tutorial can be found here:  
-[Building a Medallion Architecture on Fabric Real-Time Intelligence](https://github.com/microsoft/FabConRTITutorial/)
+[Build Fabric Real-Time Intelligence solution in a day](https://github.com/microsoft/FabConRTITutorial/)
 
 ### Duration
 
@@ -435,7 +435,7 @@ In this section we will create all the silver tables, functions, materialized-vi
 15. (Optional) While on the KQL Database details screen you may explore additional **Real-Time Intelligence Samples** by clicking the **drop-drop next to Get data** and selecting a desired sample. These samples give you the ability to learn more. 
 ![EventhouseSamples](assets/EventhouseSamples.png "Real-Time Intelligence Samples")
 
-# 12. Real-Time Dashboard
+# 10. Real-Time Dashboard
 In this section, we will build a real-time dashboard to visualize the streaming data and set it to refresh every 30 seconds. (Optionally) A pre-built version of the dashboard is available to download [here](<https://github.com/microsoft/FabricRTIWorkshop/blob/main/dashboards/RTA%20dashboard/dashboard-RTA Dashboard.json>), which can be imported and configured to your KQL Database data source.
 - The Proctor Guide covers this process.
 ![Real-Time Dashboard](assets/RealTimeDashboard.png "Real-Time Dashboard")
@@ -577,7 +577,7 @@ SilverImpressions
 24. Click **Home** and then **Save**.
 
 
-## 13. Reflex
+## 11. Reflex
 1. While editing the dashboard, click **Manage** > Set Alert.
 2. Choose "Clicks by hour".
 3. Select Condition "Becomes greater than".
@@ -591,7 +591,7 @@ SilverImpressions
 </div>
 
 
-## 13. Stop the notebook
+## 12. Stop the notebook
 At this point you've completed the lab, so you may stop running the notebook. 
 1. Open the notebook "Generate synthetic events" from your workspace and click **Stop** on the last code cell if its still running.
 2. (Optionally) You can click **Cancel All** on the top menu or click the stop red-square button to Stop session. These only appear when your session is active or the notebook is running.
@@ -601,3 +601,19 @@ At this point you've completed the lab, so you may stop running the notebook.
 
 
 ## THAT's ALL FOLKS!!
+
+---
+
+# Continue your learning
+
+- [Implement a Real-Time Intelligence Solution with Microsoft Fabric](<https://aka.ms/realtimeskill/>)
+- [Real-Time Intelligence documentation in Microsoft Fabric](<https://aka.ms/fabric-docs-rta>)
+- [Microsoft Fabric Updates Blog](<https://aka.ms/fabricblog>)
+- [Get started with Microsoft Fabric](<https://aka.ms/fabric-learn>)
+- [The mechanics of Real-Time Intelligence in Microsoft Fabric](<https://youtube.com/watch?v=4h6Wnc294gA>)
+- [Real-Time Intelligence in Microsoft Fabric](<https://youtube.com/watch?v=ugb_w3BTZGE>)
+
+
+### Thank you!
+
+![logo](https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31)
