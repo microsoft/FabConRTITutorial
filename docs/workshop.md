@@ -721,9 +721,7 @@ In this task we will make the Eventhouse tables form the KQL Database available 
 
 ### 12. Build the KQL DB schema
 
-In this section we will create all the silver tables, functions, materialized-views, and enable update policies and in our Eventhouse KQL Database. Two of the tables (product and productCategory) are shortcuts to the lakehouse and the data is NOT being copied into our KQL Database.
-
-FIXME: Is this picture correct? Should the circle be at the KQL Database of the Eventhouse? What about the SQL Databases?
+In this section we will create all the silver tables, functions and enable update policies and in our Eventhouse KQL Database. Two of the tables (`product` and `productCategory`) are shortcuts to the lakehouse and the data is **NOT** being copied into our KQL Database.
 
 ![alt text](assets/fabrta71.png)
 
