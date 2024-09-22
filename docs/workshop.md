@@ -482,7 +482,11 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
    ![alt text](assets/image_task08_step03.png)
 
-4. Click on the pencil icon the Filter node.
+   | :information_source: **Information**                                                                                                                |
+   | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | **Pay attention to the table you can see at the bottom of the screen. Here you can see events that are streamed by notebook to the event already.** |
+
+4. Click on the pencil icon in the node **Filter1** to enter edit mode.
 
    ![alt text](assets/image_task08_step04.png)
 
@@ -501,121 +505,300 @@ Next we have to create the Eventstream topology that will insert the streamed da
    | :------------------------------------- |
    | **Note: `CLICK` is in ALL CAPS.**      |
 
-6. Click on "+" sign next to the ClickEventsFilter node and choose "Stream".
+   | :heavy_exclamation_mark: **Important**                                                                                                                                                                   |
+   | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | **It is normal that the node **ClickEventsFilter** is shown with an error. The error indicates that there is no target for the datastream coming out of the filter. We will fix this in the next step.** |
 
-7. Enter the name as "ClickEventsStream".
+6. Click on **+** icon next to the **ClickEventsFilter** node. and choose **Stream** from the context menu.
 
-8. Click on "+" sign next to the ClickEventsStream node and choose "Eventhouse".
+   ![alt text](assets/image_task08_step06.png)
 
-9. Provide "ClickEventStore" as the Destination name.
+7. Coose **Stream** from the context menu.
 
-10. Select your workspace, Eventhouse that we created called "WebEvents_EH" and KQL Database of the same name.
+   ![alt text](assets/image_task08_step07.png)
 
-11. Create a new table in our KQL Database called `BronzeClicks`. Click "Save".
+8. Click on the pencil in node **Stream1** to go to edit mode. Enter `ClickEventsStream` as name of the Eventstream in the field **Stream name**. Ensure that the **Input data format** is **Json**. Click on the Button **Save**.
 
-12. Click on "+" sign next to the WebEventsStream_ES node and choose "Filter".
+   ![alt text](assets/image_task08_step08.png)
 
-13. Delete the connection between this new filter node and ClickEventsFilter node.
+9. Click on **+** icon next to the node **ClickEventsStream**.
 
-14. Connect the output of WebEventsStream_ES node to the input of ClickEventsFilter node.
+   ![alt text](assets/image_task08_step09.png)
 
-15. Click on the pencil icon of the new Filter node.
+10. Select the option **Eventhouse** in the context menu.
 
-16. Provide "ImpressionEventsFilter" as the Operation name.
+    ![alt text](assets/image_task08_step10.png)
 
-17. Choose "eventType" in the drop down for Select a field to filter on.
+11. Click the pencil in node **Eventhouse1** to enter edit mode. Provide the following values in the pane **Eventhouse**.
 
-18. Choose "equals" as the condition
+    | Field                                 | Value                                                                                                                        |
+    | :------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------- |
+    | **Event processing before ingestion** | Ensure that this option is selected.                                                                                         |
+    | **Destionation name**                 | `ClickEventStore`                                                                                                            |
+    | **Workspace**                         | Select **RTI Tutorial**. If you attend the Precon at FabConEurope please select the Workspace Name that was provided to you. |
+    | **Eventhouse**                        | Select the Eventhouse **WebEvents_EH**                                                                                       |
+    | **KQL Database**                      | Select the KQL Database **WebEvents_EH**                                                                                     |
+    | **Destination table**                 | Click on **Create new** and enter `BronzeClicks` as name for the new table and click on **Done**.                            |
+    | **Input data format**                 | Ensure that the option **Json** is selected.                                                                                 |
 
-19. Type "IMPRESSION" in the taxt box. Note: "IMPRESSION" is in ALL CAPS.
+    ![alt text](assets/image_task08_step11.png)
 
-20. Click on "Save".
+    Click the button **Save** after you entered all the values.
 
-21. Click on "+" sign next to the ImpressionEventsFilter node and choose "Stream".
+12. Click on **+** sign next to the node **WebEventsStream_ES**.
 
-22. Enter the name as "ImpressionEventsStream".
+    ![alt text](assets/image_task08_step12.png)
 
-23. Click on "+" sign next to the ImpressionEventsStream node and choose "Eventhouse".
+13. Choose the option **Filter** from the context menu.
 
-24. Provide "ImpressionEventStore" as the Destination name.
+    ![alt text](assets/image_task08_step13.png)
 
-25. Select your workspace, Eventhouse that we created called "WebEvents_EH" and KQL Database of the same name.
+14. Delete the connection between the new filter node **Filter1** and the node **ClickEventsFilter** by clicking on the trashcan icon.
 
-26. Create a new table in our KQL Database called `BronzeImpressions`. Click "Save".
+    ![alt text](assets/image_task08_step14.png)
 
-27. Click on "Publish".
+15. Connect the output of the node **WebEventsStream_ES** to the input of the node **ClickEventsFilter**.
 
-28. After a few minutes, you should see the ClickEventStore and ImpressionEventStore node changing to mode "Streaming".
+    ![alt text](assets/image_task08_step15.gif)
 
-![alt text](assets/fabrta77.png)
+16. Click on the pencil icon of the new node **Filter1** to enter edit mode. Provide the following values in the pane **Filter** on the left side. Then click on **Save**.
 
-In the end your Eventstream toplogy should appear as shown in the image below.
+    | Field                           | Value                    |
+    | :------------------------------ | :----------------------- |
+    | **Operation name**              | `ImpressionEventsFilter` |
+    | **Select a field to filter on** | **eventType**            |
+    | **Keep events when the value**  | **equals**               |
+    | **value**                       | `IMPRESSION`             |
 
-![alt text](assets/fabrta76.png)
+    ![alt text](assets/image_task08_step16.png)
 
-## 8. Setting up the Lakehouse
+    | :heavy_exclamation_mark: **Important** |
+    | :------------------------------------- |
+    | **Note: `IMPRESSION` is in ALL CAPS.** |
 
-1. Go to "ref_data" folder in the Github repo and download the products.csv and productcategory.csv files on your computer.
+    | :heavy_exclamation_mark: **Important**                                                                                                                                                                        |
+    | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | **It is normal that the node **ImpressionEventsFilter** is shown with an error. The error indicates that there is no target for the datastream coming out of the filter. We will fix this in the next step.** |
 
-2. Create new Lakehouse called "WebSalesData_LH" in your workspace.
+17. Click on **+** sign next to the **ClickEventsFilter** node and choose **Stream** from the context menu.
 
-### Uploading reference data files and creating delta tables
+    ![alt text](assets/image_task08_step17.png)
 
-3. Click "Get data" and choose "Upload Files"
-4. Upload the 2 files that you downloaded in the previous steps.
-5. After the files have been uploaded, browse the "Files" folder.
-6. Select the "..." context menu for each file and choose "Load to tables".
-7. Retain all the default values and click "Load".
+18. Click on the pencil icon in the node **Stream1** to enter edit mode. Enter `ImpressionsEventsStream` as name of the Eventstream in the field **Stream name**. Ensure that the **Input data format** is **Json**. Click on the Button **Save**.
 
-Ensure that both the files products.csv and productcategory.csv are available as delta tables in your lakehouse. Eventually, your lakehouse should appear as follows.
+    ![alt text](assets/image_task08_step18.png)
 
-![alt text](assets/fabrta78.png)
+19. Click on **+** icon next to the node **ImpressionEventsStream** and select **Eventhouse** from the context menu.
 
-### Accessing Eventhouse data from the lakehouse
+    ![alt text](assets/image_task08_step19.png)
 
-8. If your Lakehouse is using the Schemas then expand Tables, right-click dbo schema & select "New table shortcut". If Schemas do not appear under Tables, then click on "Get data" drop down, choose **New shortcut**.
-9. ![alt text](assets/fabrta65.png)
-10. Select Microsoft OneLake.
-    ![alt text](assets/fabrta66.png)
-11. Select the "BronzeClicks" and "BronzeImpressions" tables in our Eventhouse KQL Database and click "Next".
+20. Click the pencil in node **Eventhouse1** to enter edit mode. Provide the following values in the pane **Eventhouse**.
 
-<div class="info" data-title="Note">
-  
-> You may return to this step to create additional shortcuts, after running the [createAll.kql](<https://github.com/microsoft/FabricRTIWorkshop/blob/main/kql/createAll.kql>) database script which will create the additional tables. For now, you may proceed by selecting just the "BronzeClicks" and "BronzeImpressions" tables.
-</div>
+    | Field                                 | Value                                                                                                                        |
+    | :------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------- |
+    | **Event processing before ingestion** | Ensure that this option is selected.                                                                                         |
+    | **Destionation name**                 | `ImpressionEventStore`                                                                                                       |
+    | **Workspace**                         | Select **RTI Tutorial**. If you attend the Precon at FabConEurope please select the Workspace Name that was provided to you. |
+    | **Eventhouse**                        | Select the Eventhouse **WebEvents_EH**                                                                                       |
+    | **KQL Database**                      | Select the KQL Database **WebEvents_EH**                                                                                     |
+    | **Destination table**                 | Click on **Create new** and enter `BronzeImpressions` as name for the new table and click on **Done**.                       |
+    | **Input data format**                 | Ensure that the option **Json** is selected.                                                                                 |
 
-![alt text](assets/LakeShortcut1.png)
+    ![alt text](assets/image_task08_step20.png)
 
-12. Click "Create".
-    ![alt text](assets/LakeShortcut2.png)
+21. Click on the button **Publish** that is located in the toolbar at the top of the screen.
 
-13. Now you will have the Eventhouse KQL Database tables available in your Lakehouse. This also works across workspaces. You can query them like any other Lakehouse table.
-    ![alt text](assets/fabrta69.png)
+    ![alt text](assets/image_task08_step21.png)
 
-## 9. Build the KQL DB schema
+    After a few minutes, you should see the nodes **ClickEventStore** and **ImpressionEventStore** change to mode **Streaming**.
 
-In this section we will create all the silver tables, functions, materialized-views, and enable update policies and in our Eventhouse KQL Database. Two of the tables (product and productCategory) are shortcuts to the lakehouse and the data is NOT being copied into our KQL Database.
+    ![alt text](assets/image_task08_step21b.png)
+
+    In the end your Eventstream toplogy should look like the image below.
+
+    ![alt text](assets/image_task08_step21c.png)
+
+### 9. Setting up the Lakehouse
+
+In this task we will set up the Lakehouse that will contain additional information for our usecase and in which we will also make the data from the KQL Database accessible through the lakehouse.
+
+1. Go to the folder [**ref_data**](../ref_data/) in the Github repo and download the **products.csv** and **productcategory.csv** files on your computer.
+
+   ![alt text](assets/image_task09_step01.png)
+
+2. To create a Lakehouse we first have to return to the workspace where all other objects are in. To do so click on the icon **RTI Tutorial** in the left toolbar. If you are attending the FabCon Europe Precon this is the workspace that was provided to you.
+
+   ![alt text](assets/image_task09_step02.png)
+
+3. Click on the button **+ New Item** in the toolbar and in the popin window click on the tile **Lakehouse**.
+
+   ![alt text](assets/image_task09_step03.png)
+
+4. In the dialog **New lakehouse** enter `WebSalesData_LH` as name for the new lakehouse. Ensure that the checkbox **Lakehouse schemas (Public Preview)** is not checked. Then click on the button **Create**
+
+   ![alt text](assets/image_task09_step04.png)
+
+### 10. Uploading reference data files and creating delta tables in the lakehouse
+
+After our lakehouse has been created the overview page of the lakehouse will be displayed. Next task we have to accomplish is to load static data into our new lakehouse. To do so please execute the following steps.
+
+1. Click on the button **Get data** in the toolbar and select **Upload Files** from the dropdown menu.
+
+   ![alt text](assets/image_task10_step01.png)
+
+2. To upload the two files click on the folder symbol under **Files/**. Select the two files **products.csv** and **productcategory.csv**. Then click on the button **Open**.
+
+   ![alt text](assets/image_task10_step02.png)
+
+   | :information_source: **Information**                                                                  |
+   | :---------------------------------------------------------------------------------------------------- |
+   | **To select the two files at once you can just hold the key **CTRL** while you click the two files.** |
+
+3. In the popin window **Upload files** click on the button **Upload**. Now the files will be uploaded.
+
+   ![alt text](assets/image_task10_step03.png)
+
+4. To check that the files have been uploaded successfully, click on the folder **Files** in the pane **Explorer**. You should see the files in the list **Files** in the right part of the window.
+
+   ![alt text](assets/image_task10_step04.png)
+
+5. Next we have to create delta tables in our Lakehouse from the files we uploaded. To do this access the context menu by clicking on the three dots (**...**). Select **Load to tables** from the context menu.
+
+   ![alt text](assets/image_task10_step05.png)
+
+   In the submenu click on **New table**
+
+   ![alt text](assets/image_task10_step05b.png)
+
+6. Retain all default values and click on the button **Load**.
+
+   ![alt text](assets/image_task10_step06.png)
+
+   | :information_source: **Information**                                                                     |
+   | :------------------------------------------------------------------------------------------------------- |
+   | **This steps have to be executed for the file productcategory.csv as well as for the file product.csv.** |
+
+7. Ensure that both files **products.csv** and **productcategory.csv** are available as delta tables in your lakehouse. Your lakehouse should look like this:
+
+   ![alt text](assets/image_task10_step07.png)
+
+### 11. Accessing Eventhouse data from the lakehouse
+
+In this task we will make the Eventhouse tables form the KQL Database available in our Lakehouse. This will be accomplished by creating _shortcuts_.
+
+1. Click on the button **Get data** in the menu bar at the top. Choose **New shortcut** from the dropdown menu.
+
+   ![alt text](assets/image_task11_step01.png)
+
+   | :information_source: **Information**                                                                                                                                                                  |
+   | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | **If your Lakehouse is using Shemas you will see the schema **dbo** under the folder **Tables**. right-click the schema **dbo** and select the option **New table shortcut\*\* from the context menu. |
+
+2. Select Microsoft OneLake.
+
+   ![alt text](assets/image_task11_step02.png)
+
+3. Select the KQL Database **WebEvents_EH** in the Window **Select a data source type** and click on the button **Next**.
+
+   ![alt text](assets/image_task11_step03.png)
+
+4. Expand the folder **Tables** under **WebEvents_EH** in the window **New shortcut** and check both tables **BronzeClicks** and **BronzeImpressions**. Click on **Next**.
+
+   ![alt text](assets/image_task11_step04.png)
+
+   | :information_source: **Information**                                                                                                                                                                                                                                           |
+   | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | **You may return to this step to create additional shortcuts, after running the [createAll.kql](../kql/createAll.kql) database script which will create additional tables. For now, you may proceed by selecting just the **BronzeClicks** and **BronzeImpressions** tables.** |
+
+5. Click on the button **Create**.
+
+   ![alt text](assets/image_task11_step05.png)
+
+   Now you can see the shortcuts to the tables **BronzeClicks** and **BronzeImpressions** under the folder **Tables** in the lakehouse **WebSalesData_LH**.
+
+   ![alt text](assets/image_task11_step05.png)
+
+   | :notebook: **Note**                                                          |
+   | :--------------------------------------------------------------------------- |
+   | **Note that the shortcuts have another icon than the regular delta tables.** |
+
+### 12. Build the KQL DB schema
+
+In this section we will create all the silver tables, functions and enable update policies and in our Eventhouse KQL Database. Two of the tables (`product` and `productCategory`) are shortcuts to the lakehouse and the data is **NOT** being copied into our KQL Database.
+
 ![alt text](assets/fabrta71.png)
 
-1. Open the WebEvents_EH KQL Database in the Eventhouse of your Fabric Workspace.
-2. Click on "New" and choose "OneLake shortcut".
-3. Select "Microsoft OneLake".
-4. Select "WebSalesData_LH" and click on "Next".
-5. Expand Tables, select productcategory table and click on "Create". This will create a shortcut to the table productcategory in your Lakehouse without copying the data from the Lakehouse to Eventhouse.
-6. Repeat the above steps to create a similar shortcut to the products table.
-7. Expand the Shortcuts branch in the WebEvents_EH tree to verify if the 2 shortcuts have been correctly created.
-8. Click on "Explore your Data".  
-   ![alt text](assets/fabrta25.png)
-9. Open the [createAll.kql](https://github.com/microsoft/FabConRTITutorial/blob/2452f81b0bf2561ff382988de96f47482d903523/kql/createAll.kql) file in GitHub and click copy icon at the top right to copy the entire file content.
-10. Replace all on the "Explore your data" by deleting lines 1-19 and paste the contents of the createAll.kql file.
-11. Click Run
-    ![alt text](assets/fabrta27.png)
-12. Click Save as KQL queryset, name it "createAll".
-13. You can add additional tabs in the KQL Queryset to add new queries.
-14. Your tables, functions, and materialized views should appear on the database pane on the left.
+1. Open the KQL Database **WebEvents_EH** in the Eventhouse of your Fabric Workspace. To do so click on the Icon of the Eventhouse in the left toolbar.
 
-![alt text](assets/fabrta28.png) 15. (Optional) While on the KQL Database details screen you may explore additional **Real-Time Intelligence Samples** by clicking the **drop-drop next to Get data** and selecting a desired sample. These samples give you the ability to learn more.
-![EventhouseSamples](assets/EventhouseSamples.png "Real-Time Intelligence Samples")
+   ![alt text](assets/image_task12_step01.png)
+
+2. Click on the button **+ New** in the top toolbar and choose **OneLake shortcut** from the drop down menu.
+
+   ![alt text](assets/image_task12_step02.png)
+
+   | :information_source: **Information**                                                                                                                                                                            |
+   | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | **By now data has already streamed into you KQL-Database. You can see this by looking at the dashborad that is provided on the overview page of the KQL-Database ![alt text](assets/image_task12_step02b.png)** |
+
+3. Select **Microsoft OneLake**..
+
+   ![alt text](assets/image_task12_step03.png)
+
+4. Select the lakehouse **WebSalesData_LH** and click on the button **Next**.
+
+   ![alt text](assets/image_task12_step04.png)
+
+5. Expand the folder **Tables**, select the table **products** table and click on the button **Create**. This will create a shortcut to the table **products** in your Lakehouse without copying the data from the Lakehouse to Eventhouse.
+
+   ![alt text](assets/image_task12_step05.png)
+
+   | :heavy_exclamation_mark: **Important**                                                             |
+   | :------------------------------------------------------------------------------------------------- |
+   | **Repeat the steps above for the table **products** to create a shortcut for this table as well.** |
+
+6. Expand the folder **Shortcuts** in the tree of your Eventhouse **WebEvents_EH** to verify if the 2 shortcuts have been created correctly.
+
+   ![alt text](assets/image_task12_step06.png)
+
+7. Click on the button **Explore your Data** at the top of the screen.
+
+   ![alt text](assets/image_task12_step07.png)
+
+   The popin window **Explore your data** will be shown.
+
+   ![alt text](assets/image_task12_step07b.png)
+
+8. Open the file [createAll.kql](../kql/createAll.kql) in GitHub and click copy icon at the top right to copy the entire file content. This will copy the file contents to the Windows Clipboard.
+
+   ![alt text](assets/image_task12_step08.png)
+
+9. Replace the text in the textbox **Explore your data** by the contents of the file [createAll.kql](../kql/createAll.kql). The easiest way to do this is to click in the textbox, press **CTRL**+**A** to select everything and then press **CTRL**+**V** to insert the contents from the clipboard. Then click on the Button **Run**
+
+   ![alt text](assets/image_task12_step09.png)
+
+   The status of the execution of the commands from the file [createAll.kql](../kql/createAll.kql) can be seen at the bottom of the pane. The result of each Command should be **Completed**.
+
+   ![alt text](assets/image_task12_step09b.png)
+
+10. Click on the button **Save as KQL queryset**.
+
+    ![alt text](assets/image_task12_step010.png)
+
+11. In the window **Save as KQL queryset** insert `createAll` as name of the Queryset and click the button **Create**.
+
+    ![alt text](assets/image_task12_step011.png)
+
+    | :information_source: **Information**                                    |
+    | :---------------------------------------------------------------------- |
+    | **You can add additional tabs in the KQL Queryset to add new queries.** |
+
+12. Expand all folders in the database pane on the left. All tables and functions that have been created by the script can be found here.
+
+    ![alt text](assets/image_task12_step012.png)
+
+    | :information_source: **Information**                                                                                                                                                                                                                                                      |
+    | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | **While on the KQL Database details screen you may explore additional **Real-Time Intelligence Samples** by clicking the **drop-drop next to Get data** and selecting a desired sample. These samples give you the ability to learn more.** ![alt text](assets/image_task12_step012b.png) |
 
 # 10. Real-Time Dashboard
 
