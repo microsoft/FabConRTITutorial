@@ -479,6 +479,10 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
    ![alt text](assets/image_task08_step03.png)
 
+   | :information_source: **Information**                                                                                                                |
+   | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | **Pay attention to the table you can see at the bottom of the screen. Here you can see events that are streamed by notebook to the event already.** |
+
 4. Click on the pencil icon in the node **Filter1** to enter edit mode.
 
    ![alt text](assets/image_task08_step04.png)
@@ -500,9 +504,9 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
    | :heavy_exclamation_mark: **Important**                                                                                                                                                                   |
    | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | **It is normal that the node **CliclEventsFilter** is shown with an error. The error indicates that there is no target for the datastream coming out of the filter. We will fix this in the next step.** |
+   | **It is normal that the node **ClickEventsFilter** is shown with an error. The error indicates that there is no target for the datastream coming out of the filter. We will fix this in the next step.** |
 
-6. Click on "+" sign next to the **ClickEventsFilter** node. and choose "Stream".
+6. Click on **+** icon next to the **ClickEventsFilter** node. and choose **Stream** from the context menu.
 
    ![alt text](assets/image_task08_step06.png)
 
@@ -510,11 +514,11 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
    ![alt text](assets/image_task08_step07.png)
 
-8. Click on the pencil in node **Stream1** to go to edit mode. Enter `ClickEventsStream` as name of the Eventstream in the field **Stream name**. Ensure that the **Input data format** is **Json**. Click on the Button **Save**,
+8. Click on the pencil in node **Stream1** to go to edit mode. Enter `ClickEventsStream` as name of the Eventstream in the field **Stream name**. Ensure that the **Input data format** is **Json**. Click on the Button **Save**.
 
    ![alt text](assets/image_task08_step08.png)
 
-9. Click on "+" sign next to the node **ClickEventsStream**.
+9. Click on **+** icon next to the node **ClickEventsStream**.
 
    ![alt text](assets/image_task08_step09.png)
 
@@ -531,7 +535,7 @@ Next we have to create the Eventstream topology that will insert the streamed da
     | **Workspace**                         | Select **RTI Tutorial**. If you attend the Precon at FabConEurope please select the Workspace Name that was provided to you. |
     | **Eventhouse**                        | Select the Eventhouse **WebEvents_EH**                                                                                       |
     | **KQL Database**                      | Select the KQL Database **WebEvents_EH**                                                                                     |
-    | **Destination table**                 | Click on **Create new** and enter `BronzeClicks` as name for the new table and click on **Save**.                            |
+    | **Destination table**                 | Click on **Create new** and enter `BronzeClicks` as name for the new table and click on **Done**.                            |
     | **Input data format**                 | Ensure that the option **Json** is selected.                                                                                 |
 
     ![alt text](assets/image_task08_step11.png)
@@ -554,53 +558,104 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
     ![alt text](assets/image_task08_step15.gif)
 
-16. Click on the pencil icon of the new Filter node.
+16. Click on the pencil icon of the new node **Filter1** to enter edit mode. Provide the following values in the pane **Filter** on the left side. Then click on **Save**.
 
-17. Provide "ImpressionEventsFilter" as the Operation name.
+    | Field                           | Value                    |
+    | :------------------------------ | :----------------------- |
+    | **Operation name**              | `ImpressionEventsFilter` |
+    | **Select a field to filter on** | **eventType**            |
+    | **Keep events when the value**  | **equals**               |
+    | **value**                       | `IMPRESSION`             |
 
-18. Choose "eventType" in the drop down for Select a field to filter on.
+    ![alt text](assets/image_task08_step16.png)
 
-19. Choose "equals" as the condition
+    | :heavy_exclamation_mark: **Important** |
+    | :------------------------------------- |
+    | **Note: `IMPRESSION` is in ALL CAPS.** |
 
-20. Type "IMPRESSION" in the taxt box. Note: "IMPRESSION" is in ALL CAPS.
+    | :heavy_exclamation_mark: **Important**                                                                                                                                                                        |
+    | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | **It is normal that the node **ImpressionEventsFilter** is shown with an error. The error indicates that there is no target for the datastream coming out of the filter. We will fix this in the next step.** |
 
-21. Click on "Save".
+17. Click on **+** sign next to the **ClickEventsFilter** node and choose **Stream** from the context menu.
 
-22. Click on "+" sign next to the ImpressionEventsFilter node and choose "Stream".
+    ![alt text](assets/image_task08_step17.png)
 
-23. Enter the name as "ImpressionEventsStream".
+18. Click on the pencil icon in the node **Stream1** to enter edit mode. Enter `ImpressionsEventsStream` as name of the Eventstream in the field **Stream name**. Ensure that the **Input data format** is **Json**. Click on the Button **Save**.
 
-24. Click on "+" sign next to the ImpressionEventsStream node and choose "Eventhouse".
+    ![alt text](assets/image_task08_step18.png)
 
-25. Provide "ImpressionEventStore" as the Destination name.
+19. Click on **+** icon next to the node **ImpressionEventsStream** and select **Eventhouse** from the context menu.
 
-26. Select your workspace, Eventhouse that we created called "WebEvents_EH" and KQL Database of the same name.
+    ![alt text](assets/image_task08_step19.png)
 
-27. Create a new table in our KQL Database called `BronzeImpressions`. Click "Save".
+20. Click the pencil in node **Eventhouse1** to enter edit mode. Provide the following values in the pane **Eventhouse**.
 
-28. Click on "Publish".
+    | Field                                 | Value                                                                                                                        |
+    | :------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------- |
+    | **Event processing before ingestion** | Ensure that this option is selected.                                                                                         |
+    | **Destionation name**                 | `ImpressionEventStore`                                                                                                       |
+    | **Workspace**                         | Select **RTI Tutorial**. If you attend the Precon at FabConEurope please select the Workspace Name that was provided to you. |
+    | **Eventhouse**                        | Select the Eventhouse **WebEvents_EH**                                                                                       |
+    | **KQL Database**                      | Select the KQL Database **WebEvents_EH**                                                                                     |
+    | **Destination table**                 | Click on **Create new** and enter `BronzeImpressions` as name for the new table and click on **Done**.                       |
+    | **Input data format**                 | Ensure that the option **Json** is selected.                                                                                 |
 
-29. After a few minutes, you should see the ClickEventStore and ImpressionEventStore node changing to mode "Streaming".
+    ![alt text](assets/image_task08_step20.png)
 
-![alt text](assets/fabrta77.png)
+21. Click on the button **Publish** that is located in the toolbar at the top of the screen.
 
-In the end your Eventstream toplogy should appear as shown in the image below.
+    ![alt text](assets/image_task08_step21.png)
 
-![alt text](assets/fabrta76.png)
+    After a few minutes, you should see the nodes **ClickEventStore** and **ImpressionEventStore** change to mode **Streaming**.
 
-## 8. Setting up the Lakehouse
+    ![alt text](assets/image_task08_step21b.png)
 
-1. Go to "ref_data" folder in the Github repo and download the products.csv and productcategory.csv files on your computer.
+    In the end your Eventstream toplogy should look like the image below.
 
-2. Create new Lakehouse called "WebSalesData_LH" in your workspace.
+    ![alt text](assets/image_task08_step21c.png)
 
-### Uploading reference data files and creating delta tables
+### 9. Setting up the Lakehouse
 
-3. Click "Get data" and choose "Upload Files"
-4. Upload the 2 files that you downloaded in the previous steps.
-5. After the files have been uploaded, browse the "Files" folder.
-6. Select the "..." context menu for each file and choose "Load to tables".
-7. Retain all the default values and click "Load".
+In this task we will set up the Lakehouse that will contain additional information for our usecase and in which we will also save the data from the datastreams to archive them.
+
+1. Go to the folder [**ref_data**](../ref_data/) in the Github repo and download the **products.csv** and **productcategory.csv** files on your computer.
+
+   ![alt text](assets/image_task09_step01.png)
+
+2. To create a Lakehouse we first have to return to the workspace where all other objects are in. To do so click on the icon **RTI Tutorial** in the left toolbar. If you are attending the FabCon Europe Precon this is the workspace that was provided to you.
+
+   ![alt text](assets/image_task09_step02.png)
+
+3. Click on the button **+ New Item** in the toolbar and in the popin window click on the tile **Lakehouse**.
+
+   ![alt text](assets/image_task09_step03.png)
+
+4. In the dialog **New lakehouse** enter `WebSalesData_LH` as name for the new lakehouse. Ensure that the checkbox **Lakehouse schemas (Public Preview)** is not checked. Then click on the button **Create**
+
+   ![alt text](assets/image_task09_step04.png)
+
+### 10. Uploading reference data files and creating delta tables in the lakehouse
+
+After our lakehouse has been created the overview page of the lakehouse will be displayed. Next task we have to accomplish is to load static data into our new lakehouse. To do so please execute the following steps.
+
+1. Click on the button **Get data** in the toolbar and select **Upload Files** from the dropdown menu.
+
+   ![alt text](assets/image_task10_step01.png)
+
+2. To upload the two files click on the folder symbol under **Files/**. Select the two files **products.csv** and **productcategory.csv**. Then click on the button **Open**.
+
+   ![alt text](assets/image_task10_step02.png)
+
+| :information_source: **Information**                                                                  |
+| :---------------------------------------------------------------------------------------------------- |
+| **To select the two files at once you can just hold the key **STRG** while you click the two files.** |
+
+3. After the files have been uploaded, browse the "Files" folder.
+
+4. Select the "..." context menu for each file and choose "Load to tables".
+
+5. Retain all the default values and click "Load".
 
 Ensure that both the files products.csv and productcategory.csv are available as delta tables in your lakehouse. Eventually, your lakehouse should appear as follows.
 
