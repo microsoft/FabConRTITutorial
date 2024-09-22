@@ -649,7 +649,7 @@ After our lakehouse has been created the overview page of the lakehouse will be 
 
    | :information_source: **Information**                                                                  |
    | :---------------------------------------------------------------------------------------------------- |
-   | **To select the two files at once you can just hold the key **STRG** while you click the two files.** |
+   | **To select the two files at once you can just hold the key **CTRL** while you click the two files.** |
 
 3. In the popin window **Upload files** click on the button **Upload**. Now the files will be uploaded.
 
@@ -703,34 +703,101 @@ In this task we will make the Eventhouse tables form the KQL Database available 
 
    ![alt text](assets/image_task11_step04.png)
 
-| :information_source: **Information**                                                                                                                                                                                                                                           |
-| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **You may return to this step to create additional shortcuts, after running the [createAll.kql](../kql/createAll.kql) database script which will create additional tables. For now, you may proceed by selecting just the **BronzeClicks** and **BronzeImpressions** tables.** |
+   | :information_source: **Information**                                                                                                                                                                                                                                           |
+   | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | **You may return to this step to create additional shortcuts, after running the [createAll.kql](../kql/createAll.kql) database script which will create additional tables. For now, you may proceed by selecting just the **BronzeClicks** and **BronzeImpressions** tables.** |
+
+5. Click on the button **Create**.
+
+   ![alt text](assets/image_task11_step05.png)
+
+   Now you can see the shortcuts to the tables **BronzeClicks** and **BronzeImpressions** under the folder **Tables** in the lakehouse **WebSalesData_LH**.
+
+   ![alt text](assets/image_task11_step05.png)
+
+   | :notebook: **Note**                                                          |
+   | :--------------------------------------------------------------------------- |
+   | **Note that the shortcuts have another icon than the regular delta tables.** |
 
 ### 12. Build the KQL DB schema
 
 In this section we will create all the silver tables, functions, materialized-views, and enable update policies and in our Eventhouse KQL Database. Two of the tables (product and productCategory) are shortcuts to the lakehouse and the data is NOT being copied into our KQL Database.
+
+FIXME: Is this picture correct? Should the circle be at the KQL Database of the Eventhouse? What about the SQL Databases?
+
 ![alt text](assets/fabrta71.png)
 
-1. Open the WebEvents_EH KQL Database in the Eventhouse of your Fabric Workspace.
-2. Click on "New" and choose "OneLake shortcut".
-3. Select "Microsoft OneLake".
-4. Select "WebSalesData_LH" and click on "Next".
-5. Expand Tables, select productcategory table and click on "Create". This will create a shortcut to the table productcategory in your Lakehouse without copying the data from the Lakehouse to Eventhouse.
-6. Repeat the above steps to create a similar shortcut to the products table.
-7. Expand the Shortcuts branch in the WebEvents_EH tree to verify if the 2 shortcuts have been correctly created.
-8. Click on "Explore your Data".  
-   ![alt text](assets/fabrta25.png)
-9. Open the [createAll.kql](https://github.com/microsoft/FabConRTITutorial/blob/2452f81b0bf2561ff382988de96f47482d903523/kql/createAll.kql) file in GitHub and click copy icon at the top right to copy the entire file content.
-10. Replace all on the "Explore your data" by deleting lines 1-19 and paste the contents of the createAll.kql file.
-11. Click Run
-    ![alt text](assets/fabrta27.png)
-12. Click Save as KQL queryset, name it "createAll".
-13. You can add additional tabs in the KQL Queryset to add new queries.
-14. Your tables, functions, and materialized views should appear on the database pane on the left.
+1. Open the KQL Database **WebEvents_EH** in the Eventhouse of your Fabric Workspace. To do so click on the Icon of the Eventhouse in the left toolbar.
 
-![alt text](assets/fabrta28.png) 15. (Optional) While on the KQL Database details screen you may explore additional **Real-Time Intelligence Samples** by clicking the **drop-drop next to Get data** and selecting a desired sample. These samples give you the ability to learn more.
-![EventhouseSamples](assets/EventhouseSamples.png "Real-Time Intelligence Samples")
+   ![alt text](assets/image_task12_step01.png)
+
+2. Click on the button **+ New** in the top toolbar and choose **OneLake shortcut** from the drop down menu.
+
+   ![alt text](assets/image_task12_step02.png)
+
+   | :information_source: **Information**                                                                                                                                                                            |
+   | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | **By now data has already streamed into you KQL-Database. You can see this by looking at the dashborad that is provided on the overview page of the KQL-Database ![alt text](assets/image_task12_step02b.png)** |
+
+3. Select **Microsoft OneLake**..
+
+   ![alt text](assets/image_task12_step03.png)
+
+4. Select the lakehouse **WebSalesData_LH** and click on the button **Next**.
+
+   ![alt text](assets/image_task12_step04.png)
+
+5. Expand the folder **Tables**, select the table **products** table and click on the button **Create**. This will create a shortcut to the table **products** in your Lakehouse without copying the data from the Lakehouse to Eventhouse.
+
+   ![alt text](assets/image_task12_step05.png)
+
+   | :heavy_exclamation_mark: **Important**                                                             |
+   | :------------------------------------------------------------------------------------------------- |
+   | **Repeat the steps above for the table **products** to create a shortcut for this table as well.** |
+
+6. Expand the folder **Shortcuts** in the tree of your Eventhouse **WebEvents_EH** to verify if the 2 shortcuts have been created correctly.
+
+   ![alt text](assets/image_task12_step06.png)
+
+7. Click on the button **Explore your Data** at the top of the screen.
+
+   ![alt text](assets/image_task12_step07.png)
+
+   The popin window **Explore your data** will be shown.
+
+   ![alt text](assets/image_task12_step07b.png)
+
+8. Open the file [createAll.kql](../kql/createAll.kql) in GitHub and click copy icon at the top right to copy the entire file content. This will copy the file contents to the Windows Clipboard.
+
+   ![alt text](assets/image_task12_step08.png)
+
+9. Replace the text in the textbox **Explore your data** by the contents of the file [createAll.kql](../kql/createAll.kql). The easiest way to do this is to click in the textbox, press **CTRL**+**A** to select everything and then press **CTRL**+**V** to insert the contents from the clipboard. Then click on the Button **Run**
+
+   ![alt text](assets/image_task12_step09.png)
+
+   The status of the execution of the commands from the file [createAll.kql](../kql/createAll.kql) can be seen at the bottom of the pane. The result of each Command should be **Completed**.
+
+   ![alt text](assets/image_task12_step09b.png)
+
+10. Click on the button **Save as KQL queryset**.
+
+    ![alt text](assets/image_task12_step010.png)
+
+11. In the window **Save as KQL queryset** insert `createAll` as name of the Queryset and click the button **Create**.
+
+    ![alt text](assets/image_task12_step011.png)
+
+    | :information_source: **Information**                                    |
+    | :---------------------------------------------------------------------- |
+    | **You can add additional tabs in the KQL Queryset to add new queries.** |
+
+12. Expand all folders in the database pane on the left. All tables and functions that have been created by the script can be found here.
+
+    ![alt text](assets/image_task12_step012.png)
+
+    | :information_source: **Information**                                                                                                                                                                                                                                                      |
+    | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | **While on the KQL Database details screen you may explore additional **Real-Time Intelligence Samples** by clicking the **drop-drop next to Get data** and selecting a desired sample. These samples give you the ability to learn more.** ![alt text](assets/image_task12_step012b.png) |
 
 # 10. Real-Time Dashboard
 
