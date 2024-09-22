@@ -1,28 +1,74 @@
 .execute database script <|
+
 //SILVER LAYER
-.create table SilverClicks (eventType:string, eventID:string, eventDate:datetime, productId:long, userAgent:dynamic, device:string, ip_address:string, referer:dynamic, page_loading_seconds:real, clickType:string, clickPathTitle:string, clickPathUrl:string)
-.create table SilverImpressions (eventType:string, eventID:string, eventDate:datetime, productId:long, userAgent:dynamic, device:string, ip_address:string, page_loading_seconds:real, relatedProductCategory:string, relatedProductId:string, relatedProductName:string)
+.create table SilverClicks (
+    eventType:string, 
+    eventID:string, 
+    eventDate:datetime, 
+    productId:long, 
+    userAgent:dynamic, 
+    device:string, 
+    ip_address:string, 
+    referer:dynamic, 
+    page_loading_seconds:real, 
+    clickType:string, 
+    clickPathTitle:string, 
+    clickPathUrl:string
+)
+
+.create table SilverImpressions (
+    eventType:string, 
+    eventID:string, 
+    eventDate:datetime, 
+    productId:long, 
+    userAgent:dynamic, 
+    device:string, 
+    ip_address:string, 
+    page_loading_seconds:real, 
+    relatedProductCategory:string, 
+    relatedProductId:string, 
+    relatedProductName:string
+)
+
 // use update policies to transform data during Ingestion
 .create-or-alter function with (folder="Bronze to Silver Transformations") expandClickpath()
 {
 BronzeClicks
 | mv-expand extraPayload
 | evaluate bag_unpack(extraPayload)
-| project eventType, eventID, todatetime(eventDate), productId, userAgent, device, ip_address, referer, toreal(page_loading_seconds), clickType = clickType, clickPathTitle = ['title'], clickPathUrl = url
+| project 
+    eventType, 
+    eventID, 
+    todatetime(eventDate), 
+    productId, 
+    userAgent, 
+    device, 
+    ip_address, 
+    referer, 
+    toreal(page_loading_seconds), 
+    clickType = clickType, 
+    clickPathTitle = ['title'], 
+    clickPathUrl = url
 }
 .alter table SilverClicks policy update @'[{"Source": "BronzeClicks", "Query": "expandClickpath", "IsEnabled" : true, "IsTransactional": false }]'
+
 .create-or-alter function with (folder="Bronze to Silver Transformations") expandRelatedProducts()
 {
 BronzeImpressions
 | mv-expand extraPayload
 | evaluate bag_unpack(extraPayload)
-| project eventType, eventID, todatetime(eventDate), productId, userAgent, device, ip_address, toreal(page_loading_seconds), relatedProductCategory, relatedProductId, relatedProductName
+| project 
+    eventType, 
+    eventID, 
+    todatetime(eventDate), 
+    productId, 
+    userAgent, 
+    device, 
+    ip_address, 
+    toreal(page_loading_seconds), 
+    relatedProductCategory, 
+    relatedProductId, 
+    relatedProductName
 }
+
 .alter table SilverImpressions policy update @'[{"Source": "BronzeImpression", "Query": "expandRelatedProducts", "IsEnabled" : true, "IsTransactional": false }]'
-//GOLD LAYER
-// use materialized views to view the latest changes in the SilverAddress table
-.create materialized-view with (backfill=true) GoldAddress on table SilverAddress
-{
-    SilverAddress
-    | summarize arg_max(IngestionDate, *) by AddressID
-}
