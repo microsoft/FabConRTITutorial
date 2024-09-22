@@ -430,10 +430,10 @@ Ensure that both the files products.csv and productcategory.csv are available as
 
 
 ## 9. Build the KQL DB schema
-In this section we will create all the tables, functions, materialized-views, and enable update policies and in our Eventhouse KQL Database. Two of the tables (product and productCategory) are shortcuts to our SQL Database and the data is NOT being copied into our KQL Database.
+In this section we will create all the silver tables, functions, materialized-views, and enable update policies and in our Eventhouse KQL Database. Two of the tables (product and productCategory) are shortcuts to the lakehouse and the data is NOT being copied into our KQL Database.
 ![alt text](assets/fabrta71.png)
 
-1. Open the RTADemo KQL Database in the Eventhouse of your Fabric Workspace.
+1. Open the WebEvents_EH KQL Database in the Eventhouse of your Fabric Workspace.
 2. Click on "Explore your Data".  
 ![alt text](assets/fabrta25.png)
 3. Open the [createAll.kql](<https://github.com/microsoft/FabricRTIWorkshop/blob/main/kql/createAll.kql>) file in GitHub and click copy icon at the top right to copy the entire file content.
