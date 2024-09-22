@@ -343,9 +343,10 @@ For the purpose of this tutorial, speakers/proctors will provide a tenant with c
 
    After the Eventhouse has been created it will be automatically opened.
 
-   | :notebook: **Note**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-   | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-   | **The [Eventhouse](https://learn.microsoft.com/en-us/fabric/real-time-intelligence/eventhouse) is designed to handle real-time data streams efficiently, which lets organizations ingest, process, and analyze data in near real-time. Eventhouses are particularly useful for scenarios where **timely insights are crucial**. Eventhouses are **specifically tailored** to time-based, streaming events with multiple data formats. This data is automatically indexed and partitioned based on ingestion time.** |
+<div class="info" data-title="Note">
+  
+> **The [Eventhouse](https://learn.microsoft.com/en-us/fabric/real-time-intelligence/eventhouse) is designed to handle real-time data streams efficiently, which lets organizations ingest, process, and analyze data in near real-time. Eventhouses are particularly useful for scenarios where **timely insights are crucial**. Eventhouses are **specifically tailored** to time-based, streaming events with multiple data formats. This data is automatically indexed and partitioned based on ingestion time.** 
+</div>
 
 ### 4. Enable OneLake Availability
 
@@ -365,9 +366,10 @@ This feature is also called "one logical copy" and it automatically allows KQL D
 
    ![alt text](assets/image_task04_step02.png)
 
-   | :notebook: **Note**                                                                                            |
-   | :------------------------------------------------------------------------------------------------------------- |
-   | **Newly created tables will automatically inherit the "OneLake availability" setting from the Database level** |
+<div class="info" data-title="Note">
+  
+> **Newly created tables will automatically inherit the "OneLake availability" setting from the Database level**
+</div>
 
 ### 5. Create a new Eventstream
 
@@ -401,25 +403,29 @@ In this section we will be streaming events (impressions and clicks events) gene
 
    ![alt text](assets/image_task05_step06.png)
 
-   | :notebook: **Note**                                                                                           |
-   | :------------------------------------------------------------------------------------------------------------ |
-   | **The easiest way to record the needed values is to just copy them to a notepad window for later reference.** |
+<div class="info" data-title="Note">
+  
+>  **The easiest way to record the needed values is to just copy them to a notepad window for later reference.**
+</div>
 
 7. To copy the connection string you first have to click on the view icon. After the connection string is revealed click on the copy icon and copy the connection string to Notepad as well.
 
    ![alt text](assets/image_task05_step07.png)
 
-| :notebook: **Note**                                                            |
-| :----------------------------------------------------------------------------- |
-| **It does not matter if you copy the primary or secondary connection string.** |
+<div class="info" data-title="Note">
 
-| :heavy_exclamation_mark: **Important**                |
-| :---------------------------------------------------- |
-| **To copy the connection string it must be visible.** |
+> **It does not matter if you copy the primary or secondary connection string.**
+</div>
 
-| :information_source: **Information**                                                                             |
-| :--------------------------------------------------------------------------------------------------------------- |
-| **Eventstreams Custom-Endpoint/Custom-App sources also provide **Kafka** endpoints where data can be pushed to** |
+<div class="important" data-title="Note">
+
+> **To copy the connection string it must be visible.**
+</div>
+
+<div class="important" data-title="Note">
+
+> **Eventstreams Custom-Endpoint/Custom-App sources also provide **Kafka** endpoints where data can be pushed to**
+</div>
 
 ### 6. Import Data Generator Notebook
 
@@ -453,9 +459,10 @@ We use a python notebook to generate a stream of artificial click events. The no
 
 Now we have to run the notebook to create the stream of artificial click events for our lab. In order for the Notebook to send the events to the correct Event Hub we have to insert the information we have saved in [Task 5 - Create Event Stream](#5-create-a-new-eventstream).To run the notebook and create our datastream please proceed with the following steps.
 
-| :heavy_exclamation_mark: **Important**                                                                                                        |
-| :-------------------------------------------------------------------------------------------------------------------------------------------- |
-| **DO NOT use an InPrivate browser window. Recommend using a Personal browser window for the Notebook session to connect & run successfully.** |
+<div class="warning" data-title="Note">
+
+> **DO NOT use an InPrivate browser window. Recommend using a Personal browser window for the Notebook session to connect & run successfully.**
+</div>
 
 1. Click on the Notebook **Generate_synthetic_web_events** in your Fabric Workspace to open it.
 
@@ -469,9 +476,12 @@ Now we have to run the notebook to create the stream of artificial click events 
 
    ![alt text](assets/image_task07_step03.png)
 
-   | :notebook: **Note**                                                                                                                                                                                                                                                                                               |
-   | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | **It can happen that the notebook will throw some errors in cell 1. These errors are caused by libaries that already have been installed in the environment. You can safely ignore these errors. The notebook will execute successfully regardless of these errors.** ![alt text](assets/image_task07_errors.png) |
+   <div class="info" data-title="Note">
+   
+   > **It can happen that the notebook will throw some errors in cell 1. These errors are caused by libaries that already have been installed in the environment. You can safely ignore these errors. The notebook will execute successfully regardless of these errors.**
+   </div>
+   
+   ![alt text](assets/image_task07_errors.png) |
 
    Wait a few minutes for the first code cell to finish and it will proceed to next code cells automatically.
 
@@ -495,9 +505,10 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
    ![alt text](assets/image_task08_step03.png)
 
-   | :information_source: **Information**                                                                                                                |
-   | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | **Pay attention to the table you can see at the bottom of the screen. Here you can see events that are streamed by notebook to the event already.** |
+   <div class="info" data-title="Note">
+   
+   > **Pay attention to the table you can see at the bottom of the screen. Here you can see events that are streamed by notebook to the event already.**
+   </div>
 
 4. Click on the pencil icon in the node **Filter1** to enter edit mode.
 
@@ -514,13 +525,15 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
    ![alt text](assets/image_task08_step05.png)
 
-   | :heavy_exclamation_mark: **Important** |
-   | :------------------------------------- |
-   | **Note: `CLICK` is in ALL CAPS.**      |
+   <div class="important" data-title="Note">
+   
+   > **Note: `CLICK` is in ALL CAPS.**
+   </div>
 
-   | :heavy_exclamation_mark: **Important**                                                                                                                                                                   |
-   | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | **It is normal that the node **ClickEventsFilter** is shown with an error. The error indicates that there is no target for the datastream coming out of the filter. We will fix this in the next step.** |
+   <div class="important" data-title="Note">
+   
+   > **It is normal that the node **ClickEventsFilter** is shown with an error. The error indicates that there is no target for the datastream coming out of the filter. We will fix this in the next step.**
+   </div>
 
 6. Click on **+** icon next to the **ClickEventsFilter** node. and choose **Stream** from the context menu.
 
@@ -585,13 +598,15 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
     ![alt text](assets/image_task08_step16.png)
 
-    | :heavy_exclamation_mark: **Important** |
-    | :------------------------------------- |
-    | **Note: `IMPRESSION` is in ALL CAPS.** |
+    <div class="important" data-title="Note">
+    
+    > **Note: `IMPRESSION` is in ALL CAPS.**
+    </div>
 
-    | :heavy_exclamation_mark: **Important**                                                                                                                                                                        |
-    | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | **It is normal that the node **ImpressionEventsFilter** is shown with an error. The error indicates that there is no target for the datastream coming out of the filter. We will fix this in the next step.** |
+    <div class="important" data-title="Note">
+    
+    > **It is normal that the node **ImpressionEventsFilter** is shown with an error. The error indicates that there is no target for the datastream coming out of the filter. We will fix this in the next step.**
+    </div>
 
 17. Click on **+** sign next to the **ClickEventsFilter** node and choose **Stream** from the context menu.
 
@@ -663,9 +678,10 @@ After our lakehouse has been created the overview page of the lakehouse will be 
 
    ![alt text](assets/image_task10_step02.png)
 
-   | :information_source: **Information**                                                                  |
-   | :---------------------------------------------------------------------------------------------------- |
-   | **To select the two files at once you can just hold the key **CTRL** while you click the two files.** |
+   <div class="info" data-title="Note">
+   
+   > **To select the two files at once you can just hold the key **CTRL** while you click the two files.**
+   </div>
 
 3. In the popin window **Upload files** click on the button **Upload**. Now the files will be uploaded.
 
@@ -687,9 +703,10 @@ After our lakehouse has been created the overview page of the lakehouse will be 
 
    ![alt text](assets/image_task10_step06.png)
 
-   | :information_source: **Information**                                                                     |
-   | :------------------------------------------------------------------------------------------------------- |
-   | **This steps have to be executed for the file productcategory.csv as well as for the file product.csv.** |
+   <div class="info" data-title="Note">
+   
+   > **This steps have to be executed for the file productcategory.csv as well as for the file product.csv.**
+   </div>
 
 7. Ensure that both files **products.csv** and **productcategory.csv** are available as delta tables in your lakehouse. Your lakehouse should look like this:
 
@@ -703,9 +720,10 @@ In this task we will make the Eventhouse tables form the KQL Database available 
 
    ![alt text](assets/image_task11_step01.png)
 
-   | :information_source: **Information**                                                                                                                                                                  |
-   | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | **If your Lakehouse is using Shemas you will see the schema **dbo** under the folder **Tables**. right-click the schema **dbo** and select the option **New table shortcut\*\* from the context menu. |
+   <div class="important" data-title="Note">
+   
+   > **If your Lakehouse is using Shemas you will see the schema **dbo** under the folder **Tables**. right-click the schema **dbo** and select the option **New table shortcut\*\* from the context menu.
+   </div>
 
 2. Select Microsoft OneLake.
 
@@ -719,9 +737,10 @@ In this task we will make the Eventhouse tables form the KQL Database available 
 
    ![alt text](assets/image_task11_step04.png)
 
-   | :information_source: **Information**                                                                                                                                                                                                                                           |
-   | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | **You may return to this step to create additional shortcuts, after running the [createAll.kql](../kql/createAll.kql) database script which will create additional tables. For now, you may proceed by selecting just the **BronzeClicks** and **BronzeImpressions** tables.** |
+   <div class="info" data-title="Note">
+
+   > **You may return to this step to create additional shortcuts, after running the [createAll.kql](../kql/createAll.kql) database script which will create additional tables. For now, you may proceed by selecting just the **BronzeClicks** and **BronzeImpressions** tables.** 
+   </div>
 
 5. Click on the button **Create**.
 
@@ -731,9 +750,10 @@ In this task we will make the Eventhouse tables form the KQL Database available 
 
    ![alt text](assets/image_task11_step05.png)
 
-   | :notebook: **Note**                                                          |
-   | :--------------------------------------------------------------------------- |
-   | **Note that the shortcuts have another icon than the regular delta tables.** |
+   <div class="info" data-title="Note">
+   
+   > **Note that the shortcuts have another icon than the regular delta tables.**
+   </div>
 
 ### 12. Build the KQL DB schema
 
@@ -749,9 +769,11 @@ In this section we will create all the silver tables, functions and enable updat
 
    ![alt text](assets/image_task12_step02.png)
 
-   | :information_source: **Information**                                                                                                                                                                            |
-   | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | **By now data has already streamed into you KQL-Database. You can see this by looking at the dashborad that is provided on the overview page of the KQL-Database ![alt text](assets/image_task12_step02b.png)** |
+   <div class="info" data-title="Note">
+   
+   > **By now data has already streamed into you KQL-Database. You can see this by looking at the dashborad that is provided on the overview page of the KQL-Database ![alt text](assets/image_task12_step02b.png)**
+
+   </div>
 
 3. Select **Microsoft OneLake**..
 
@@ -765,9 +787,10 @@ In this section we will create all the silver tables, functions and enable updat
 
    ![alt text](assets/image_task12_step05.png)
 
-   | :heavy_exclamation_mark: **Important**                                                             |
-   | :------------------------------------------------------------------------------------------------- |
-   | **Repeat the steps above for the table **products** to create a shortcut for this table as well.** |
+   <div class="important" data-title="Note">
+   
+   > **Repeat the steps above for the table **products** to create a shortcut for this table as well.**
+   </div>
 
 6. Expand the folder **Shortcuts** in the tree of your Eventhouse **WebEvents_EH** to verify if the 2 shortcuts have been created correctly.
 
@@ -801,17 +824,22 @@ In this section we will create all the silver tables, functions and enable updat
 
     ![alt text](assets/image_task12_step011.png)
 
-    | :information_source: **Information**                                    |
-    | :---------------------------------------------------------------------- |
-    | **You can add additional tabs in the KQL Queryset to add new queries.** |
+    <div class="info" data-title="Note">
+    
+    > **You can add additional tabs in the KQL Queryset to add new queries.**
+    </div>
+
 
 12. Expand all folders in the database pane on the left. All tables and functions that have been created by the script can be found here.
 
     ![alt text](assets/image_task12_step012.png)
 
-    | :information_source: **Information**                                                                                                                                                                                                                                                      |
-    | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | **While on the KQL Database details screen you may explore additional **Real-Time Intelligence Samples** by clicking the **drop-drop next to Get data** and selecting a desired sample. These samples give you the ability to learn more.** ![alt text](assets/image_task12_step012b.png) |
+    <div class="important" data-title="Note">
+    
+     > **While on the KQL Database details screen you may explore additional **Real-Time Intelligence Samples** by clicking the **drop-drop next to Get data** and selecting a desired sample. These samples give you the ability to learn more.** 
+     </div>
+     
+     ![alt text](assets/image_task12_step012b.png)
 
 # 10. Real-Time Dashboard
 
