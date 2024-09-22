@@ -309,17 +309,29 @@ For the purpose of this tutorial, speakers/proctors will provide a tenant with c
 
    ![alt text](assets/image_task02_step03.png)
 
-   After you clicked on **Apply** the workspace will be created. This can take up to a minute.
+   After you clicked on **Apply** the workspace will be created. This can take up to a minute. The workspace will be opened automatically.
 
 ### 3. Create a new Eventhouse
 
-1. Create an Eventhouse called "WebEvents_EH".
+1. To create an Eventhouse click on the button **+ New Item**.
 
-<div class="info" data-title="Note">
-  
-> The [Eventhouse](<https://learn.microsoft.com/en-us/fabric/real-time-intelligence/eventhouse>) is designed to handle real-time data streams efficiently, which lets organizations ingest, process, and analyze data in near real-time. Eventhouses are particularly useful for scenarios where **timely insights are crucial**. Eventhouses are **specifically tailored** to time-based, streaming events with multiple data formats. This data is automatically indexed and partitioned based on ingestion time.
-</div>
-2. Enable OneLake Availability
+   ![alt text](assets/image_task03_step01.png)
+
+2. In the popup window **New item** select **Eventhouse**
+
+   ![alt text](assets/image_task03_step02.png)
+
+3. In the dialog **New Eventhouse** insert `WebEvents_EH` as name and click on **Create**
+
+   ![alt text](assets/image_task03_step03.png)
+
+   After the Eventhouse has been created it will be automatically opened.
+
+   | :notebook: **Note**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+   | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+   | **The [Eventhouse](https://learn.microsoft.com/en-us/fabric/real-time-intelligence/eventhouse) is designed to handle real-time data streams efficiently, which lets organizations ingest, process, and analyze data in near real-time. Eventhouses are particularly useful for scenarios where **timely insights are crucial**. Eventhouses are **specifically tailored** to time-based, streaming events with multiple data formats. This data is automatically indexed and partitioned based on ingestion time.** |
+
+### 4. Enable OneLake Availability
 
 This feature is also called "one logical copy" and it automatically allows KQL Database tables to be accessed from a Lakehouse, Notebooks, etc in delta-parquet format via OneLake.
 
@@ -327,11 +339,14 @@ This feature is also called "one logical copy" and it automatically allows KQL D
 
 ![alt text](assets/fabrta70.png)
 
-### Here's how to set this up
+#### Here's how to set this up
 
-1. Open your Eventhouse.
+1. When an Eventhouse is created, a KQL Database with the same name is created as well. To open the KQL Database click on the Database **WebEvents_EH** in the section **KQL Databases**.
+
 2. Select your KQL Database.
+
 3. Click on the pencil icon next to OneLake availability in the Database details pane. Click the toggle to activate it and click Done.
+
    ![alt text](assets/fabrta61.png)
    ![alt text](assets/fabrta62.png)
 
