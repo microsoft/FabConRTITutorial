@@ -683,31 +683,31 @@ After our lakehouse has been created the overview page of the lakehouse will be 
 
 In this task we will make the Eventhouse tables form the KQL Database available in our Lakehouse. This will be accomplished by creating _shortcuts_.
 
-1. If your Lakehouse is using the Schemas then expand Tables, right-click dbo schema & select "New table shortcut". If Schemas do not appear under Tables, then click on "Get data" drop down, choose **New shortcut**.
+1. Click on the button **Get data** in the menu bar at the top. Choose **New shortcut** from the dropdown menu.
 
-| :information_source: **Information**       |
-| :----------------------------------------- |
-| **If your Lakehouse is using Shemas you ** |
+   ![alt text](assets/image_task11_step01.png)
 
-9. ![alt text](assets/fabrta65.png)
-10. Select Microsoft OneLake.
-    ![alt text](assets/fabrta66.png)
-11. Select the "BronzeClicks" and "BronzeImpressions" tables in our Eventhouse KQL Database and click "Next".
+   | :information_source: **Information**                                                                                                                                                                  |
+   | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | **If your Lakehouse is using Shemas you will see the schema **dbo** under the folder **Tables**. right-click the schema **dbo** and select the option **New table shortcut\*\* from the context menu. |
 
-<div class="info" data-title="Note">
-  
-> You may return to this step to create additional shortcuts, after running the [createAll.kql](<https://github.com/microsoft/FabricRTIWorkshop/blob/main/kql/createAll.kql>) database script which will create the additional tables. For now, you may proceed by selecting just the "BronzeClicks" and "BronzeImpressions" tables.
-</div>
+2. Select Microsoft OneLake.
 
-![alt text](assets/LakeShortcut1.png)
+   ![alt text](assets/image_task11_step02.png)
 
-12. Click "Create".
-    ![alt text](assets/LakeShortcut2.png)
+3. Select the KQL Database **WebEvents_EH** in the Window **Select a data source type** and click on the button **Next**.
 
-13. Now you will have the Eventhouse KQL Database tables available in your Lakehouse. This also works across workspaces. You can query them like any other Lakehouse table.
-    ![alt text](assets/fabrta69.png)
+   ![alt text](assets/image_task11_step03.png)
 
-## 9. Build the KQL DB schema
+4. Expand the folder **Tables** under **WebEvents_EH** in the window **New shortcut** and check both tables **BronzeClicks** and **BronzeImpressions**. Click on **Next**.
+
+   ![alt text](assets/image_task11_step04.png)
+
+| :information_source: **Information**                                                                                                                                                                                                                                           |
+| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **You may return to this step to create additional shortcuts, after running the [createAll.kql](../kql/createAll.kql) database script which will create additional tables. For now, you may proceed by selecting just the **BronzeClicks** and **BronzeImpressions** tables.** |
+
+### 12. Build the KQL DB schema
 
 In this section we will create all the silver tables, functions, materialized-views, and enable update policies and in our Eventhouse KQL Database. Two of the tables (product and productCategory) are shortcuts to the lakehouse and the data is NOT being copied into our KQL Database.
 ![alt text](assets/fabrta71.png)
