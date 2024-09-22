@@ -316,9 +316,10 @@ For the purpose of this tutorial, speakers/proctors will provide a tenant with c
 
    ![alt text](assets/image_task02_step02.png)
 
-  <div class="info" data-title="Note">
-  > If the name that you would like to use for your workspace is still available this will be shown below the input box for **Name**. Workspace Names have to be unique in a Fabric tenant.
-  </div>
+<div class="info" data-title="Note">
+  
+> If the name that you would like to use for your workspace is still available this will be shown below the input box for **Name**. Workspace Names have to be unique in a Fabric tenant.
+</div>
 
 3. Check if the option **Trial** is checked. If so click on **Apply**.
 
