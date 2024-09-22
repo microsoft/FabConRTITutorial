@@ -72,3 +72,42 @@ BronzeImpressions
 }
 
 .alter table SilverImpressions policy update @'[{"Source": "BronzeImpression", "Query": "expandRelatedProducts", "IsEnabled" : true, "IsTransactional": false }]'
+
+.create-or-alter function with (docstring = "Social Media Campaign Clickstream", folder = "Gold Views") SocialMediaCampaignClickstream()
+{
+SilverClicks
+| extend CampaignType = tostring(referer.campaignType)
+| extend Platform = tostring(userAgent.platform)
+| extend Browser = tostring(userAgent.browser)
+| extend RefererUrl = tostring(referer.url)
+| extend AdTitle = tostring(referer.adTitle)
+| where CampaignType in ("facebook", "twitter", "instagram", "pinterest")
+| project-away userAgent, referer
+| project-reorder CampaignType
+}
+
+.create-or-alter function with (docstring = "Search Media Campaign Clickstream", folder = "Gold Views") SearchMediaCampaignClickstream()
+{
+SilverClicks
+| extend CampaignType = tostring(referer.campaignType)
+| extend Platform = tostring(userAgent.platform)
+| extend Browser = tostring(userAgent.browser)
+| extend RefererUrl = tostring(referer.url)
+| extend AdTitle = tostring(referer.adTitle)
+| where CampaignType in ("google", "bing")
+| project-away userAgent, referer
+| project-reorder CampaignType
+}
+
+.create-or-alter function with (docstring = "Email Campaign Clickstream", folder = "Gold Views") EmailCampaignClickstream()
+{
+SilverClicks
+| extend CampaignType = tostring(referer.campaignType)
+| extend Platform = tostring(userAgent.platform)
+| extend Browser = tostring(userAgent.browser)
+| extend RefererUrl = tostring(referer.url)
+| extend EmailId = tostring(referer.emailId)
+| where CampaignType in ("email")
+| project-away userAgent, referer
+| project-reorder CampaignType
+}
