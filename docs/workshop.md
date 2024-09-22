@@ -722,7 +722,7 @@ In this task we will make the Eventhouse tables form the KQL Database available 
 
    <div class="important" data-title="Note">
    
-   > **If your Lakehouse is using Shemas you will see the schema **dbo** under the folder **Tables**. right-click the schema **dbo** and select the option **New table shortcut\*\* from the context menu.
+   > **If your Lakehouse is using Schemas you will see the schema **dbo** under the folder **Tables**. right-click the schema **dbo** and select the option **New table shortcut\*\* from the context menu.
    </div>
 
 2. Select Microsoft OneLake.
@@ -841,7 +841,7 @@ In this section we will create all the silver tables, functions and enable updat
      
      ![alt text](assets/image_task12_step012b.png)
 
-# 10. Real-Time Dashboard
+### 13. Real-Time Dashboard
 
 In this section, we will build a real-time dashboard to visualize the streaming data and set it to refresh every 30 seconds. (Optionally) A pre-built version of the dashboard is available to download [here](<https://github.com/microsoft/FabricRTIWorkshop/blob/main/dashboards/RTA%20dashboard/dashboard-RTA Dashboard.json>), which can be imported and configured to your KQL Database data source.
 
@@ -857,7 +857,7 @@ In this section, we will build a real-time dashboard to visualize the streaming 
 7. Set the **Database** to "WebEvents_EH" & click Create.
 8. Proceed to paste each query below, add a visual, and apply changes. (Optionally) All queries are available in this script file [dashboard-RTA.kql](https://github.com/microsoft/FabricRTIWorkshop/blob/main/dashboards/RTA%20dashboard/dashboard-RTA.kql).
 
-### Clicks by hour
+#### Clicks by hour
 
 ```
 //Clicks by hour
@@ -885,7 +885,7 @@ SilverClicks
 
 11. Click **+ Add tile** again to proceed with the next visuals.
 
-### Impressions by hour
+#### Impressions by hour
 
 12. Visual type: **Area chart**.
 
@@ -900,7 +900,7 @@ SilverImpressions
 
 ![alt text](assets/fabrta53.png)
 
-### Impressions by location
+#### Impressions by location
 
 12. Visual type: **Map**.
 
@@ -915,7 +915,7 @@ SilverImpressions
 
 ![alt text](assets/fabrta54.png)
 
-### Average Page Load time
+#### Average Page Load time
 
 13. Visual type: **Timechart**.
 
@@ -931,7 +931,7 @@ SilverImpressions
 
 ![alt text](assets/AvgPageLoadTime.png)
 
-### Impressions, Clicks & CTR
+#### Impressions, Clicks & CTR
 
 14. Add a tile & paste the query below once. Note, this is a multi-statement query that uses multiple let statements & a query combined by semicolons.
 15. Set Tile name: **Impressions**.
@@ -962,7 +962,7 @@ imp
 ![alt text](assets/fabrta57.png)
 ![alt text](assets/fabrta58.png)
 
-### Average Page Load Time Anomalies
+#### Average Page Load Time Anomalies
 
 ```
 //Avg Page Load Time Anomalies
@@ -973,7 +973,7 @@ SilverImpressions
 | render anomalychart
 ```
 
-### Strong Anomalies
+#### Strong Anomalies
 
 ```
 //Strong Anomalies
@@ -986,7 +986,7 @@ SilverImpressions
 | project-away anomalies
 ```
 
-### Logo (Markdown Text Tile)
+#### Logo (Markdown Text Tile)
 
 ```
 //Logo (Markdown Text Tile)
@@ -995,13 +995,13 @@ SilverImpressions
 
 > The title can be resized on the dashboard canvas directly, rather than writing code.
 
-### Auto-refresh
+#### Auto-refresh
 
 22. While editing the dashboard, click **Manage** > **Auto refresh**.
 23. Set it to **Enabled**, and **Default** refresh rate to **30 seconds**, click Apply.
 24. Click **Home** and then **Save**.
 
-## 11. Reflex
+### 14. Reflex
 
 1. While editing the dashboard, click **Manage** > Set Alert.
 2. Choose "Clicks by hour".
@@ -1015,7 +1015,7 @@ SilverImpressions
 > The Reflex item will appear in your workspace and you can edit the Reflex trigger action. The same Reflex item can also trigger multiple actions. 
 </div>
 
-## 12. Stop the notebook
+### 15. Stop the notebook
 
 At this point you've completed the lab, so you may stop running the notebook.
 
