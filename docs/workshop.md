@@ -387,7 +387,6 @@ In the end your Eventstream toplogy should appear as shown in the image below.
 ![alt text](assets/fabrta76.png)
 
 
-
 ## 8. Setting up the Lakehouse
 
 1. Go to "ref_data" folder in the Github repo and download the products.csv and productcategory.csv files on your computer.
@@ -427,22 +426,193 @@ Ensure that both the files products.csv and productcategory.csv are available as
 13. Now you will have the Eventhouse KQL Database tables available in your Lakehouse. This also works across workspaces. You can query them like any other Lakehouse table.
 ![alt text](assets/fabrta69.png)
 
-
-
 ## 9. Build the KQL DB schema
 In this section we will create all the silver tables, functions, materialized-views, and enable update policies and in our Eventhouse KQL Database. Two of the tables (product and productCategory) are shortcuts to the lakehouse and the data is NOT being copied into our KQL Database.
 ![alt text](assets/fabrta71.png)
 
 1. Open the WebEvents_EH KQL Database in the Eventhouse of your Fabric Workspace.
-2. Click on "Explore your Data".  
+2. Click on "New" and choose "OneLake shortcut".
+3. Select "Microsoft OneLake".
+4. Select "WebSalesData_LH" and click on "Next".
+5. Expand Tables, select productcategory table and click on "Create". This will create a shortcut to the table productcategory in your Lakehouse without copying the data from the Lakehouse to Eventhouse.
+6. Repeat the above steps to create a similar shortcut to the products table.
+7. Expand the Shortcuts branch in the WebEvents_EH tree to verify if the 2 shortcuts have been correctly created.
+8. Click on "Explore your Data".  
 ![alt text](assets/fabrta25.png)
-3. Open the [createAll.kql](<https://github.com/microsoft/FabricRTIWorkshop/blob/main/kql/createAll.kql>) file in GitHub and click copy icon at the top right to copy the entire file content.
-4. Replace all on the "Explore your data" by deleting lines 1-19 and paste the contents of the createAll.kql file.  
-5. Click Run
+9. Open the [createAll.kql](<https://github.com/microsoft/FabConRTITutorial/blob/2452f81b0bf2561ff382988de96f47482d903523/kql/createAll.kql>) file in GitHub and click copy icon at the top right to copy the entire file content.
+10. Replace all on the "Explore your data" by deleting lines 1-19 and paste the contents of the createAll.kql file.  
+11. Click Run
 ![alt text](assets/fabrta27.png)
-7. Click Save as KQL queryset, name it "createAll".
-8. You can add additional tabs in the KQL Queryset to add new queries.
-9. Your tables, functions, shortcuts and materialized views should appear on the database pane on the left.
+12. Click Save as KQL queryset, name it "createAll".
+13. You can add additional tabs in the KQL Queryset to add new queries.
+14. Your tables, functions, and materialized views should appear on the database pane on the left.
 ![alt text](assets/fabrta28.png)
-9. (Optional) While on the KQL Database details screen you may explore additional **Real-Time Intelligence Samples** by clicking the **drop-drop next to Get data** and selecting a desired sample. These samples give you the ability to learn more. 
+15. (Optional) While on the KQL Database details screen you may explore additional **Real-Time Intelligence Samples** by clicking the **drop-drop next to Get data** and selecting a desired sample. These samples give you the ability to learn more. 
 ![EventhouseSamples](assets/EventhouseSamples.png "Real-Time Intelligence Samples")
+
+# 12. Real-Time Dashboard
+In this section, we will build a real-time dashboard to visualize the streaming data and set it to refresh every 30 seconds. (Optionally) A pre-built version of the dashboard is available to download [here](<https://github.com/microsoft/FabricRTIWorkshop/blob/main/dashboards/RTA%20dashboard/dashboard-RTA Dashboard.json>), which can be imported and configured to your KQL Database data source.
+- The Proctor Guide covers this process.
+![Real-Time Dashboard](assets/RealTimeDashboard.png "Real-Time Dashboard")
+
+1. Click + Create (button is located at top left Menu underneath Home).
+2. Current workspace should be the same one.
+3. Scroll down and choose **Real-Time Dashboard**.
+4. Name it "Web Events Dashboard".
+5. Click **+ Add tile**.
+6. Click **+ Data source**. 
+7. Set the **Database** to "WebEvents_EH" & click Create. 
+8. Proceed to paste each query below, add a visual, and apply changes. (Optionally) All queries are available in this script file [dashboard-RTA.kql](<https://github.com/microsoft/FabricRTIWorkshop/blob/main/dashboards/RTA%20dashboard/dashboard-RTA.kql>).
+
+
+### Clicks by hour
+```
+//Clicks by hour
+SilverClicks
+| where eventDate between (_startTime.._endTime)
+| summarize date_count = count() by bin(eventDate, 1h) 
+| render timechart  
+| top 30 by date_count
+```
+
+1. Set Time rage parameter at the top left to **Last 7 days**. This parameter is referenced by the query in the `where` clause by using fields `_startTime` and `_endTime`.
+2. Click **Run**.
+3. Click **+ Add visual**.
+4. Format the visual.
+5. Set Tile name to "Click by hour".
+6. Set Visual type to **Area chart**.
+7. Click **Apply Changes**.
+
+![ClicksByHour](assets/ClicksByHour.png "Clicks by hour")
+
+9. While editing the dashboard, click **Manage** on the top left, and click **Parameters**.
+10. Edit the "Time range" parameter by setting the Default value to **Last 7 Days**, click Close & Done.
+
+![TimeRangeParameter](assets/TimeRangeParameter.png "Parameter Default Value")
+
+11. Click **+ Add tile** again to proceed with the next visuals.
+
+### Impressions by hour
+12. Visual type: **Area chart**.
+```
+//Impressions by hour
+SilverImpressions 
+| where eventDate between (_startTime.._endTime)
+| summarize date_count = count() by bin(eventDate, 1h) 
+| render timechart  
+| top 30 by date_count 
+```
+![alt text](assets/fabrta53.png)
+
+### Impressions by location
+12. Visual type: **Map**.
+```
+//Impressions by location
+SilverImpressions 
+| where eventDate  between (_startTime.._endTime)
+| join external_table('products') on $left.productId == $right.ProductID 
+| project lon = toreal(geo_info_from_ip_address(ip_address).longitude), lat = toreal(geo_info_from_ip_address(ip_address).latitude), Name 
+| render scatterchart with (kind = map) //, xcolumn=lon, ycolumns=lat)
+```
+![alt text](assets/fabrta54.png)
+
+### Average Page Load time
+13. Visual type: **Timechart**.
+```
+//Average Page Load time
+SilverImpressions 
+| where eventDate   between (_startTime.._endTime)
+//| summarize average_loadtime = avg(page_loading_seconds) by bin(eventDate, 1h) 
+| make-series average_loadtime = avg(page_loading_seconds) on eventDate from _startTime to _endTime+4h step 1h
+| extend forecast = series_decompose_forecast(average_loadtime, 4)
+| render timechart
+```
+![alt text](assets/AvgPageLoadTime.png)
+
+### Impressions, Clicks & CTR
+14. Add a tile & paste the query below once. Note, this is a multi-statement query that uses multiple let statements & a query combined by semicolons. 
+15. Set Tile name: **Impressions**.
+16. Visual type: **Stat**.
+17. Data Value column to `impressions`.
+18. Click **Apply changes**.
+19. Click the 3-dots (...) at the top right of the tile you just created to **Duplicate** it two more times.
+20. Name the 2nd one **Clicks**, set the Data value column to `clicks`, then Apply changes.
+21. Name the 3rd **Click Through Rate**, set the Data value column to `CTR`, then Apply changes.
+22. (Optional) On the "Visual formatting" pane, scroll down and adjust the "Conditional formatting" as desired by clicking "+ Add rule".
+```
+//Clicks, Impressions, CTR
+let imp =  SilverImpressions 
+| where eventDate  between (_startTime.._endTime)
+| extend dateOnly = substring(todatetime(eventDate).tostring(), 0, 10) 
+| summarize imp_count = count() by dateOnly; 
+let clck = SilverClicks 
+| where eventDate  between (_startTime.._endTime)
+| extend dateOnly = substring(todatetime(eventDate).tostring(), 0, 10) 
+| summarize clck_count = count() by dateOnly;
+imp  
+| join clck on $left.dateOnly == $right.dateOnly 
+| project selected_date = dateOnly , impressions = imp_count , clicks = clck_count, CTR = clck_count * 100 / imp_count
+```
+![alt text](assets/fabrta56.png)
+![alt text](assets/fabrta57.png)
+![alt text](assets/fabrta58.png)
+
+### Average Page Load Time Anomalies
+```
+//Avg Page Load Time Anomalies
+SilverImpressions
+| where eventDate   between (_startTime.._endTime)
+| make-series average_loadtime = avg(page_loading_seconds) on eventDate from _startTime to _endTime+4h step 1h
+| extend anomalies = series_decompose_anomalies(average_loadtime)
+| render anomalychart
+```
+
+### Strong Anomalies
+```
+//Strong Anomalies
+SilverImpressions
+| where eventDate between (_startTime.._endTime)
+| make-series average_loadtime = avg(page_loading_seconds) on eventDate from _startTime to _endTime+4h step 1h
+| extend anomalies = series_decompose_anomalies(average_loadtime,2.5)
+| mv-expand eventDate, average_loadtime, anomalies
+| where anomalies <> 0
+| project-away anomalies
+```
+
+### Logo (Markdown Text Tile)
+```
+//Logo (Markdown Text Tile)
+![AdventureWorks](https://vikasrajput.github.io/resources/PBIRptDev/AdventureWorksLogo.jpg "AdventureWorks")
+```
+> The title can be resized on the dashboard canvas directly, rather than writing code. 
+
+### Auto-refresh
+22. While editing the dashboard, click **Manage** > **Auto refresh**.
+23. Set it to **Enabled**, and **Default** refresh rate to **30 seconds**, click Apply.
+24. Click **Home** and then **Save**.
+
+
+## 13. Reflex
+1. While editing the dashboard, click **Manage** > Set Alert.
+2. Choose "Clicks by hour".
+3. Select Condition "Becomes greater than".
+4. Set Value to 250.
+5. Action choose **Message me in Teams**.
+6. Click Create.
+
+<div class="info" data-title="Note">
+  
+> The Reflex item will appear in your workspace and you can edit the Reflex trigger action. The same Reflex item can also trigger multiple actions. 
+</div>
+
+
+## 13. Stop the notebook
+At this point you've completed the lab, so you may stop running the notebook. 
+1. Open the notebook "Generate synthetic events" from your workspace and click **Stop** on the last code cell if its still running.
+2. (Optionally) You can click **Cancel All** on the top menu or click the stop red-square button to Stop session. These only appear when your session is active or the notebook is running.
+![alt text](assets/fabrta60.png)
+3. (Optionally) "LabAdmin" can click **Monitor** on the left Menu, search for "generate", click the 3-dots (...) next to the notebook "In progress" status and click **Cancel**.
+![StopAllNotebooks](assets/StopAllNotebooks.png "Monitor - click 3-dots per item to Cancel")
+
+
+## THAT's ALL FOLKS!!
