@@ -71,7 +71,7 @@ BronzeImpressions
     relatedProductName
 }
 
-.alter table SilverImpressions policy update @'[{"Source": "BronzeImpression", "Query": "expandRelatedProducts", "IsEnabled" : true, "IsTransactional": false }]'
+.alter table SilverImpressions policy update @'[{"Source": "BronzeImpressions", "Query": "expandRelatedProducts", "IsEnabled" : true, "IsTransactional": false }]'
 
 .create-or-alter function with (docstring = "Social Media Campaign Clickstream", folder = "Gold Views") SocialMediaCampaignClickstream()
 {
