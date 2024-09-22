@@ -359,79 +359,190 @@ In this section we will be streaming events (impressions and clicks events) gene
 
 ![alt text](assets/fabrta73.png)
 
-1. Create an Eventstream called "WebEventsStream_ES". Check the box "Enhanced Capabilities".
+1. Select your Workspace in the left pane. In our example it is **RTI Tutorial**. If you are doing the Lab at FabCon please select the workspace that has been provided to you. Then click on **+ New Item**. In the popout window scroll a little bit down and select **Eventstream**.
 
-2. Click on "Use Custom Endpoint". This will create an event hub connected to the Eventstream. Provide the source name as "WebEventsCustomSource" or as you prefer.
-3. Click on "Add".
-   ![alt text](assets/fabrta74.png)
-4. Click on "Publish".
-5. Click on the Eventstream source - Custom Endpoint to get the "Event hub name" and "Connection string-primary key". We need these values to send the events from our Notebook.
-6. Click on "Keys".
-7. Click the copy icon next to the **Event hub name** to copy it to a notepad.
-   ![alt text](assets/fabrta8.png)
-8. Click the view icon at the end of the **Connection string** (primary or secondary) to see it.
-9. Then, click the copy icon at the end of **Connection string** to copy it to a notepad. It must be visible in order to copy it.
+   ![alt text](assets/image_task05_step01.png)
 
-<div class="info" data-title="Note">
-  
->   Eventstreams Custom-Endpoint/Custom-App sources also provide **Kafka** endpoints where data can be pushed to.
-</div>
+2. Give the Eventstream the name `WebEventsStream_ES`. Make sure that the checkbox **Enhanced Capabilites** is selected and click on **Create**.
 
-## 5. Import Data Generator Notebook
+   ![alt text](assets/image_task05_step02.png)
 
-1. Import the notebook file [Generate_synthetic_web_events.ipynb](https://github.com/microsoft/FabConRTITutorial/blob/461275d54917670ee996bf85c780290061a35ff2/notebook/Generate_synthetic_web_events.ipynb) to generate events using streaming.
-2. From GitHub, click the "Download raw file" icon on the top right.
-3. Then proceed to import the notebook file to your Fabric workspace.
-   ![alt text](assets/fabrta8.1.png)
-   ![alt text](assets/fabrta8.2.png)
+3. On the Screen **Design a flow to ingest, transform, and route streaming events** click on **Use Custom Endpoint**. This will create an event hub connected to the Eventstream.
 
-## 6. Run the notebook
+   ![alt text](assets/image_task05_step03.png)
 
-1. DO NOT use an InPrivate browser window. Recommend using a Personal browser window for the Notebook session to connect & run successfully.
-2. Open the "Generate_synthetic_web_events" notebook in your Fabric Workspace.
-3. Paste your `Event hub name` value and `Event hub Connection String Primary Key` value using the values your copied from the previous step - Eventstream keys.
-   ![alt text](assets/fabrta9.png)
-4. Click **Run all** at the top left to start generating streaming events.
-5. Wait a few minutes for the first code cell to finish and it will proceed to next code cells automatically.
-6. Scroll down to the last code cell and it should begin to print the generated synthetic events in JSON format.
-   ![Notebook Success](assets/NotebookSuccess.png)
+4. Insert `WebEventsCustomSource` as the source name and the click on **Add**.
 
-## 7. Define Eventstream topology
+   ![alt text](assets/image_task05_step04.png)
 
-1. Open the Eventstream in your Fabric Workspace.
-2. Click on "Edit".
-   ![alt text](assets/fabrta75.png)
-3. Select "Transform events or add Destination" - Filter.
+5. Click on **Publish**.
+
+   ![alt text](assets/image_task05_step05.png)
+
+   Now the Eventstream will be published and the Event Hub will be created.
+
+6. To get the information we need for the Notebook, the name of the event hub and a connection string click on the Eventstream source named **WebEventsCustomSource**. In the area below the diagram click on **Keys**. Then click on the copy icon besides the **Event hub name**. Now the event hub name is copied to the clipborad.
+
+   ![alt text](assets/image_task05_step06.png)
+
+   | :notebook: **Note**                                                                                           |
+   | :------------------------------------------------------------------------------------------------------------ |
+   | **The easiest way to record the needed values is to just copy them to a notepad window for later reference.** |
+
+7. To copy the connection string you first have to click on the view icon. After the connection string is revealed click on the copy icon and copy the connection string to Notepad as well.
+
+   ![alt text](assets/image_task05_step07.png)
+
+| :notebook: **Note**                                                            |
+| :----------------------------------------------------------------------------- |
+| **It does not matter if you copy the primary or secondary connection string.** |
+
+| :heavy_exclamation_mark: **Important**                |
+| :---------------------------------------------------- |
+| **To copy the connection string it must be visible.** |
+
+| :information_source: **Information**                                                                             |
+| :--------------------------------------------------------------------------------------------------------------- |
+| **Eventstreams Custom-Endpoint/Custom-App sources also provide **Kafka** endpoints where data can be pushed to** |
+
+### 6. Import Data Generator Notebook
+
+We use a python notebook to generate a stream of artificial click events. The notebook can be found in this GitHub repository [Generate_synthetic_web_events.ipynb](../notebook/Generate_synthetic_web_events.ipynb).
+
+1. Open the notebook in Github by clicking on this [link](../notebook/Generate_synthetic_web_events.ipynb). In GitHub click on the **Download raw file** icon on the top right.
+
+   ![alt text](assets/image_task06_step01.png)
+
+   Save the notebook on your local hard drive. By default it will be stored in the folder **Downloads**.
+
+   Now we have to import the notebook into our Fabric Workspace. To aceive this execute the following steps.
+
+2. To import the notebook into your workspace you first have to return to the workspace. To do so click on the icon of your workspace on the left pane. In our example the workspace is named **RTI Tutorial**. If you do the Lab at FabCon Europe choose the workspace name that was provided to you. After changing to the workspace click on the menu **Import**, select **Notebook** and then the option **From this computer**.
+
+   ![alt text](assets/image_task06_step02.png)
+
+3. In the pane **Import status** on the right side select **Upload**
+
+   ![alt text](assets/image_task06_step03.png)
+
+4. Browse to the folder on your local computer where you saved the notebook and select the notebook and click on the button **Open**.
+
+   ![alt text](assets/image_task06_step04.png)
+
+   After the notebook has been uploaded Fabric will display a message that the notebook has been imported successfully.
+
+   ![alt text](assets/image_task06_step04b.png)
+
+### 7. Run the notebook
+
+Now we have to run the notebook to create the stream of artificial click events for our lab. In order for the Notebook to send the events to the correct Event Hub we have to insert the information we have saved in [Task 5 - Create Event Stream](#5-create-a-new-eventstream).To run the notebook and create our datastream please proceed with the following steps.
+
+| :heavy_exclamation_mark: **Important**                                                                                                        |
+| :-------------------------------------------------------------------------------------------------------------------------------------------- |
+| **DO NOT use an InPrivate browser window. Recommend using a Personal browser window for the Notebook session to connect & run successfully.** |
+
+1. Click on the Notebook **Generate_synthetic_web_events** in your Fabric Workspace to open it.
+
+   ![alt text](assets/image_task07_step01.png)
+
+2. Paste in the values your copied in [Task 5 - Create Event Stream](#5-create-a-new-eventstream) as values for `eventHubNameevents` and `eventHubConnString` into the notebook.
+
+   ![alt text](assets/image_task07_step02.png)
+
+3. Click **Run all** at the top left to start generating streaming events.
+
+   ![alt text](assets/image_task07_step03.png)
+
+   | :notebook: **Note**                                                                                                                                                                                                                                                                                               |
+   | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | **It can happen that the notebook will throw some errors in cell 1. These errors are caused by libaries that already have been installed in the environment. You can safely ignore these errors. The notebook will execute successfully regardless of these errors.** ![alt text](assets/image_task07_errors.png) |
+
+   Wait a few minutes for the first code cell to finish and it will proceed to next code cells automatically.
+
+4. Scroll down to the last code cell and it should begin to print the generated synthetic events in JSON format. If you see an output similar to the following screenshot everything is set up and the notebooks streams artificial click data to the event hub.
+
+   ![alt text](assets/image_task07_step04.png)
+
+### 8. Define Eventstream topology
+
+Next we have to create the Eventstream topology that will insert the streamed data into our KQL Database. To aceive this please follow the following steps.
+
+1. Open your Eventstream in your Fabric Workspace. To do so click on the icon of your workspace on the left pane. In our example the workspace is named **RTI Tutorial**. If you do the Lab at FabCon Europe choose the workspace name that was provided to you. After changing to the workspace click on the Eventstream **WebEventStream_ES**.
+
+   ![alt text](assets/image_task08_step01.png)
+
+2. Click on **Edit** in the top toolbar.
+
+   ![alt text](assets/image_task08_step02.png)
+
+3. Click on the node **Transform events or add Destination** and select **Filter** from the menu.
+
+   ![alt text](assets/image_task08_step03.png)
+
 4. Click on the pencil icon the Filter node.
-5. Provide "ClickEventsFilter" as the Operation name.
-6. Choose "eventType" in the drop down for Select a field to filter on.
-7. Choose "equals" as the condition
-8. Type "CLICK" in the taxt box. Note: "CLICK" is in ALL CAPS.
-9. Click on "Save".
-10. Click on "+" sign next to the ClickEventsFilter node and choose "Stream".
-11. Enter the name as "ClickEventsStream".
-12. Click on "+" sign next to the ClickEventsStream node and choose "Eventhouse".
-13. Provide "ClickEventStore" as the Destination name.
-14. Select your workspace, Eventhouse that we created called "WebEvents_EH" and KQL Database of the same name.
-15. Create a new table in our KQL Database called `BronzeClicks`. Click "Save".
 
-16. Click on "+" sign next to the WebEventsStream_ES node and choose "Filter".
-17. Delete the connection between this new filter node and ClickEventsFilter node.
-18. Connect the output of WebEventsStream_ES node to the input of ClickEventsFilter node.
-19. Click on the pencil icon of the new Filter node.
-20. Provide "ImpressionEventsFilter" as the Operation name.
-21. Choose "eventType" in the drop down for Select a field to filter on.
-22. Choose "equals" as the condition
-23. Type "IMPRESSION" in the taxt box. Note: "IMPRESSION" is in ALL CAPS.
-24. Click on "Save".
-25. Click on "+" sign next to the ImpressionEventsFilter node and choose "Stream".
-26. Enter the name as "ImpressionEventsStream".
-27. Click on "+" sign next to the ImpressionEventsStream node and choose "Eventhouse".
-28. Provide "ImpressionEventStore" as the Destination name.
-29. Select your workspace, Eventhouse that we created called "WebEvents_EH" and KQL Database of the same name.
-30. Create a new table in our KQL Database called `BronzeImpressions`. Click "Save".
-31. Click on "Publish".
-32. After a few minutes, you should see the ClickEventStore and ImpressionEventStore node changing to mode "Streaming".
+   ![alt text](assets/image_task08_step04.png)
+
+5. Provide the following values in the pane **Filter** on the left side. Then click on **Save**.
+
+   | Field                           | Value               |
+   | :------------------------------ | :------------------ |
+   | **Operation name**              | `ClickEventsFilter` |
+   | **Select a field to filter on** | **eventType**       |
+   | **Keep events when the value**  | **equals**          |
+   | **value**                       | `CLICK`             |
+
+   ![alt text](assets/image_task08_step05.png)
+
+   | :heavy_exclamation_mark: **Important** |
+   | :------------------------------------- |
+   | **Note: `CLICK` is in ALL CAPS.**      |
+
+6. Click on "+" sign next to the ClickEventsFilter node and choose "Stream".
+
+7. Enter the name as "ClickEventsStream".
+
+8. Click on "+" sign next to the ClickEventsStream node and choose "Eventhouse".
+
+9. Provide "ClickEventStore" as the Destination name.
+
+10. Select your workspace, Eventhouse that we created called "WebEvents_EH" and KQL Database of the same name.
+
+11. Create a new table in our KQL Database called `BronzeClicks`. Click "Save".
+
+12. Click on "+" sign next to the WebEventsStream_ES node and choose "Filter".
+
+13. Delete the connection between this new filter node and ClickEventsFilter node.
+
+14. Connect the output of WebEventsStream_ES node to the input of ClickEventsFilter node.
+
+15. Click on the pencil icon of the new Filter node.
+
+16. Provide "ImpressionEventsFilter" as the Operation name.
+
+17. Choose "eventType" in the drop down for Select a field to filter on.
+
+18. Choose "equals" as the condition
+
+19. Type "IMPRESSION" in the taxt box. Note: "IMPRESSION" is in ALL CAPS.
+
+20. Click on "Save".
+
+21. Click on "+" sign next to the ImpressionEventsFilter node and choose "Stream".
+
+22. Enter the name as "ImpressionEventsStream".
+
+23. Click on "+" sign next to the ImpressionEventsStream node and choose "Eventhouse".
+
+24. Provide "ImpressionEventStore" as the Destination name.
+
+25. Select your workspace, Eventhouse that we created called "WebEvents_EH" and KQL Database of the same name.
+
+26. Create a new table in our KQL Database called `BronzeImpressions`. Click "Save".
+
+27. Click on "Publish".
+
+28. After a few minutes, you should see the ClickEventStore and ImpressionEventStore node changing to mode "Streaming".
 
 ![alt text](assets/fabrta77.png)
 
