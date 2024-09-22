@@ -3,7 +3,7 @@
 published: true                        # Optional. Set to true to publish the workshop (default: false)
 type: workshop                          # Required.
 title: Building Fabric Real-Time Intelligence solution in a day               # Required. Full title of the workshop
-short_title: Fabric Real-Time Intelligence Tutorial    # Optional. Short title displayed in the header
+short_title: Microsoft Fabric Real-Time Intelligence Tutorial    # Optional. Short title displayed in the header
 description: In this technical workshop, you will build a complete analytics platform with streaming data using Microsoft Fabric Real-Time Intelligence components and other features of Microsoft Fabric. This is a proctor led worksop in which each section is accompanied by a technical overview of Fabric RTI components.   # Required.
 level: intermediate                         # Required. Can be 'beginner', 'intermediate' or 'advanced'
 authors:                                # Required. You can add as many authors as needed      
@@ -172,6 +172,8 @@ Photo by [HEAD Accessories](https://unsplash.com/@headaccessories?utm_content=cr
 Photo by [Jan Kopřiva](https://unsplash.com/@jxk?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/photos/a-close-up-of-a-helmet-with-sunglasses-on-it-CT6AScSsQQM?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash).
 
 ---
+
+## Architecture
 
 ### Components of Fabric's Real-Time Intelligence
 
