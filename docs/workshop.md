@@ -479,7 +479,7 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
    ![alt text](assets/image_task08_step03.png)
 
-4. Click on the pencil icon the Filter node.
+4. Click on the pencil icon in the node **Filter1** to enter edit mode.
 
    ![alt text](assets/image_task08_step04.png)
 
@@ -498,51 +498,89 @@ Next we have to create the Eventstream topology that will insert the streamed da
    | :------------------------------------- |
    | **Note: `CLICK` is in ALL CAPS.**      |
 
-6. Click on "+" sign next to the ClickEventsFilter node and choose "Stream".
+   | :heavy_exclamation_mark: **Important**                                                                                                                                                                   |
+   | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | **It is normal that the node **CliclEventsFilter** is shown with an error. The error indicates that there is no target for the datastream coming out of the filter. We will fix this in the next step.** |
 
-7. Enter the name as "ClickEventsStream".
+6. Click on "+" sign next to the **ClickEventsFilter** node. and choose "Stream".
 
-8. Click on "+" sign next to the ClickEventsStream node and choose "Eventhouse".
+   ![alt text](assets/image_task08_step06.png)
 
-9. Provide "ClickEventStore" as the Destination name.
+7. Coose **Stream** from the context menu.
 
-10. Select your workspace, Eventhouse that we created called "WebEvents_EH" and KQL Database of the same name.
+   ![alt text](assets/image_task08_step07.png)
 
-11. Create a new table in our KQL Database called `BronzeClicks`. Click "Save".
+8. Click on the pencil in node **Stream1** to go to edit mode. Enter `ClickEventsStream` as name of the Eventstream in the field **Stream name**. Ensure that the **Input data format** is **Json**. Click on the Button **Save**,
 
-12. Click on "+" sign next to the WebEventsStream_ES node and choose "Filter".
+   ![alt text](assets/image_task08_step08.png)
 
-13. Delete the connection between this new filter node and ClickEventsFilter node.
+9. Click on "+" sign next to the node **ClickEventsStream**.
 
-14. Connect the output of WebEventsStream_ES node to the input of ClickEventsFilter node.
+   ![alt text](assets/image_task08_step09.png)
 
-15. Click on the pencil icon of the new Filter node.
+10. Select the option **Eventhouse** in the context menu.
 
-16. Provide "ImpressionEventsFilter" as the Operation name.
+    ![alt text](assets/image_task08_step10.png)
 
-17. Choose "eventType" in the drop down for Select a field to filter on.
+11. Click the pencil in node **Eventhouse1** to enter edit mode. Provide the following values in the pane **Eventhouse**.
 
-18. Choose "equals" as the condition
+    | Field                                 | Value                                                                                                                        |
+    | :------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------- |
+    | **Event processing before ingestion** | Ensure that this option is selected.                                                                                         |
+    | **Destionation name**                 | `ClickEventStore`                                                                                                            |
+    | **Workspace**                         | Select **RTI Tutorial**. If you attend the Precon at FabConEurope please select the Workspace Name that was provided to you. |
+    | **Eventhouse**                        | Select the Eventhouse **WebEvents_EH**                                                                                       |
+    | **KQL Database**                      | Select the KQL Database **WebEvents_EH**                                                                                     |
+    | **Destination table**                 | Click on **Create new** and enter `BronzeClicks` as name for the new table and click on **Save**.                            |
+    | **Input data format**                 | Ensure that the option **Json** is selected.                                                                                 |
 
-19. Type "IMPRESSION" in the taxt box. Note: "IMPRESSION" is in ALL CAPS.
+    ![alt text](assets/image_task08_step11.png)
 
-20. Click on "Save".
+    Click the button **Save** after you entered all the values.
 
-21. Click on "+" sign next to the ImpressionEventsFilter node and choose "Stream".
+12. Click on **+** sign next to the node **WebEventsStream_ES**.
 
-22. Enter the name as "ImpressionEventsStream".
+    ![alt text](assets/image_task08_step12.png)
 
-23. Click on "+" sign next to the ImpressionEventsStream node and choose "Eventhouse".
+13. Choose the option **Filter** from the context menu.
 
-24. Provide "ImpressionEventStore" as the Destination name.
+    ![alt text](assets/image_task08_step13.png)
 
-25. Select your workspace, Eventhouse that we created called "WebEvents_EH" and KQL Database of the same name.
+14. Delete the connection between the new filter node **Filter1** and the node **ClickEventsFilter** by clicking on the trashcan icon.
 
-26. Create a new table in our KQL Database called `BronzeImpressions`. Click "Save".
+    ![alt text](assets/image_task08_step14.png)
 
-27. Click on "Publish".
+15. Connect the output of the node **WebEventsStream_ES** to the input of the node **ClickEventsFilter**.
 
-28. After a few minutes, you should see the ClickEventStore and ImpressionEventStore node changing to mode "Streaming".
+    ![alt text](assets/image_task08_step15.gif)
+
+16. Click on the pencil icon of the new Filter node.
+
+17. Provide "ImpressionEventsFilter" as the Operation name.
+
+18. Choose "eventType" in the drop down for Select a field to filter on.
+
+19. Choose "equals" as the condition
+
+20. Type "IMPRESSION" in the taxt box. Note: "IMPRESSION" is in ALL CAPS.
+
+21. Click on "Save".
+
+22. Click on "+" sign next to the ImpressionEventsFilter node and choose "Stream".
+
+23. Enter the name as "ImpressionEventsStream".
+
+24. Click on "+" sign next to the ImpressionEventsStream node and choose "Eventhouse".
+
+25. Provide "ImpressionEventStore" as the Destination name.
+
+26. Select your workspace, Eventhouse that we created called "WebEvents_EH" and KQL Database of the same name.
+
+27. Create a new table in our KQL Database called `BronzeImpressions`. Click "Save".
+
+28. Click on "Publish".
+
+29. After a few minutes, you should see the ClickEventStore and ImpressionEventStore node changing to mode "Streaming".
 
 ![alt text](assets/fabrta77.png)
 
