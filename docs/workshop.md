@@ -285,15 +285,33 @@ For the purpose of this tutorial, speakers/proctors will provide a tenant with c
 
    ![Fabric Home](assets/image_task01_step03.png "Real-Time Intelligence")
 
-## 2. Fabric Workspace
+### 2. Fabric Workspace
 
 1. Click **Workspaces** on the left menu and open the Fabric Workspace **designated** to your login by the Fabric Trial Tenant.
 
-2. (Optional) If using your own Fabric Tenant, create a new workspace for this lab.
+| :notebook: **Note**                                                                  |
+| :----------------------------------------------------------------------------------- |
+| **(Optional) If using your own Fabric Tenant, create a new workspace for this lab.** |
 
-   ![alt text](assets/fabrta0.png)
+1. To create a new Workspace click on **Workspaces** in the left pane and then click on **+ New Workspace** in the popup window.
 
-## 3. Create a new Eventhouse
+   ![alt text](assets/image_task02_step01.png)
+
+2. Enter _RTI Tutorial_ as name for the new Workspace. Then extend **Advanced**
+
+   ![alt text](assets/image_task02_step02.png)
+
+   | :notebook: **Note**                                                                                                                                                                         |
+   | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+   | **If the name that you would like to use for your workspace is still available this will be shown below the input box for **Name**. Workspace Names have to be unique in a Fabric tenant.** |
+
+3. Check if the option **Trial** is checked. If so click on **Apply**.
+
+   ![alt text](assets/image_task02_step03.png)
+
+   After you clicked on **Apply** the workspace will be created. This can take up to a minute.
+
+### 3. Create a new Eventhouse
 
 1. Create an Eventhouse called "WebEvents_EH".
 
