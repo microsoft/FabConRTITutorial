@@ -1,38 +1,23 @@
-# Workshop Build a Fabric Real-Time Intelligence solution in a Day
+---
+
+published: true                        # Optional. Set to true to publish the workshop (default: false)
+type: workshop                          # Required.
+title: Building a Medallion Architecture using MS Fabric Real-Time Intelligence               # Required. Full title of the workshop
+short_title: Real-Time Intelligence Tutorial    # Optional. Short title displayed in the header
+description: In this technical workshop, you will build a complete analytics platform for streaming & batching data.   # Required.
+level: intermediate                         # Required. Can be 'beginner', 'intermediate' or 'advanced'
+authors:                                # Required. You can add as many authors as needed      
+  - Microsoft Fabric Real-Time Intelligence
+contacts:                               # Required. Must match the number of authors
+  - https://aka.ms/fabricblog
+video_url: https://youtube.com/watch?v=hkChU3KMZaE             # Optional. Link to a video of the workshop
+duration_minutes: 120                    # Required. Estimated duration in minutes
+audience: students, pro devs, analysts            # Optional. Audience of the workshop (students, pro devs, etc.)
+tags: fabric, kql, realtime, intelligence, event, stream, sql, data, analytics, kusto, medallion, dashboard, reflex, activator         # Required. Tags for filtering and searching
 
 ---
 
-published: false # Optional. Set to true to publish the workshop (default: false)
-type: workshop # Required.
-title: Build Fabric Real-Time Intelligence solution in a day # Required. Full title of the workshop
-short_title: Fabric RTI Tutorial # Optional. Short title displayed in the header
-description: This is a workshop for data enthusiast, Microsoft Fabric learners, data architects, analytics engineers, analysts who are interested in acquiring hands-on skills on Real-Time Intelligence components of Microsoft Fabric. # Required.
-level: intermediate # Required. Can be 'beginner', 'intermediate' or 'advanced'
-authors: # Required. You can add as many authors as needed
-
-- Brian Bønk Rueløkke, Devang Shah, Frank Geisler, Johan Ludvig Brattås, Matt Gordon
-  contacts: # Required. Must match the number of authors
-
-- [devsha@microsoft.com](devsha@microsoft.com)
-
-duration_minutes: 360 minutes # Required. Estimated duration in minutes
-tags: fabric, kql, realtime, intelligence, event, stream, sql, data, analytics, kusto, medallion, dashboard, reflex, activator # Required. Tags for filtering and searching
-navigation_levels: 2 # Optional. Number of levels displayed in the side menu (default: 2)
-navigation_numbering: true # Optional. Enable numbering in the side menu (default: true)
-sections_title: # Optional. Override titles for each section to be displayed in the side bar
-
-- Section 1 Introduction
-- Section 2 Fabric Real-Time Intelligence
-- Section 3 The e-commerce store
-- Section 4 Architecture
-- Section 5 Data model
-- Section 6 Pre-requisites
-- Section 7 Building the solution
-- Section 8 Continue your learning
-
----
-
-## Introduction
+# Introduction
 
 Suppose you own an e-commerce website selling bike accessories. You have millions of visitors a month, you want to analyze the website traffic, consumer patterns and predict sales.
 
