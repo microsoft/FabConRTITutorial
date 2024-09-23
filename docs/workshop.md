@@ -1,11 +1,12 @@
 ---
-published: true # Optional. Set to true to publish the workshop (default: false)
-type: workshop # Required.
-title: Building Fabric Real-Time Intelligence solution in a day # Required. Full title of the workshop
-short_title: Fabric Real-Time Intelligence Tutorial # Optional. Short title displayed in the header
-description: In this technical workshop, you will build a complete analytics platform with streaming data using Microsoft Fabric Real-Time Intelligence components and other features of Microsoft Fabric. This is a proctor led worksop in which each section is accompanied by a technical overview of Fabric RTI components. # Required.
-level: intermediate # Required. Can be 'beginner', 'intermediate' or 'advanced'
-authors: # Required. You can add as many authors as needed
+
+published: true                        # Optional. Set to true to publish the workshop (default: false)
+type: workshop                          # Required.
+title: Building Fabric Real-Time Intelligence solution in a day               # Required. Full title of the workshop
+short_title: FabConEU 2024 Build A Fabric Real-Time Intelligence Solution in One Day    # Optional. Short title displayed in the header
+description: In this technical workshop, you will build a complete analytics platform with streaming data using Microsoft Fabric Real-Time Intelligence components and other features of Microsoft Fabric. This is a proctor led worksop in which each section is accompanied by a technical overview of Fabric RTI components.   # Required.
+level: intermediate                         # Required. Can be 'beginner', 'intermediate' or 'advanced'
+authors:                                # Required. You can add as many authors as needed      
   - Microsoft Fabric Real-Time Intelligence
 contacts: # Required. Must match the number of authors
   - https://aka.ms/fabricblog
@@ -197,7 +198,9 @@ The e-commerce store database entities are:
 
 ---
 
-## Components of Fabric's Real-Time Intelligence
+## Architecture
+
+### Components of Fabric's Real-Time Intelligence
 
 ![RTIComponents](assets/RTIComponents.png "Components of Fabric's Real-Time Intelligence")
 
@@ -235,19 +238,20 @@ Now with Data Activator (Reflex), we can also set alerts on Real-time Dashboards
 | **Product**         | **Shortcut** to OneLake delta table | Products, including descriptions and prices. |
 | **ProductCategory** | **Shortcut** to OneLake delta table | Product category.                            |
 
-### Functions
+### Transformation Functions
 
 | Function                  | Description                                                                 |
 | ------------------------- | --------------------------------------------------------------------------- |
 | **expandClickpath**       | Expands JSON array of dictonaries to transform into strongly typed columns. |
 | **expandRelatedProducts** | Expands JSON array of dictonaries to transform into strongly typed columns  |
 
-### Materialized-Views
+### Functions as Views
 
 | View            | Origin                  | Description                                                                                                                   |
 | --------------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **ToBeDefined** | Eventhouse silver table | Materialized view showing only the **latest** changes in the source table showing how to handle duplicate or updated records. |
-| **ToBeDefined** | Eventhouse silver table | Materialized view showing only the **latest** changes in the source table showing how to handle duplicate or updated records. |
+| **SocialMediaCampaignClickstream** | Eventhouse gold function | Function showing clickstream originating due to social media campaigns |
+| **SearchMediaCampaignClickstream** | Eventhouse gold function | Function showing clickstream originating due to campaigns on search engines |
+| **EmailCampaignClickstream** | Eventhouse gold function | Function showing clickstream originating due to email campaigns |
 
 ---
 
@@ -256,10 +260,23 @@ Now with Data Activator (Reflex), we can also set alerts on Real-time Dashboards
 - Recommended material to review (at least one) prior to this lab, however it's not required:
   - [Write your first query with Kusto](https://aka.ms/learn.kql)
   - [Implement a Real-Time Intelligence Solution Tutorial](https://learn.microsoft.com/fabric/real-time-intelligence/tutorial-introduction)
+  - To complete the lab you **must** have access to a [Microsoft Fabric](<https://www.microsoft.com/microsoft-fabric/getting-started>) workspace with at least Contributor permissions.
 
-| :heavy_exclamation_mark: **Important**                                                                                                                                                |
-| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **To complete the lab you **must** have access to a [Microsoft Fabric](https://www.microsoft.com/microsoft-fabric/getting-started) workspace with at least Contributor permissions.** |
+### Trial Tenant for the Lab
+If you need a new Trial Tenant to complete the lab, suggest to register a new Outlook.com email and follow these steps:
+1. [Provision Fabric Trial Tenant](<https://github.com/microsoft/FabricRTIWorkshop/tree/main/trialtenant>) - see document and powershell script to setup a lab admin.
+   - 25 workspaces with access to 25 logins will be created automatically (one workspace per user).
+   - Participants should create items in the workspace designated to their own login.
+   - If more than 25 accounts are necessary, additional Trial Tenants can be provisioned by repeating this process again. Also, participants can share the lab credentials and use folders in their workspaces. 
+3. [Office 365 E5 Trial](<https://blog.fabric.microsoft.com/blog/accessing-microsoft-fabric-for-developers-startups-and-enterprises>). ⚠️ Make sure to disable recurring billing, otherwise your credit card will be charged for Office E5.
+4. The "LabAdmin" credential should be used by the lab proctor.
+5. The "LabAdmin" can have the pre-built lab items for Lab Users 01-24 to reference as a cheat-sheet. To do so, grant Users 01-24 viewer permission to the "LabAdmin" workspace.
+![WorkspaceManageAccess](assets/WorkspaceManageAccess.png "Workspace Manage Access")
+
+### Enable Real-Time Dashboards (preview)
+1. While logged in as Tenant Admin or Capacity Admin to Fabric, click the gear icon on the top right of the  page to open Admin Portal. Note, the "LabAdmin" account will have access to enable this for the Trial Tenant described above.
+2. In the [Tenant Settings](<https://app.fabric.microsoft.com/admin-portal/tenantSettings?experience=kusto>), search for "dashboards", click the toggle to **Enabled**, click **Apply**.
+![EnableRTDashboards](assets/EnableRTDashboards.png "Enable Real-Time Dashboards")
 
 ### Fabric tenant and capacity for the tutorial
 
@@ -271,9 +288,10 @@ For the purpose of this tutorial, speakers/proctors will provide a tenant with c
 
 ### 1. Login to Lab Environment
 
-| :heavy_exclamation_mark: **Important**                                                                                  |
-| :---------------------------------------------------------------------------------------------------------------------- |
-| **Do **not** use an InPrivate browser window. Recommend using a Personal browser window to successfully run this lab.** |
+<div class="info" data-title="Note">
+  
+> Do **not** use an InPrivate browser window. Recommend using a Personal browser window to successfully run this lab.
+</div>
 
 1. Open [app.fabric.microsoft.com](https://app.fabric.microsoft.com/) in your browser.
 
@@ -288,10 +306,7 @@ For the purpose of this tutorial, speakers/proctors will provide a tenant with c
 ### 2. Fabric Workspace
 
 1. Click **Workspaces** on the left menu and open the Fabric Workspace **designated** to your login by the Fabric Trial Tenant.
-
-| :notebook: **Note**                                                                  |
-| :----------------------------------------------------------------------------------- |
-| **(Optional) If using your own Fabric Tenant, create a new workspace for this lab.** |
+2. (Optional) If using your own Fabric Tenant, create a new workspace for this lab. 
 
 1. To create a new Workspace click on **Workspaces** in the left pane and then click on **+ New Workspace** in the popup window.
 
@@ -301,9 +316,10 @@ For the purpose of this tutorial, speakers/proctors will provide a tenant with c
 
    ![alt text](assets/image_task02_step02.png)
 
-   | :notebook: **Note**                                                                                                                                                                         |
-   | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-   | **If the name that you would like to use for your workspace is still available this will be shown below the input box for **Name**. Workspace Names have to be unique in a Fabric tenant.** |
+<div class="info" data-title="Note">
+  
+> If the name that you would like to use for your workspace is still available this will be shown below the input box for **Name**. Workspace Names have to be unique in a Fabric tenant.
+</div>
 
 3. Check if the option **Trial** is checked. If so click on **Apply**.
 
@@ -327,9 +343,10 @@ For the purpose of this tutorial, speakers/proctors will provide a tenant with c
 
    After the Eventhouse has been created it will be automatically opened.
 
-   | :notebook: **Note**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-   | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-   | **The [Eventhouse](https://learn.microsoft.com/en-us/fabric/real-time-intelligence/eventhouse) is designed to handle real-time data streams efficiently, which lets organizations ingest, process, and analyze data in near real-time. Eventhouses are particularly useful for scenarios where **timely insights are crucial**. Eventhouses are **specifically tailored** to time-based, streaming events with multiple data formats. This data is automatically indexed and partitioned based on ingestion time.** |
+<div class="info" data-title="Note">
+  
+> **The [Eventhouse](https://learn.microsoft.com/en-us/fabric/real-time-intelligence/eventhouse) is designed to handle real-time data streams efficiently, which lets organizations ingest, process, and analyze data in near real-time. Eventhouses are particularly useful for scenarios where **timely insights are crucial**. Eventhouses are **specifically tailored** to time-based, streaming events with multiple data formats. This data is automatically indexed and partitioned based on ingestion time.** 
+</div>
 
 ### 4. Enable OneLake Availability
 
@@ -349,9 +366,10 @@ This feature is also called "one logical copy" and it automatically allows KQL D
 
    ![alt text](assets/image_task04_step02.png)
 
-   | :notebook: **Note**                                                                                            |
-   | :------------------------------------------------------------------------------------------------------------- |
-   | **Newly created tables will automatically inherit the "OneLake availability" setting from the Database level** |
+<div class="info" data-title="Note">
+  
+> **Newly created tables will automatically inherit the "OneLake availability" setting from the Database level**
+</div>
 
 ### 5. Create a new Eventstream
 
@@ -385,25 +403,29 @@ In this section we will be streaming events (impressions and clicks events) gene
 
    ![alt text](assets/image_task05_step06.png)
 
-   | :notebook: **Note**                                                                                           |
-   | :------------------------------------------------------------------------------------------------------------ |
-   | **The easiest way to record the needed values is to just copy them to a notepad window for later reference.** |
+<div class="info" data-title="Note">
+  
+>  **The easiest way to record the needed values is to just copy them to a notepad window for later reference.**
+</div>
 
 7. To copy the connection string you first have to click on the view icon. After the connection string is revealed click on the copy icon and copy the connection string to Notepad as well.
 
    ![alt text](assets/image_task05_step07.png)
 
-| :notebook: **Note**                                                            |
-| :----------------------------------------------------------------------------- |
-| **It does not matter if you copy the primary or secondary connection string.** |
+<div class="info" data-title="Note">
 
-| :heavy_exclamation_mark: **Important**                |
-| :---------------------------------------------------- |
-| **To copy the connection string it must be visible.** |
+> **It does not matter if you copy the primary or secondary connection string.**
+</div>
 
-| :information_source: **Information**                                                                             |
-| :--------------------------------------------------------------------------------------------------------------- |
-| **Eventstreams Custom-Endpoint/Custom-App sources also provide **Kafka** endpoints where data can be pushed to** |
+<div class="important" data-title="Note">
+
+> **To copy the connection string it must be visible.**
+</div>
+
+<div class="important" data-title="Note">
+
+> **Eventstreams Custom-Endpoint/Custom-App sources also provide **Kafka** endpoints where data can be pushed to**
+</div>
 
 ### 6. Import Data Generator Notebook
 
@@ -437,9 +459,10 @@ We use a python notebook to generate a stream of artificial click events. The no
 
 Now we have to run the notebook to create the stream of artificial click events for our lab. In order for the Notebook to send the events to the correct Event Hub we have to insert the information we have saved in [Task 5 - Create Event Stream](#5-create-a-new-eventstream).To run the notebook and create our datastream please proceed with the following steps.
 
-| :heavy_exclamation_mark: **Important**                                                                                                        |
-| :-------------------------------------------------------------------------------------------------------------------------------------------- |
-| **DO NOT use an InPrivate browser window. Recommend using a Personal browser window for the Notebook session to connect & run successfully.** |
+<div class="warning" data-title="Note">
+
+> **DO NOT use an InPrivate browser window. Recommend using a Personal browser window for the Notebook session to connect & run successfully.**
+</div>
 
 1. Click on the Notebook **Generate_synthetic_web_events** in your Fabric Workspace to open it.
 
@@ -453,9 +476,12 @@ Now we have to run the notebook to create the stream of artificial click events 
 
    ![alt text](assets/image_task07_step03.png)
 
-   | :notebook: **Note**                                                                                                                                                                                                                                                                                               |
-   | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | **It can happen that the notebook will throw some errors in cell 1. These errors are caused by libaries that already have been installed in the environment. You can safely ignore these errors. The notebook will execute successfully regardless of these errors.** ![alt text](assets/image_task07_errors.png) |
+   <div class="info" data-title="Note">
+   
+   > **It can happen that the notebook will throw some errors in cell 1. These errors are caused by libaries that already have been installed in the environment. You can safely ignore these errors. The notebook will execute successfully regardless of these errors.**
+   </div>
+   
+   ![alt text](assets/image_task07_errors.png) |
 
    Wait a few minutes for the first code cell to finish and it will proceed to next code cells automatically.
 
@@ -479,9 +505,10 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
    ![alt text](assets/image_task08_step03.png)
 
-   | :information_source: **Information**                                                                                                                |
-   | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | **Pay attention to the table you can see at the bottom of the screen. Here you can see events that are streamed by notebook to the event already.** |
+   <div class="info" data-title="Note">
+   
+   > **Pay attention to the table you can see at the bottom of the screen. Here you can see events that are streamed by notebook to the event already.**
+   </div>
 
 4. Click on the pencil icon in the node **Filter1** to enter edit mode.
 
@@ -498,13 +525,15 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
    ![alt text](assets/image_task08_step05.png)
 
-   | :heavy_exclamation_mark: **Important** |
-   | :------------------------------------- |
-   | **Note: `CLICK` is in ALL CAPS.**      |
+   <div class="important" data-title="Note">
+   
+   > **Note: `CLICK` is in ALL CAPS.**
+   </div>
 
-   | :heavy_exclamation_mark: **Important**                                                                                                                                                                   |
-   | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | **It is normal that the node **ClickEventsFilter** is shown with an error. The error indicates that there is no target for the datastream coming out of the filter. We will fix this in the next step.** |
+   <div class="important" data-title="Note">
+   
+   > **It is normal that the node **ClickEventsFilter** is shown with an error. The error indicates that there is no target for the datastream coming out of the filter. We will fix this in the next step.**
+   </div>
 
 6. Click on **+** icon next to the **ClickEventsFilter** node. and choose **Stream** from the context menu.
 
@@ -569,13 +598,15 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
     ![alt text](assets/image_task08_step16.png)
 
-    | :heavy_exclamation_mark: **Important** |
-    | :------------------------------------- |
-    | **Note: `IMPRESSION` is in ALL CAPS.** |
+    <div class="important" data-title="Note">
+    
+    > **Note: `IMPRESSION` is in ALL CAPS.**
+    </div>
 
-    | :heavy_exclamation_mark: **Important**                                                                                                                                                                        |
-    | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | **It is normal that the node **ImpressionEventsFilter** is shown with an error. The error indicates that there is no target for the datastream coming out of the filter. We will fix this in the next step.** |
+    <div class="important" data-title="Note">
+    
+    > **It is normal that the node **ImpressionEventsFilter** is shown with an error. The error indicates that there is no target for the datastream coming out of the filter. We will fix this in the next step.**
+    </div>
 
 17. Click on **+** sign next to the **ClickEventsFilter** node and choose **Stream** from the context menu.
 
@@ -647,9 +678,10 @@ After our lakehouse has been created the overview page of the lakehouse will be 
 
    ![alt text](assets/image_task10_step02.png)
 
-   | :information_source: **Information**                                                                  |
-   | :---------------------------------------------------------------------------------------------------- |
-   | **To select the two files at once you can just hold the key **CTRL** while you click the two files.** |
+   <div class="info" data-title="Note">
+   
+   > **To select the two files at once you can just hold the key **CTRL** while you click the two files.**
+   </div>
 
 3. In the popin window **Upload files** click on the button **Upload**. Now the files will be uploaded.
 
@@ -671,9 +703,10 @@ After our lakehouse has been created the overview page of the lakehouse will be 
 
    ![alt text](assets/image_task10_step06.png)
 
-   | :information_source: **Information**                                                                     |
-   | :------------------------------------------------------------------------------------------------------- |
-   | **This steps have to be executed for the file productcategory.csv as well as for the file product.csv.** |
+   <div class="info" data-title="Note">
+   
+   > **This steps have to be executed for the file productcategory.csv as well as for the file product.csv.**
+   </div>
 
 7. Ensure that both files **products.csv** and **productcategory.csv** are available as delta tables in your lakehouse. Your lakehouse should look like this:
 
@@ -687,9 +720,10 @@ In this task we will make the Eventhouse tables form the KQL Database available 
 
    ![alt text](assets/image_task11_step01.png)
 
-   | :information_source: **Information**                                                                                                                                                                  |
-   | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | **If your Lakehouse is using Shemas you will see the schema **dbo** under the folder **Tables**. right-click the schema **dbo** and select the option **New table shortcut\*\* from the context menu. |
+   <div class="important" data-title="Note">
+   
+   > **If your Lakehouse is using Schemas you will see the schema **dbo** under the folder **Tables**. right-click the schema **dbo** and select the option **New table shortcut\*\* from the context menu.
+   </div>
 
 2. Select Microsoft OneLake.
 
@@ -703,9 +737,10 @@ In this task we will make the Eventhouse tables form the KQL Database available 
 
    ![alt text](assets/image_task11_step04.png)
 
-   | :information_source: **Information**                                                                                                                                                                                                                                           |
-   | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | **You may return to this step to create additional shortcuts, after running the [createAll.kql](../kql/createAll.kql) database script which will create additional tables. For now, you may proceed by selecting just the **BronzeClicks** and **BronzeImpressions** tables.** |
+   <div class="info" data-title="Note">
+
+   > **You may return to this step to create additional shortcuts, after running the [createAll.kql](../kql/createAll.kql) database script which will create additional tables. For now, you may proceed by selecting just the **BronzeClicks** and **BronzeImpressions** tables.** 
+   </div>
 
 5. Click on the button **Create**.
 
@@ -715,9 +750,10 @@ In this task we will make the Eventhouse tables form the KQL Database available 
 
    ![alt text](assets/image_task11_step05.png)
 
-   | :notebook: **Note**                                                          |
-   | :--------------------------------------------------------------------------- |
-   | **Note that the shortcuts have another icon than the regular delta tables.** |
+   <div class="info" data-title="Note">
+   
+   > **Note that the shortcuts have another icon than the regular delta tables.**
+   </div>
 
 ### 12. Build the KQL DB schema
 
@@ -733,9 +769,11 @@ In this section we will create all the silver tables, functions and enable updat
 
    ![alt text](assets/image_task12_step02.png)
 
-   | :information_source: **Information**                                                                                                                                                                            |
-   | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | **By now data has already streamed into you KQL-Database. You can see this by looking at the dashborad that is provided on the overview page of the KQL-Database ![alt text](assets/image_task12_step02b.png)** |
+   <div class="info" data-title="Note">
+   
+   > **By now data has already streamed into you KQL-Database. You can see this by looking at the dashborad that is provided on the overview page of the KQL-Database ![alt text](assets/image_task12_step02b.png)**
+
+   </div>
 
 3. Select **Microsoft OneLake**..
 
@@ -749,9 +787,10 @@ In this section we will create all the silver tables, functions and enable updat
 
    ![alt text](assets/image_task12_step05.png)
 
-   | :heavy_exclamation_mark: **Important**                                                             |
-   | :------------------------------------------------------------------------------------------------- |
-   | **Repeat the steps above for the table **products** to create a shortcut for this table as well.** |
+   <div class="important" data-title="Note">
+   
+   > **Repeat the steps above for the table **products** to create a shortcut for this table as well.**
+   </div>
 
 6. Expand the folder **Shortcuts** in the tree of your Eventhouse **WebEvents_EH** to verify if the 2 shortcuts have been created correctly.
 
@@ -785,19 +824,24 @@ In this section we will create all the silver tables, functions and enable updat
 
     ![alt text](assets/image_task12_step011.png)
 
-    | :information_source: **Information**                                    |
-    | :---------------------------------------------------------------------- |
-    | **You can add additional tabs in the KQL Queryset to add new queries.** |
+    <div class="info" data-title="Note">
+    
+    > **You can add additional tabs in the KQL Queryset to add new queries.**
+    </div>
+
 
 12. Expand all folders in the database pane on the left. All tables and functions that have been created by the script can be found here.
 
     ![alt text](assets/image_task12_step012.png)
 
-    | :information_source: **Information**                                                                                                                                                                                                                                                      |
-    | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | **While on the KQL Database details screen you may explore additional **Real-Time Intelligence Samples** by clicking the **drop-drop next to Get data** and selecting a desired sample. These samples give you the ability to learn more.** ![alt text](assets/image_task12_step012b.png) |
+    <div class="important" data-title="Note">
+    
+     > **While on the KQL Database details screen you may explore additional **Real-Time Intelligence Samples** by clicking the **drop-drop next to Get data** and selecting a desired sample. These samples give you the ability to learn more.** 
+     </div>
+     
+     ![alt text](assets/image_task12_step012b.png)
 
-# 10. Real-Time Dashboard
+### 13. Real-Time Dashboard
 
 In this section, we will build a real-time dashboard to visualize the streaming data and set it to refresh every 30 seconds. (Optionally) A pre-built version of the dashboard is available to download [here](<https://github.com/microsoft/FabricRTIWorkshop/blob/main/dashboards/RTA%20dashboard/dashboard-RTA Dashboard.json>), which can be imported and configured to your KQL Database data source.
 
@@ -813,7 +857,7 @@ In this section, we will build a real-time dashboard to visualize the streaming 
 7. Set the **Database** to "WebEvents_EH" & click Create.
 8. Proceed to paste each query below, add a visual, and apply changes. (Optionally) All queries are available in this script file [dashboard-RTA.kql](https://github.com/microsoft/FabricRTIWorkshop/blob/main/dashboards/RTA%20dashboard/dashboard-RTA.kql).
 
-### Clicks by hour
+#### Clicks by hour
 
 ```
 //Clicks by hour
@@ -841,7 +885,7 @@ SilverClicks
 
 11. Click **+ Add tile** again to proceed with the next visuals.
 
-### Impressions by hour
+#### Impressions by hour
 
 12. Visual type: **Area chart**.
 
@@ -856,7 +900,7 @@ SilverImpressions
 
 ![alt text](assets/fabrta53.png)
 
-### Impressions by location
+#### Impressions by location
 
 12. Visual type: **Map**.
 
@@ -871,7 +915,7 @@ SilverImpressions
 
 ![alt text](assets/fabrta54.png)
 
-### Average Page Load time
+#### Average Page Load time
 
 13. Visual type: **Timechart**.
 
@@ -887,7 +931,7 @@ SilverImpressions
 
 ![alt text](assets/AvgPageLoadTime.png)
 
-### Impressions, Clicks & CTR
+#### Impressions, Clicks & CTR
 
 14. Add a tile & paste the query below once. Note, this is a multi-statement query that uses multiple let statements & a query combined by semicolons.
 15. Set Tile name: **Impressions**.
@@ -918,7 +962,7 @@ imp
 ![alt text](assets/fabrta57.png)
 ![alt text](assets/fabrta58.png)
 
-### Average Page Load Time Anomalies
+#### Average Page Load Time Anomalies
 
 ```
 //Avg Page Load Time Anomalies
@@ -929,7 +973,7 @@ SilverImpressions
 | render anomalychart
 ```
 
-### Strong Anomalies
+#### Strong Anomalies
 
 ```
 //Strong Anomalies
@@ -942,7 +986,7 @@ SilverImpressions
 | project-away anomalies
 ```
 
-### Logo (Markdown Text Tile)
+#### Logo (Markdown Text Tile)
 
 ```
 //Logo (Markdown Text Tile)
@@ -951,13 +995,13 @@ SilverImpressions
 
 > The title can be resized on the dashboard canvas directly, rather than writing code.
 
-### Auto-refresh
+#### Auto-refresh
 
 22. While editing the dashboard, click **Manage** > **Auto refresh**.
 23. Set it to **Enabled**, and **Default** refresh rate to **30 seconds**, click Apply.
 24. Click **Home** and then **Save**.
 
-## 11. Reflex
+### 14. Reflex
 
 1. While editing the dashboard, click **Manage** > Set Alert.
 2. Choose "Clicks by hour".
@@ -971,7 +1015,7 @@ SilverImpressions
 > The Reflex item will appear in your workspace and you can edit the Reflex trigger action. The same Reflex item can also trigger multiple actions. 
 </div>
 
-## 12. Stop the notebook
+### 15. Stop the notebook
 
 At this point you've completed the lab, so you may stop running the notebook.
 
