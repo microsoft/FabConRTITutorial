@@ -928,6 +928,12 @@ SilverClicks
 
    ![alt text](assets/image_task13_step09.png)
 
+    <div class="important" data-title="Note">
+
+   > **When you click on **Apply changes** the value of the range parameter will jump back to one hour. Ignore this for now as we will fix this later.**
+
+     </div>
+
 3. While editing the dashboard, click on the tab **Manage** on the top left then click on the button **Parameters**.
 
    ![alt text](assets/image_task13_step10.png)
