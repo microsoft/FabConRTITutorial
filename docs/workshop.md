@@ -262,6 +262,14 @@ Now with Data Activator (Reflex), we can also set alerts on Real-time Dashboards
   - [Implement a Real-Time Intelligence Solution Tutorial](https://learn.microsoft.com/fabric/real-time-intelligence/tutorial-introduction)
   - To complete the lab you **must** have access to a [Microsoft Fabric](<https://www.microsoft.com/microsoft-fabric/getting-started>) workspace with at least Contributor permissions.
 
+### Fabric tenant and capacity for FabConEU 2024 tutorial
+
+<div class="important" data-title="Note">
+
+> For the purpose of this tutorial, speakers/proctors will provide a tenant with capacity for you to build your solution.
+
+</div>
+
 ### Trial Tenant for the Lab
 If you need a new Trial Tenant to complete the lab, suggest to register a new Outlook.com email and follow these steps:
 1. [Provision Fabric Trial Tenant](<https://github.com/microsoft/FabricRTIWorkshop/tree/main/trialtenant>) - see document and powershell script to setup a lab admin.
@@ -278,9 +286,7 @@ If you need a new Trial Tenant to complete the lab, suggest to register a new Ou
 2. In the [Tenant Settings](<https://app.fabric.microsoft.com/admin-portal/tenantSettings?experience=kusto>), search for "dashboards", click the toggle to **Enabled**, click **Apply**.
 ![EnableRTDashboards](assets/EnableRTDashboards.png "Enable Real-Time Dashboards")
 
-### Fabric tenant and capacity for the tutorial
 
-For the purpose of this tutorial, speakers/proctors will provide a tenant with capacity for you to build your solution.
 
 ---
 
@@ -1001,7 +1007,7 @@ SilverImpressions
 23. Set it to **Enabled**, and **Default** refresh rate to **30 seconds**, click Apply.
 24. Click **Home** and then **Save**.
 
-### 14. Reflex
+### 14. Data Activator
 
 1. While editing the dashboard, click **Manage** > Set Alert.
 2. Choose "Clicks by hour".
