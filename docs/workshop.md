@@ -1,12 +1,11 @@
 ---
-
-published: true                        # Optional. Set to true to publish the workshop (default: false)
-type: workshop                          # Required.
-title: Building Fabric Real-Time Intelligence solution in a day               # Required. Full title of the workshop
-short_title: FabConEU 2024 Build A Fabric Real-Time Intelligence Solution in One Day    # Optional. Short title displayed in the header
-description: In this technical workshop, you will build a complete analytics platform with streaming data using Microsoft Fabric Real-Time Intelligence components and other features of Microsoft Fabric. This is a proctor led worksop in which each section is accompanied by a technical overview of Fabric RTI components.   # Required.
-level: intermediate                         # Required. Can be 'beginner', 'intermediate' or 'advanced'
-authors:                                # Required. You can add as many authors as needed      
+published: true # Optional. Set to true to publish the workshop (default: false)
+type: workshop # Required.
+title: Building Fabric Real-Time Intelligence solution in a day # Required. Full title of the workshop
+short_title: FabConEU 2024 Build A Fabric Real-Time Intelligence Solution in One Day # Optional. Short title displayed in the header
+description: In this technical workshop, you will build a complete analytics platform with streaming data using Microsoft Fabric Real-Time Intelligence components and other features of Microsoft Fabric. This is a proctor led worksop in which each section is accompanied by a technical overview of Fabric RTI components. # Required.
+level: intermediate # Required. Can be 'beginner', 'intermediate' or 'advanced'
+authors: # Required. You can add as many authors as needed
   - Microsoft Fabric Real-Time Intelligence
 contacts: # Required. Must match the number of authors
   - https://aka.ms/fabricblog
@@ -248,11 +247,11 @@ Now with Data Activator (Reflex), we can also set alerts on Real-time Dashboards
 
 ### Functions as Views
 
-| View            | Origin                  | Description                                                                                                                   |
-| --------------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **SocialMediaCampaignClickstream** | Eventhouse gold function | Function showing clickstream originating due to social media campaigns |
+| View                               | Origin                   | Description                                                                 |
+| ---------------------------------- | ------------------------ | --------------------------------------------------------------------------- |
+| **SocialMediaCampaignClickstream** | Eventhouse gold function | Function showing clickstream originating due to social media campaigns      |
 | **SearchMediaCampaignClickstream** | Eventhouse gold function | Function showing clickstream originating due to campaigns on search engines |
-| **EmailCampaignClickstream** | Eventhouse gold function | Function showing clickstream originating due to email campaigns |
+| **EmailCampaignClickstream**       | Eventhouse gold function | Function showing clickstream originating due to email campaigns             |
 
 ---
 
@@ -261,7 +260,7 @@ Now with Data Activator (Reflex), we can also set alerts on Real-time Dashboards
 - Recommended material to review (at least one) prior to this lab, however it's not required:
   - [Write your first query with Kusto](https://aka.ms/learn.kql)
   - [Implement a Real-Time Intelligence Solution Tutorial](https://learn.microsoft.com/fabric/real-time-intelligence/tutorial-introduction)
-  - To complete the lab you **must** have access to a [Microsoft Fabric](<https://www.microsoft.com/microsoft-fabric/getting-started>) workspace with at least Contributor permissions.
+  - To complete the lab you **must** have access to a [Microsoft Fabric](https://www.microsoft.com/microsoft-fabric/getting-started) workspace with at least Contributor permissions.
 
 ### Fabric tenant and capacity for FabConEU 2024 tutorial
 
@@ -272,20 +271,23 @@ Now with Data Activator (Reflex), we can also set alerts on Real-time Dashboards
 </div>
 
 ### Trial Tenant for the Lab
+
 If you need a new Trial Tenant to complete the lab, suggest to register a new Outlook.com email and follow these steps:
-1. [Provision Fabric Trial Tenant](<https://github.com/microsoft/FabricRTIWorkshop/tree/main/trialtenant>) - see document and powershell script to setup a lab admin.
+
+1. [Provision Fabric Trial Tenant](https://github.com/microsoft/FabricRTIWorkshop/tree/main/trialtenant) - see document and powershell script to setup a lab admin.
    - 25 workspaces with access to 25 logins will be created automatically (one workspace per user).
    - Participants should create items in the workspace designated to their own login.
-   - If more than 25 accounts are necessary, additional Trial Tenants can be provisioned by repeating this process again. Also, participants can share the lab credentials and use folders in their workspaces. 
-3. [Office 365 E5 Trial](<https://blog.fabric.microsoft.com/blog/accessing-microsoft-fabric-for-developers-startups-and-enterprises>). ⚠️ Make sure to disable recurring billing, otherwise your credit card will be charged for Office E5.
-4. The "LabAdmin" credential should be used by the lab proctor.
-5. The "LabAdmin" can have the pre-built lab items for Lab Users 01-24 to reference as a cheat-sheet. To do so, grant Users 01-24 viewer permission to the "LabAdmin" workspace.
-![WorkspaceManageAccess](assets/WorkspaceManageAccess.png "Workspace Manage Access")
+   - If more than 25 accounts are necessary, additional Trial Tenants can be provisioned by repeating this process again. Also, participants can share the lab credentials and use folders in their workspaces.
+2. [Office 365 E5 Trial](https://blog.fabric.microsoft.com/blog/accessing-microsoft-fabric-for-developers-startups-and-enterprises). ⚠️ Make sure to disable recurring billing, otherwise your credit card will be charged for Office E5.
+3. The "LabAdmin" credential should be used by the lab proctor.
+4. The "LabAdmin" can have the pre-built lab items for Lab Users 01-24 to reference as a cheat-sheet. To do so, grant Users 01-24 viewer permission to the "LabAdmin" workspace.
+   ![WorkspaceManageAccess](assets/WorkspaceManageAccess.png "Workspace Manage Access")
 
 ### Enable Real-Time Dashboards (preview)
-1. While logged in as Tenant Admin or Capacity Admin to Fabric, click the gear icon on the top right of the  page to open Admin Portal. Note, the "LabAdmin" account will have access to enable this for the Trial Tenant described above.
-2. In the [Tenant Settings](<https://app.fabric.microsoft.com/admin-portal/tenantSettings?experience=kusto>), search for "dashboards", click the toggle to **Enabled**, click **Apply**.
-![EnableRTDashboards](assets/EnableRTDashboards.png "Enable Real-Time Dashboards")
+
+1. While logged in as Tenant Admin or Capacity Admin to Fabric, click the gear icon on the top right of the page to open Admin Portal. Note, the "LabAdmin" account will have access to enable this for the Trial Tenant described above.
+2. In the [Tenant Settings](https://app.fabric.microsoft.com/admin-portal/tenantSettings?experience=kusto), search for "dashboards", click the toggle to **Enabled**, click **Apply**.
+   ![EnableRTDashboards](assets/EnableRTDashboards.png "Enable Real-Time Dashboards")
 
 
 
@@ -313,13 +315,13 @@ If you need a new Trial Tenant to complete the lab, suggest to register a new Ou
 ### 2. Fabric Workspace
 
 1. Click **Workspaces** on the left menu and open the Fabric Workspace **designated** to your login by the Fabric Trial Tenant.
-2. (Optional) If using your own Fabric Tenant, create a new workspace for this lab. 
+2. (Optional) If using your own Fabric Tenant, create a new workspace for this lab.
 
-1. To create a new Workspace click on **Workspaces** in the left pane and then click on **+ New Workspace** in the popup window.
+3. To create a new Workspace click on **Workspaces** in the left pane and then click on **+ New Workspace** in the popup window.
 
    ![alt text](assets/image_task02_step01.png)
 
-2. Enter _RTI Tutorial_ as name for the new Workspace. Then extend **Advanced**
+4. Enter _RTI Tutorial_ as name for the new Workspace. Then extend **Advanced**
 
    ![alt text](assets/image_task02_step02.png)
 
@@ -422,16 +424,19 @@ In this section we will be streaming events (impressions and clicks events) gene
 <div class="info" data-title="Note">
 
 > **It does not matter if you copy the primary or secondary connection string.**
+
 </div>
 
 <div class="important" data-title="Note">
 
 > **To copy the connection string it must be visible.**
+
 </div>
 
 <div class="important" data-title="Note">
 
 > **Eventstreams Custom-Endpoint/Custom-App sources also provide **Kafka** endpoints where data can be pushed to**
+
 </div>
 
 ### 6. Import Data Generator Notebook
@@ -469,6 +474,7 @@ Now we have to run the notebook to create the stream of artificial click events 
 <div class="warning" data-title="Note">
 
 > **DO NOT use an InPrivate browser window. Recommend using a Personal browser window for the Notebook session to connect & run successfully.**
+
 </div>
 
 1. Click on the Notebook **Generate_synthetic_web_events** in your Fabric Workspace to open it.
@@ -484,10 +490,11 @@ Now we have to run the notebook to create the stream of artificial click events 
    ![alt text](assets/image_task07_step03.png)
 
    <div class="info" data-title="Note">
-   
+
    > **It can happen that the notebook will throw some errors in cell 1. These errors are caused by libaries that already have been installed in the environment. You can safely ignore these errors. The notebook will execute successfully regardless of these errors.**
+
    </div>
-   
+
    ![alt text](assets/image_task07_errors.png) |
 
    Wait a few minutes for the first code cell to finish and it will proceed to next code cells automatically.
@@ -513,8 +520,9 @@ Next we have to create the Eventstream topology that will insert the streamed da
    ![alt text](assets/image_task08_step03.png)
 
    <div class="info" data-title="Note">
-   
+
    > **Pay attention to the table you can see at the bottom of the screen. Here you can see events that are streamed by notebook to the event already.**
+
    </div>
 
 4. Click on the pencil icon in the node **Filter1** to enter edit mode.
@@ -533,13 +541,15 @@ Next we have to create the Eventstream topology that will insert the streamed da
    ![alt text](assets/image_task08_step05.png)
 
    <div class="important" data-title="Note">
-   
+
    > **Note: `CLICK` is in ALL CAPS.**
+
    </div>
 
    <div class="important" data-title="Note">
-   
+
    > **It is normal that the node **ClickEventsFilter** is shown with an error. The error indicates that there is no target for the datastream coming out of the filter. We will fix this in the next step.**
+
    </div>
 
 6. Click on **+** icon next to the **ClickEventsFilter** node. and choose **Stream** from the context menu.
@@ -606,13 +616,15 @@ Next we have to create the Eventstream topology that will insert the streamed da
     ![alt text](assets/image_task08_step16.png)
 
     <div class="important" data-title="Note">
-    
+
     > **Note: `IMPRESSION` is in ALL CAPS.**
+
     </div>
 
     <div class="important" data-title="Note">
-    
+
     > **It is normal that the node **ImpressionEventsFilter** is shown with an error. The error indicates that there is no target for the datastream coming out of the filter. We will fix this in the next step.**
+
     </div>
 
 17. Click on **+** sign next to the **ImpressionEventsFilter** node and choose **Stream** from the context menu.
@@ -686,8 +698,9 @@ After our lakehouse has been created the overview page of the lakehouse will be 
    ![alt text](assets/image_task10_step02.png)
 
    <div class="info" data-title="Note">
-   
+
    > **To select the two files at once you can just hold the key **CTRL** while you click the two files.**
+
    </div>
 
 3. In the popin window **Upload files** click on the button **Upload**. Now the files will be uploaded.
@@ -711,8 +724,9 @@ After our lakehouse has been created the overview page of the lakehouse will be 
    ![alt text](assets/image_task10_step06.png)
 
    <div class="info" data-title="Note">
-   
+
    > **This steps have to be executed for the file productcategory.csv as well as for the file product.csv.**
+
    </div>
 
 7. Ensure that both files **products.csv** and **productcategory.csv** are available as delta tables in your lakehouse. Your lakehouse should look like this:
@@ -728,8 +742,9 @@ In this task we will make the Eventhouse tables form the KQL Database available 
    ![alt text](assets/image_task11_step01.png)
 
    <div class="important" data-title="Note">
-   
+
    > **If your Lakehouse is using Schemas you will see the schema **dbo** under the folder **Tables**. right-click the schema **dbo** and select the option **New table shortcut\*\* from the context menu.
+
    </div>
 
 2. Select Microsoft OneLake.
@@ -746,7 +761,8 @@ In this task we will make the Eventhouse tables form the KQL Database available 
 
    <div class="info" data-title="Note">
 
-   > **You may return to this step to create additional shortcuts, after running the [createAll.kql](../kql/createAll.kql) database script which will create additional tables. For now, you may proceed by selecting just the **BronzeClicks** and **BronzeImpressions** tables.** 
+   > **You may return to this step to create additional shortcuts, after running the [createAll.kql](../kql/createAll.kql) database script which will create additional tables. For now, you may proceed by selecting just the **BronzeClicks** and **BronzeImpressions** tables.**
+
    </div>
 
 5. Click on the button **Create**.
@@ -758,8 +774,9 @@ In this task we will make the Eventhouse tables form the KQL Database available 
    ![alt text](assets/image_task11_step05.png)
 
    <div class="info" data-title="Note">
-   
+
    > **Note that the shortcuts have another icon than the regular delta tables.**
+
    </div>
 
 ### 12. Build the KQL DB schema
@@ -777,7 +794,7 @@ In this section we will create all the silver tables, functions and enable updat
    ![alt text](assets/image_task12_step02.png)
 
    <div class="info" data-title="Note">
-   
+
    > **By now data has already streamed into you KQL-Database. You can see this by looking at the dashborad that is provided on the overview page of the KQL-Database ![alt text](assets/image_task12_step02b.png)**
 
    </div>
@@ -795,7 +812,7 @@ In this section we will create all the silver tables, functions and enable updat
    ![alt text](assets/image_task12_step05.png)
 
    <div class="important" data-title="Note">
-   
+  
    > **Repeat the steps above for the table **productcategory** to create a shortcut for this table as well.**
    </div>
 
@@ -832,21 +849,22 @@ In this section we will create all the silver tables, functions and enable updat
     ![alt text](assets/image_task12_step011.png)
 
     <div class="info" data-title="Note">
-    
-    > **You can add additional tabs in the KQL Queryset to add new queries.**
-    </div>
 
+    > **You can add additional tabs in the KQL Queryset to add new queries.**
+
+    </div>
 
 12. Expand all folders in the database pane on the left. All tables and functions that have been created by the script can be found here.
 
     ![alt text](assets/image_task12_step012.png)
 
     <div class="important" data-title="Note">
-    
-     > **While on the KQL Database details screen you may explore additional **Real-Time Intelligence Samples** by clicking the **drop-drop next to Get data** and selecting a desired sample. These samples give you the ability to learn more.** 
+
+    > **While on the KQL Database details screen you may explore additional **Real-Time Intelligence Samples** by clicking the **drop-drop next to Get data** and selecting a desired sample. These samples give you the ability to learn more.**
+
      </div>
-     
-     ![alt text](assets/image_task12_step012b.png)
+
+    ![alt text](assets/image_task12_step012b.png)
 
 ### 13. Real-Time Dashboard
 
@@ -855,18 +873,47 @@ In this section, we will build a real-time dashboard to visualize the streaming 
 - The Proctor Guide covers this process.
   ![Real-Time Dashboard](assets/RealTimeDashboard.png "Real-Time Dashboard")
 
-1. Click + Create (button is located at top left Menu underneath Home).
-2. Current workspace should be the same one.
-3. Scroll down and choose **Real-Time Dashboard**.
-4. Name it "Web Events Dashboard".
-5. Click **+ Add tile**.
-6. Click **+ Data source**.
-7. Set the **Database** to "WebEvents_EH" & click Create.
-8. Proceed to paste each query below, add a visual, and apply changes. (Optionally) All queries are available in this script file [dashboard-RTA.kql](https://github.com/microsoft/FabricRTIWorkshop/blob/main/dashboards/RTA%20dashboard/dashboard-RTA.kql).
+1. Change to the workspace. To do so click on the icon of your workspace on the left pane. In our example the workspace is named **RTI Tutorial**. If you do the Lab at FabCon Europe choose the workspace name that was provided to you.
+
+   ![alt text](assets/image_task13_step01.png)
+
+2. To create a new realtime dashboard click on the button **+ New Item** and the select **Real-Time Dashboard**
+
+   ![alt text](assets/image_task13_step02.png)
+
+3. Enter the name `Web Events Dashboard` in the field **New Real-Time Dashboard**. Then click on **Create**.
+
+   ![alt text](assets/image_task13_step03.png)
+
+4. An empty dashboard will be displayed. To add a visualisation click on the button **+ Add tile**.
+
+   ![alt text](assets/image_task13_step04.png)
+
+5. Click on the Button **+ Data source**.
+
+   ![alt text](assets/image_task13_step05.png)
+
+6. In the Window **One Lake Data Hub** select the Eventhouse **WebEvents_EH**. Then click on **Connect**.
+
+   ![alt text](assets/image_task13_step06.png)
+
+7. As name keep the given name `WebEvents_EH`. Set the **Database** to **WebEvents_EH** and click on the button **Create**.
+
+   ![alt text](assets/image_task13_step07.png)
+
+Proceed to paste each query below, add a visual, and apply changes. (Optionally) All queries are available in this script file [dashboard-RTA.kql](https://github.com/microsoft/FabricRTIWorkshop/blob/main/dashboards/RTA%20dashboard/dashboard-RTA.kql).
+
+    <div class="important" data-title="Note">
+
+    > **We will demo the steps for the very first Visual. From there on you can follow the exact same steps for all other visuals on your own.**
+
+     </div>
 
 #### Clicks by hour
 
-```
+This visual will show the clicks by hour. It will use the following query.
+
+```kusto
 //Clicks by hour
 SilverClicks
 | where eventDate between (_startTime.._endTime)
@@ -875,43 +922,54 @@ SilverClicks
 | top 30 by date_count
 ```
 
-1. Set Time rage parameter at the top left to **Last 7 days**. This parameter is referenced by the query in the `where` clause by using fields `_startTime` and `_endTime`.
-2. Click **Run**.
-3. Click **+ Add visual**.
-4. Format the visual.
-5. Set Tile name to "Click by hour".
-6. Set Visual type to **Area chart**.
-7. Click **Apply Changes**.
+1. Replace the content of the textbox by the code above. Click on the time range parameter at the top of the screen and set it to **Last 7 days**. This parameter is referenced by the query in the `where` clause by using fields `_startTime` and `_endTime`. Click on the button **Run**. The query will be executed and the results will be shown in the table at the bottom. To create a visualisation click on the button **+ Add Visual**. This will open a pane at the right side of the browser.
 
-![ClicksByHour](assets/ClicksByHour.png "Clicks by hour")
+   ![alt text](assets/image_task13_step08.png)
 
-9. While editing the dashboard, click **Manage** on the top left, and click **Parameters**.
-10. Edit the "Time range" parameter by setting the Default value to **Last 7 Days**, click Close & Done.
+2. Format the visual by entering `Click by hour` in the field **Title**. Select **Area chart** in the combobox **Visual type**. Then click on the button **Apply changes**.
 
-![TimeRangeParameter](assets/TimeRangeParameter.png "Parameter Default Value")
+   ![alt text](assets/image_task13_step09.png)
 
-11. Click **+ Add tile** again to proceed with the next visuals.
+3. While editing the dashboard, click on the tab **Manage** on the top left then click on the button **Parameters**.
+
+   ![alt text](assets/image_task13_step10.png)
+
+4. To edit the parameter **Time range** click on the pencil icon. This will enter the edit mode for this parameter.
+
+   ![alt text](assets/image_task13_step11.png)
+
+5. Select **Last 7 Days** in the combo box **Default value**. Then click on **Done**.
+
+   ![alt text](assets/image_task13_step12.png)
+
+6. In the parameter pane click on the button **Close**.
+
+   ![alt text](assets/image_task13_step13.png)
+
+7. Click on the tab **Home** and then click on the button **New tile** again to proceed with the next visuals.
+
+   ![alt text](assets/image_task13_step14.png)
 
 #### Impressions by hour
 
-12. Visual type: **Area chart**.
+- Visual type: **Area chart**.
 
-```
-//Impressions by hour
-SilverImpressions
-| where eventDate between (_startTime.._endTime)
-| summarize date_count = count() by bin(eventDate, 1h)
-| render timechart
-| top 30 by date_count
+```kusto
+  //Impressions by hour
+  SilverImpressions
+  | where eventDate between (_startTime.._endTime)
+  | summarize date_count = count() by bin(eventDate, 1h)
+  | render timechart
+  | top 30 by date_count
 ```
 
 ![alt text](assets/fabrta53.png)
 
 #### Impressions by location
 
-12. Visual type: **Map**.
+- Visual type: **Map**.
 
-```
+```kusto
 //Impressions by location
 SilverImpressions
 | where eventDate  between (_startTime.._endTime)
@@ -924,9 +982,9 @@ SilverImpressions
 
 #### Average Page Load time
 
-13. Visual type: **Timechart**.
+- Visual type: **Timechart**.
 
-```
+```kusto
 //Average Page Load time
 SilverImpressions
 | where eventDate   between (_startTime.._endTime)
@@ -940,58 +998,68 @@ SilverImpressions
 
 #### Impressions, Clicks & CTR
 
-14. Add a tile & paste the query below once. Note, this is a multi-statement query that uses multiple let statements & a query combined by semicolons.
-15. Set Tile name: **Impressions**.
-16. Visual type: **Stat**.
-17. Data Value column to `impressions`.
-18. Click **Apply changes**.
-19. Click the 3-dots (...) at the top right of the tile you just created to **Duplicate** it two more times.
-20. Name the 2nd one **Clicks**, set the Data value column to `clicks`, then Apply changes.
-21. Name the 3rd **Click Through Rate**, set the Data value column to `CTR`, then Apply changes.
-22. (Optional) On the "Visual formatting" pane, scroll down and adjust the "Conditional formatting" as desired by clicking "+ Add rule".
+1. Add a tile & paste the query below once. Note, this is a multi-statement query that uses multiple let statements & a query combined by semicolons.
 
-```
-//Clicks, Impressions, CTR
-let imp =  SilverImpressions
-| where eventDate  between (_startTime.._endTime)
-| extend dateOnly = substring(todatetime(eventDate).tostring(), 0, 10)
-| summarize imp_count = count() by dateOnly;
-let clck = SilverClicks
-| where eventDate  between (_startTime.._endTime)
-| extend dateOnly = substring(todatetime(eventDate).tostring(), 0, 10)
-| summarize clck_count = count() by dateOnly;
-imp
-| join clck on $left.dateOnly == $right.dateOnly
-| project selected_date = dateOnly , impressions = imp_count , clicks = clck_count, CTR = clck_count * 100 / imp_count
-```
+   ```kusto
+   //Clicks, Impressions, CTR
+   let imp =  SilverImpressions
+   | where eventDate  between (_startTime.._endTime)
+   | extend dateOnly = substring(todatetime(eventDate).tostring(), 0, 10)
+   | summarize imp_count = count() by dateOnly;
+   let clck = SilverClicks
+   | where eventDate  between (_startTime.._endTime)
+   | extend dateOnly = substring(todatetime(eventDate).tostring(), 0, 10)
+   | summarize clck_count = count() by dateOnly;
+   imp
+   | join clck on $left.dateOnly == $right.dateOnly
+   | project selected_date = dateOnly , impressions = imp_count , clicks = clck_count, CTR = clck_count * 100 / imp_count
+   ```
 
-![alt text](assets/fabrta56.png)
-![alt text](assets/fabrta57.png)
-![alt text](assets/fabrta58.png)
+2. Enter `Impressions` in the field **Tile name**. Select **Stat** in the combobox **Visual type**. In combobox **Data Value column** select **impressions (long)**. Then click on the button **Apply changes**.
+
+   ![alt text](assets/image_task13_step16.png)
+
+3. Click the 3-dots (**...**) at the top right of the tile you just created and select **Duplicate** from the context menu to duplicate it two more times.
+
+   ![alt text](assets/image_task13_step17.png)
+
+4. Name the 2nd one `Clicks`, set the Data value column to **clicks (long)**, then click on the button **Apply changes**.
+
+   ![alt text](assets/fabrta57.png)
+
+5. Name the 3rd `Click Through Rate`, set the Data value column to **CTR**, then click on the button **Apply changes**.
+
+   ![alt text](assets/fabrta58.png)
+
+6. (Optional) On the **Visual formatting** pane, scroll down and adjust the **Conditional formatting** as desired by clicking **+ Add rule**.
 
 #### Average Page Load Time Anomalies
 
-```
-//Avg Page Load Time Anomalies
-SilverImpressions
-| where eventDate   between (_startTime.._endTime)
-| make-series average_loadtime = avg(page_loading_seconds) on eventDate from _startTime to _endTime+4h step 1h
-| extend anomalies = series_decompose_anomalies(average_loadtime)
-| render anomalychart
-```
+- Visual type: **Time Series**
+
+  ```kusto
+  //Avg Page Load Time Anomalies
+  SilverImpressions
+  | where eventDate   between (_startTime.._endTime)
+  | make-series average_loadtime = avg(page_loading_seconds) on eventDate from _startTime to _endTime+4h step 1h
+  | extend anomalies = series_decompose_anomalies(average_loadtime)
+  | render anomalychart
+  ```
 
 #### Strong Anomalies
 
-```
-//Strong Anomalies
-SilverImpressions
-| where eventDate between (_startTime.._endTime)
-| make-series average_loadtime = avg(page_loading_seconds) on eventDate from _startTime to _endTime+4h step 1h
-| extend anomalies = series_decompose_anomalies(average_loadtime,2.5)
-| mv-expand eventDate, average_loadtime, anomalies
-| where anomalies <> 0
-| project-away anomalies
-```
+- Visual type: **Table**
+
+  ```kusto
+  //Strong Anomalies
+  SilverImpressions
+  | where eventDate between (_startTime.._endTime)
+  | make-series average_loadtime = avg(page_loading_seconds) on eventDate from _startTime to _endTime+4h step 1h
+  | extend anomalies = series_decompose_anomalies(average_loadtime,2.5)
+  | mv-expand eventDate, average_loadtime, anomalies
+  | where anomalies <> 0
+  | project-away anomalies
+  ```
 
 #### Logo (Markdown Text Tile)
 
@@ -1000,22 +1068,57 @@ SilverImpressions
 ![AdventureWorks](https://vikasrajput.github.io/resources/PBIRptDev/AdventureWorksLogo.jpg "AdventureWorks")
 ```
 
-> The title can be resized on the dashboard canvas directly, rather than writing code.
+    <div class="info" data-title="Note">
+
+    > **The title can be resized on the dashboard canvas directly, rather than writing code.**
+
+     </div>
+
+After you added all the visuals and moved them to thier appropiate places your dashboard should look similar to this.
+
+![alt text](assets/image_task13_step18.png)
 
 #### Auto-refresh
 
-22. While editing the dashboard, click **Manage** > **Auto refresh**.
-23. Set it to **Enabled**, and **Default** refresh rate to **30 seconds**, click Apply.
-24. Click **Home** and then **Save**.
+In this section we will enable auto-refresh so the dashboard will be automatically updated while it is shown on screen.
+
+1. While editing the dashboard, click on the tab **Manage** and then click on the button **Auto refresh**. This will open a pane on the right side of the browser.
+
+   ![alt text](assets/image_task13_step19.png)
+
+2. In the pane **Auto refresh** set it to **Enabled** and set **Default refresh rate** to **30 seconds**. Then click on the button **Apply**
+
+   ![alt text](assets/image_task13_step20.png)
+
+3. Click on the tab **Home** and then click on the button **Save**.
+
+   ![alt text](assets/image_task13_step21.png)
 
 ### 14. Data Activator
 
-1. While editing the dashboard, click **Manage** > Set Alert.
-2. Choose "Clicks by hour".
-3. Select Condition "Becomes greater than".
-4. Set Value to 250.
-5. Action choose **Message me in Teams**.
-6. Click Create.
+In this section we will create a Reflex Alert that will send a Teams Message when a value meets a certain threshold.
+
+1. While editing the dashboard, click on the three dots (**...**) of the tile **Click by hour**. Select **Set alert** from the context menu. This will open the pane **Set alert** at the right side in the browser.
+
+   ![alt text](assets/image_task14_step01.png)
+
+2. In the pane **Set alert** set the values as stated in the following table 
+
+    | Field                                 | Value                                                                                                                        |
+    | :------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------- |
+    | **Check** | **On each event grouped by**                                                                                         |
+    | **Grouping field**                | **event_date**                                                                                                       |
+    | **When**                        | **date_count** |
+    | **Condition**                        | **Becomes greater than** |
+     | **Value**                        | `250` |
+
+     Select **Message me in teams** as **Action**.
+
+   ![alt text](assets/image_task14_step02.png)
+
+3. In the combobox **Workspace** select the workspace. In our example the workspace is named **RTI Tutorial**. If you do the Lab at FabCon Europe choose the workspace name that was provided to you. Ensure that in the combobox **Item** the value **Create a new item** is selected. Insert `My Reflex` as value for the field **New item name**. Then click on the button **Create**.
+
+   ![alt text](assets/image_task14_step03.png)
 
 <div class="info" data-title="Note">
   
@@ -1040,13 +1143,11 @@ Add Reflex as a destination to your Eventstream and create an email alert everyt
 
 At this point you've completed the lab, so you may stop running the notebook.
 
-1. Open the notebook "Generate synthetic events" from your workspace and click **Stop** on the last code cell if its still running.
-2. (Optionally) You can click **Cancel All** on the top menu or click the stop red-square button to Stop session. These only appear when your session is active or the notebook is running.
-   ![alt text](assets/fabrta60.png)
-3. (Optionally) "LabAdmin" can click **Monitor** on the left Menu, search for "generate", click the 3-dots (...) next to the notebook "In progress" status and click **Cancel**.
-   ![StopAllNotebooks](assets/StopAllNotebooks.png "Monitor - click 3-dots per item to Cancel")
+1. Open the notebook **Generate synthetic events** from your workspace and click the button **Cancel all** in the toolbar at the top.
 
-## THAT's ALL FOLKS!!
+   ![alt text](assets/image_task15_step01.png)
+
+## THAT's ALL FOLKS !!
 
 ---
 
