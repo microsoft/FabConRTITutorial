@@ -1,5 +1,4 @@
 .execute database script <|
-
 //SILVER LAYER
 .create table SilverClicks (
     eventType:string, 
@@ -15,7 +14,7 @@
     clickPathTitle:string, 
     clickPathUrl:string
 )
-
+//
 .create table SilverImpressions (
     eventType:string, 
     eventID:string, 
@@ -29,7 +28,6 @@
     relatedProductId:string, 
     relatedProductName:string
 )
-
 // use update policies to transform data during Ingestion
 .create-or-alter function with (folder="Bronze to Silver Transformations") expandClickpath()
 {
@@ -50,8 +48,9 @@ BronzeClicks
     clickPathTitle = ['title'], 
     clickPathUrl = url
 }
+//
 .alter table SilverClicks policy update @'[{"Source": "BronzeClicks", "Query": "expandClickpath", "IsEnabled" : true, "IsTransactional": false }]'
-
+//
 .create-or-alter function with (folder="Bronze to Silver Transformations") expandRelatedProducts()
 {
 BronzeImpressions
@@ -70,9 +69,9 @@ BronzeImpressions
     relatedProductId, 
     relatedProductName
 }
-
+//
 .alter table SilverImpressions policy update @'[{"Source": "BronzeImpressions", "Query": "expandRelatedProducts", "IsEnabled" : true, "IsTransactional": false }]'
-
+//
 .create-or-alter function with (docstring = "Social Media Campaign Clickstream", folder = "Gold Views") SocialMediaCampaignClickstream()
 {
 SilverClicks
@@ -85,7 +84,7 @@ SilverClicks
 | project-away userAgent, referer
 | project-reorder CampaignType
 }
-
+//
 .create-or-alter function with (docstring = "Search Media Campaign Clickstream", folder = "Gold Views") SearchMediaCampaignClickstream()
 {
 SilverClicks
@@ -98,7 +97,7 @@ SilverClicks
 | project-away userAgent, referer
 | project-reorder CampaignType
 }
-
+//
 .create-or-alter function with (docstring = "Email Campaign Clickstream", folder = "Gold Views") EmailCampaignClickstream()
 {
 SilverClicks
