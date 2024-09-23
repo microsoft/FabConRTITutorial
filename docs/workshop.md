@@ -796,7 +796,7 @@ In this section we will create all the silver tables, functions and enable updat
 
    <div class="important" data-title="Note">
    
-   > **Repeat the steps above for the table **products** to create a shortcut for this table as well.**
+   > **Repeat the steps above for the table **productcategory** to create a shortcut for this table as well.**
    </div>
 
 6. Expand the folder **Shortcuts** in the tree of your Eventhouse **WebEvents_EH** to verify if the 2 shortcuts have been created correctly.
@@ -811,7 +811,7 @@ In this section we will create all the silver tables, functions and enable updat
 
    ![alt text](assets/image_task12_step07b.png)
 
-8. Open the file [createAll.kql](../kql/createAll.kql) in GitHub and click copy icon at the top right to copy the entire file content. This will copy the file contents to the Windows Clipboard.
+8. Open the file [createAll.kql](https://github.com/microsoft/FabConRTITutorial/blob/main/kql/createAll.kql) in GitHub and click copy icon at the top right to copy the entire file content. This will copy the file contents to the Windows Clipboard.
 
    ![alt text](assets/image_task12_step08.png)
 
@@ -1022,7 +1022,21 @@ SilverImpressions
 > The Reflex item will appear in your workspace and you can edit the Reflex trigger action. The same Reflex item can also trigger multiple actions. 
 </div>
 
-### 15. Stop the notebook
+### 15. Bonus Challenges
+
+#### Build Power BI report using the data in Eventhouse
+
+Using the Gold Layer functions, build a Power BI report that shows statistics from the different campaign types
+
+#### Build Fabric events streaming pipeline
+
+Using the Fabric Events in Real-Time hub, build a pipeline that sends link to the documentation of Real-Time Dashobard when someone tried to create a new Real-Time Dashboard.
+
+#### Alerting directly on Eventstream
+
+Add Reflex as a destination to your Eventstream and create an email alert everytime number of impressions exceed a value of your choice 3 times every 10 minutes.  
+
+### 16. Stop the notebook
 
 At this point you've completed the lab, so you may stop running the notebook.
 
