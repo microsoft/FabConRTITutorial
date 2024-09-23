@@ -1039,7 +1039,7 @@ SilverImpressions
 
 #### Average Page Load Time Anomalies
 
-- Visual type: **Time Series**
+- Visual type: **Timechart**
 
   ```kusto
   //Avg Page Load Time Anomalies
