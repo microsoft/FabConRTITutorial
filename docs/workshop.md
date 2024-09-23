@@ -1039,7 +1039,7 @@ SilverImpressions
 
 #### Average Page Load Time Anomalies
 
-- Visual type: **Time Series**
+- Visual type: **Timechart**
 
   ```kusto
   //Avg Page Load Time Anomalies
@@ -1069,16 +1069,24 @@ SilverImpressions
 
 #### Logo (Markdown Text Tile)
 
-```
-//Logo (Markdown Text Tile)
-![AdventureWorks](https://vikasrajput.github.io/resources/PBIRptDev/AdventureWorksLogo.jpg "AdventureWorks")
-```
+1. Click on the button **New text tile** in the toolbar at the top.
 
-    <div class="info" data-title="Note">
+   ![alt text](assets/image_task13_step17b.png)
 
-    > **The title can be resized on the dashboard canvas directly, rather than writing code.**
+2. Paste the following code in the text area and click on the button **Apply changes**
 
-     </div>
+   ```
+   //Logo (Markdown Text Tile)
+   ![AdventureWorks](https://vikasrajput.github.io/resources/PBIRptDev/AdventureWorksLogo.jpg "AdventureWorks")
+   ```
+
+   ![alt text](assets/image_task13_step17c.png)
+
+   <div class="info" data-title="Note">
+
+   > **The title can be resized on the dashboard canvas directly, rather than writing code.**
+
+    </div>
 
 After you added all the visuals and moved them to thier appropiate places your dashboard should look similar to this.
 
