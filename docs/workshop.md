@@ -26,7 +26,7 @@ You will learn how to:
 - Use Fabric shortcuts to query data without move or copy (with AdventureWorksLT sample data).
 - Stream events into Fabric Eventhouse via Eventstream.
 - Create real-time data transformations in Fabric Eventhouse through the power of Kusto Query Language (KQL).
-- Leverage OneLake availability to access data via Lakehouse. 
+- Leverage OneLake availability to access data via Lakehouse.
 - Create real-time visualizations using Real-Time Dashboards.
 - Build Data Activator Reflex actions and alerts on the streaming data.
 
@@ -40,7 +40,6 @@ All the **code** in this tutorial can be found here:
 - Total workshop duration is 5-6 hours.
 - Each section is accompanied with technical explanation of the Fabric Real-Time Intelligence component being used in the tutorial.
 - Without the accompanied explanation, the tutorial can be completed in 1-2 hours.
-
 
 ## Original Creators
 
@@ -288,8 +287,6 @@ If you need a new Trial Tenant to complete the lab, suggest to register a new Ou
 1. While logged in as Tenant Admin or Capacity Admin to Fabric, click the gear icon on the top right of the page to open Admin Portal. Note, the "LabAdmin" account will have access to enable this for the Trial Tenant described above.
 2. In the [Tenant Settings](https://app.fabric.microsoft.com/admin-portal/tenantSettings?experience=kusto), search for "dashboards", click the toggle to **Enabled**, click **Apply**.
    ![EnableRTDashboards](assets/EnableRTDashboards.png "Enable Real-Time Dashboards")
-
-
 
 ---
 
@@ -812,8 +809,9 @@ In this section we will create all the silver tables, functions and enable updat
    ![alt text](assets/image_task12_step05.png)
 
    <div class="important" data-title="Note">
-  
+
    > **Repeat the steps above for the table **productcategory** to create a shortcut for this table as well.**
+
    </div>
 
 6. Expand the folder **Shortcuts** in the tree of your Eventhouse **WebEvents_EH** to verify if the 2 shortcuts have been created correctly.
@@ -897,7 +895,7 @@ In this section, we will build a real-time dashboard to visualize the streaming 
 
    ![alt text](assets/image_task13_step06.png)
 
-7. As name keep the given name `WebEvents_EH`. Set the **Database** to **WebEvents_EH** and click on the button **Create**.
+7. As name keep the given name `WebEvents_EH`. Set the **Database** to **WebEvents_EH** and click on the button **Add**.
 
    ![alt text](assets/image_task13_step07.png)
 
@@ -929,6 +927,12 @@ SilverClicks
 2. Format the visual by entering `Click by hour` in the field **Title**. Select **Area chart** in the combobox **Visual type**. Then click on the button **Apply changes**.
 
    ![alt text](assets/image_task13_step09.png)
+
+    <div class="important" data-title="Note">
+
+   > **When you click on **Apply changes** the value of the range parameter will jump back to one hour. Ignore this for now as we will fix this later.**
+
+     </div>
 
 3. While editing the dashboard, click on the tab **Manage** on the top left then click on the button **Parameters**.
 
@@ -1046,6 +1050,8 @@ SilverImpressions
   | render anomalychart
   ```
 
+  ![alt text](assets/pageloadanomalies.png)
+
 #### Strong Anomalies
 
 - Visual type: **Table**
@@ -1102,17 +1108,17 @@ In this section we will create a Reflex Alert that will send a Teams Message whe
 
    ![alt text](assets/image_task14_step01.png)
 
-2. In the pane **Set alert** set the values as stated in the following table 
+2. In the pane **Set alert** set the values as stated in the following table
 
-    | Field                                 | Value                                                                                                                        |
-    | :------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------- |
-    | **Check** | **On each event grouped by**                                                                                         |
-    | **Grouping field**                | **event_date**                                                                                                       |
-    | **When**                        | **date_count** |
-    | **Condition**                        | **Becomes greater than** |
-     | **Value**                        | `250` |
+   | Field              | Value                        |
+   | :----------------- | :--------------------------- |
+   | **Check**          | **On each event grouped by** |
+   | **Grouping field** | **event_date**               |
+   | **When**           | **date_count**               |
+   | **Condition**      | **Becomes greater than**     |
+   | **Value**          | `250`                        |
 
-     Select **Message me in teams** as **Action**.
+   Select **Message me in teams** as **Action**.
 
    ![alt text](assets/image_task14_step02.png)
 
@@ -1137,7 +1143,7 @@ Using the Fabric Events in Real-Time hub, build a pipeline that sends link to th
 
 #### Alerting directly on Eventstream
 
-Add Reflex as a destination to your Eventstream and create an email alert everytime number of impressions exceed a value of your choice 3 times every 10 minutes.  
+Add Reflex as a destination to your Eventstream and create an email alert everytime number of impressions exceed a value of your choice 3 times every 10 minutes.
 
 ### 16. Stop the notebook
 
@@ -1148,6 +1154,8 @@ At this point you've completed the lab, so you may stop running the notebook.
    ![alt text](assets/image_task15_step01.png)
 
 ## THAT's ALL FOLKS !!
+
+![alt text](assets/_0e5f9cfb-de2e-42fd-aff4-73fba140a5d3.jpg)
 
 ---
 
