@@ -23,24 +23,25 @@ This workshop will walk you through the process of building an end-to-end [Real-
 
 You will learn how to:
 
-- Build a web traffic analytics solution using Fabric Real-Time Intelligence.
-- Use Fabric shortcuts to query data without move or copy(with AdventureWorksLT sample data).
-- Stream events into Fabric Eventhouse via Eventstream & leverage OneLake availability.
-- Create real-time data transformations in Fabric Eventhouse through the power of Kusto Query Language (KQL) & Fabric Copilot.
+- Build a web traffic analytics solution using Fabric Real-Time Intelligence based on clickstream data.
+- Use Fabric shortcuts to query data without move or copy (with AdventureWorksLT sample data).
+- Stream events into Fabric Eventhouse via Eventstream.
+- Create real-time data transformations in Fabric Eventhouse through the power of Kusto Query Language (KQL).
+- Leverage OneLake availability to access data via Lakehouse. 
 - Create real-time visualizations using Real-Time Dashboards.
-- Build Reflex actions and alerts on the streaming data.
+- Build Data Activator Reflex actions and alerts on the streaming data.
 
 See what real customers like [McLaren](https://www.linkedin.com/posts/shahdevang_if-you-missed-flavien-daussys-story-at-build-activity-7199013652681633792-3hdp), [Dener Motorsports](https://customers.microsoft.com/en-us/story/1751743814947802722-dener-motorsport-producose-ltd-azure-service-fabric-other-en-brazil), [Elcome](https://customers.microsoft.com/en-us/story/1770346240728000716-elcome-microsoft-copilot-consumer-goods-en-united-arab-emirates), [Seair Exim Solutions](https://customers.microsoft.com/en-us/story/1751967961979695913-seair-power-bi-professional-services-en-india) & [One NZ](https://customers.microsoft.com/en-us/story/1736247733970863057-onenz-powerbi-telecommunications-en-new-zealand) are saying.
 
 All the **code** in this tutorial can be found here:  
 [Build Fabric Real-Time Intelligence solution in a day](https://github.com/microsoft/FabConRTITutorial/)
 
-## Duration
+## Modalities
 
-- Workshop 5-6 hours.
-- Each section is accompanied with technical explanation of the Fabric Real-Time Intelligence component being used.
-- Without the accompanied explanation, lab can be completed in 1-2 hours.
-- **TO BE CHANGED** [pre-reqs](https://moaw.dev/workshop/?src=gh%3Amicrosoft%2FFabricRTIWorkshop%2Fmain%2Fdocs%2F&step=6) 30-45 minutes (section 7, recommend provisioning trial tenant prior if necessary).
+- Total workshop duration is 5-6 hours.
+- Each section is accompanied with technical explanation of the Fabric Real-Time Intelligence component being used in the tutorial.
+- Without the accompanied explanation, the tutorial can be completed in 1-2 hours.
+
 
 ## Original Creators
 
@@ -435,9 +436,9 @@ In this section we will be streaming events (impressions and clicks events) gene
 
 ### 6. Import Data Generator Notebook
 
-We use a python notebook to generate a stream of artificial click events. The notebook can be found in this GitHub repository [Generate_synthetic_web_events.ipynb](../notebook/Generate_synthetic_web_events.ipynb).
+We use a python notebook to generate a stream of artificial click events. The notebook can be found in this GitHub repository [Generate_synthetic_web_events.ipynb](https://github.com/microsoft/FabConRTITutorial/blob/main/notebook/Generate_synthetic_web_events.ipynb).
 
-1. Open the notebook in Github by clicking on this [link](../notebook/Generate_synthetic_web_events.ipynb). In GitHub click on the **Download raw file** icon on the top right.
+1. Open the notebook in Github by clicking on this [link](https://github.com/microsoft/FabConRTITutorial/blob/main/notebook/Generate_synthetic_web_events.ipynb). In GitHub click on the **Download raw file** icon on the top right.
 
    ![alt text](assets/image_task06_step01.png)
 
