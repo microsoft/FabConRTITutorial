@@ -615,7 +615,7 @@ Next we have to create the Eventstream topology that will insert the streamed da
     > **It is normal that the node **ImpressionEventsFilter** is shown with an error. The error indicates that there is no target for the datastream coming out of the filter. We will fix this in the next step.**
     </div>
 
-17. Click on **+** sign next to the **ClickEventsFilter** node and choose **Stream** from the context menu.
+17. Click on **+** sign next to the **ImpressionEventsFilter** node and choose **Stream** from the context menu.
 
     ![alt text](assets/image_task08_step17.png)
 
