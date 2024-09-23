@@ -657,7 +657,7 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
 In this task we will set up the Lakehouse that will contain additional information for our usecase and in which we will also make the data from the KQL Database accessible through the lakehouse.
 
-1. Go to the folder [**ref_data**](../ref_data/) in the Github repo and download the **products.csv** and **productcategory.csv** files on your computer.
+1. Go to the folder [**ref_data**](https://github.com/microsoft/FabConRTITutorial/tree/main/ref_data) in the Github repo and download the **products.csv** and **productcategory.csv** files on your computer.
 
    ![alt text](assets/image_task09_step01.png)
 
