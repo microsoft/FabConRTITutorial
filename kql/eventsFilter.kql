@@ -1,0 +1,36 @@
+.drop table <table-name>
+
+.create table BronzeClicks based-on rawEvents
+
+.create table BronzeImpressions based-on rawEvents
+
+.create-or-alter function extractImpressionEvents()
+{
+rawEvents
+| where eventType == "IMPRESSION"
+}
+
+.create-or-alter function extractClickEvents()
+{
+rawEvents
+| where eventType == "CLICK"
+}
+
+.alter table BronzeClicks policy update
+```[{
+    "IsEnabled": true,
+    "Source": "rawEvents",
+    "Query": "extractClickEvents",
+    "IsTransactional": false,
+    "PropagateIngestionProperties": false
+}]```
+
+
+.alter table BronzeImpressions policy update
+```[{
+    "IsEnabled": true,
+    "Source": "rawEvents",
+    "Query": "extractImpressionEvents",
+    "IsTransactional": false,
+    "PropagateIngestionProperties": false
+}]```
