@@ -13,6 +13,3 @@ For help and questions about using this project, please use GitHub Issues and ta
 
 Support for this **PROJECT or PRODUCT** is limited to the resources listed above.
 
-
-Link to SAK:
-https://1drv.ms/w/s!AhqwwfhTJTg8gq090zRFAJBdNYhKKA?e=QgvuVI
