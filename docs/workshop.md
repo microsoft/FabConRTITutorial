@@ -866,7 +866,7 @@ In this section we will create all the silver tables, functions and enable updat
 
 ### 13. Real-Time Dashboard
 
-In this section, we will build a real-time dashboard to visualize the streaming data and set it to refresh every 30 seconds. (Optionally) A pre-built version of the dashboard is available to download [here](<https://github.com/microsoft/FabricRTIWorkshop/blob/main/dashboards/RTA%20dashboard/dashboard-RTA Dashboard.json>), which can be imported and configured to your KQL Database data source.
+In this section, we will build a real-time dashboard to visualize the streaming data and set it to refresh every 30 seconds. (Optionally) A pre-built version of the dashboard is available to download [here](<https://github.com/microsoft/FabConRTITutorial/blob/main/docs/assets/RTIDashboard.json>), which can be imported and configured to your KQL Database data source.
 
 - The Proctor Guide covers this process.
   ![Real-Time Dashboard](assets/RealTimeDashboard.png "Real-Time Dashboard")
