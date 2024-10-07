@@ -2,7 +2,7 @@
 published: true # Optional. Set to true to publish the workshop (default: false)
 type: workshop # Required.
 title: Building Fabric Real-Time Intelligence solution in a day # Required. Full title of the workshop
-short_title: FabConEU 2024 Build A Fabric Real-Time Intelligence Solution in One Day # Optional. Short title displayed in the header
+short_title: dataMinds Connect 2024 Build A Fabric Real-Time Intelligence Solution in One Day # Optional. Short title displayed in the header
 description: In this technical workshop, you will build a complete analytics platform with streaming data using Microsoft Fabric Real-Time Intelligence components and other features of Microsoft Fabric. This is a proctor led worksop in which each section is accompanied by a technical overview of Fabric RTI components. # Required.
 level: intermediate # Required. Can be 'beginner', 'intermediate' or 'advanced'
 authors: # Required. You can add as many authors as needed
@@ -261,7 +261,7 @@ Now with Data Activator (Reflex), we can also set alerts on Real-time Dashboards
   - [Implement a Real-Time Intelligence Solution Tutorial](https://learn.microsoft.com/fabric/real-time-intelligence/tutorial-introduction)
   - To complete the lab you **must** have access to a [Microsoft Fabric](https://www.microsoft.com/microsoft-fabric/getting-started) workspace with at least Contributor permissions.
 
-### Fabric tenant and capacity for FabConEU 2024 tutorial
+### Fabric tenant and capacity for dataMinds Connect 2024 tutorial
 
 <div class="important" data-title="Note">
 
@@ -372,10 +372,15 @@ This feature is also called "one logical copy" and it automatically allows KQL D
 
    ![alt text](assets/image_task04_step02.png)
 
-<div class="info" data-title="Note">
-  
-> **Newly created tables will automatically inherit the "OneLake availability" setting from the Database level**
-</div>
+   <div class="info" data-title="Note">
+
+   > **Newly created tables will automatically inherit the "OneLake availability" setting from the Database level**
+
+   </div>
+
+3. Now the dialog **Turn on OneLake availibility** is shown. Ensure that **Apply to existing tables** is checked and click on the button **Turn on**.
+
+   ![alt text](assets/image_task04_step03.png)
 
 ### 5. Create a new Eventstream
 
@@ -383,7 +388,7 @@ In this section we will be streaming events (impressions and clicks events) gene
 
 ![alt text](assets/fabrta73.png)
 
-1. Select your Workspace in the left pane. In our example it is **RTI Tutorial**. If you are doing the Lab at FabCon please select the workspace that has been provided to you. Then click on **+ New Item**. In the popout window scroll a little bit down and select **Eventstream**.
+1. Select your Workspace in the left pane. In our example it is **RTI Tutorial**. If you are doing the Lab at dataMinds Connect please select the workspace that has been provided to you. Then click on **+ New Item**. In the popout window scroll a little bit down and select **Eventstream**.
 
    ![alt text](assets/image_task05_step01.png)
 
@@ -448,7 +453,7 @@ We use a python notebook to generate a stream of artificial click events. The no
 
    Now we have to import the notebook into our Fabric Workspace. To aceive this execute the following steps.
 
-2. To import the notebook into your workspace you first have to return to the workspace. To do so click on the icon of your workspace on the left pane. In our example the workspace is named **RTI Tutorial**. If you do the Lab at FabCon Europe choose the workspace name that was provided to you. After changing to the workspace click on the menu **Import**, select **Notebook** and then the option **From this computer**.
+2. To import the notebook into your workspace you first have to return to the workspace. To do so click on the icon of your workspace on the left pane. In our example the workspace is named **RTI Tutorial**. If you do the Lab at dataMinds Connect Europe choose the workspace name that was provided to you. After changing to the workspace click on the menu **Import**, select **Notebook** and then the option **From this computer**.
 
    ![alt text](assets/image_task06_step02.png)
 
@@ -492,7 +497,7 @@ Now we have to run the notebook to create the stream of artificial click events 
 
    </div>
 
-   ![alt text](assets/image_task07_errors.png) |
+   ![alt text](assets/image_task07_errors.png)
 
    Wait a few minutes for the first code cell to finish and it will proceed to next code cells automatically.
 
@@ -504,7 +509,7 @@ Now we have to run the notebook to create the stream of artificial click events 
 
 Next we have to create the Eventstream topology that will insert the streamed data into our KQL Database. To aceive this please follow the following steps.
 
-1. Open your Eventstream in your Fabric Workspace. To do so click on the icon of your workspace on the left pane. In our example the workspace is named **RTI Tutorial**. If you do the Lab at FabCon Europe choose the workspace name that was provided to you. After changing to the workspace click on the Eventstream **WebEventStream_ES**.
+1. Open your Eventstream in your Fabric Workspace. To do so click on the icon of your workspace on the left pane. In our example the workspace is named **RTI Tutorial**. If you do the Lab at dataMinds Connect Europe choose the workspace name that was provided to you. After changing to the workspace click on the Eventstream **WebEventStream_ES**.
 
    ![alt text](assets/image_task08_step01.png)
 
@@ -571,15 +576,15 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
 11. Click the pencil in node **Eventhouse1** to enter edit mode. Provide the following values in the pane **Eventhouse**.
 
-    | Field                                 | Value                                                                                                                        |
-    | :------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------- |
-    | **Event processing before ingestion** | Ensure that this option is selected.                                                                                         |
-    | **Destionation name**                 | `ClickEventStore`                                                                                                            |
-    | **Workspace**                         | Select **RTI Tutorial**. If you attend the Precon at FabConEurope please select the Workspace Name that was provided to you. |
-    | **Eventhouse**                        | Select the Eventhouse **WebEvents_EH**                                                                                       |
-    | **KQL Database**                      | Select the KQL Database **WebEvents_EH**                                                                                     |
-    | **Destination table**                 | Click on **Create new** and enter `BronzeClicks` as name for the new table and click on **Done**.                            |
-    | **Input data format**                 | Ensure that the option **Json** is selected.                                                                                 |
+    | Field                                 | Value                                                                                                                                 |
+    | :------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------ |
+    | **Event processing before ingestion** | Ensure that this option is selected.                                                                                                  |
+    | **Destionation name**                 | `ClickEventStore`                                                                                                                     |
+    | **Workspace**                         | Select **RTI Tutorial**. If you attend the Precon at dataMinds Connectrope please select the Workspace Name that was provided to you. |
+    | **Eventhouse**                        | Select the Eventhouse **WebEvents_EH**                                                                                                |
+    | **KQL Database**                      | Select the KQL Database **WebEvents_EH**                                                                                              |
+    | **Destination table**                 | Click on **Create new** and enter `BronzeClicks` as name for the new table and click on **Done**.                                     |
+    | **Input data format**                 | Ensure that the option **Json** is selected.                                                                                          |
 
     ![alt text](assets/image_task08_step11.png)
 
@@ -638,15 +643,17 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
 20. Click the pencil in node **Eventhouse1** to enter edit mode. Provide the following values in the pane **Eventhouse**.
 
-    | Field                                 | Value                                                                                                                        |
-    | :------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------- |
-    | **Event processing before ingestion** | Ensure that this option is selected.                                                                                         |
-    | **Destionation name**                 | `ImpressionEventStore`                                                                                                       |
-    | **Workspace**                         | Select **RTI Tutorial**. If you attend the Precon at FabConEurope please select the Workspace Name that was provided to you. |
-    | **Eventhouse**                        | Select the Eventhouse **WebEvents_EH**                                                                                       |
-    | **KQL Database**                      | Select the KQL Database **WebEvents_EH**                                                                                     |
-    | **Destination table**                 | Click on **Create new** and enter `BronzeImpressions` as name for the new table and click on **Done**.                       |
-    | **Input data format**                 | Ensure that the option **Json** is selected.                                                                                 |
+    | Field                                 | Value                                                                                                                                 |
+    | :------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------ |
+    | **Event processing before ingestion** | Ensure that this option is selected.                                                                                                  |
+    | **Destionation name**                 | `ImpressionEventStore`                                                                                                                |
+    | **Workspace**                         | Select **RTI Tutorial**. If you attend the Precon at dataMinds Connectrope please select the Workspace Name that was provided to you. |
+    | **Eventhouse**                        | Select the Eventhouse **WebEvents_EH**                                                                                                |
+    | **KQL Database**                      | Select the KQL Database **WebEvents_EH**                                                                                              |
+    | **Destination table**                 | Click on **Create new** and enter `BronzeImpressions` as name for the new table and click on **Done**.                                |
+    | **Input data format**                 | Ensure that the option **Json** is selected.                                                                                          |
+
+After providing these values click on the button **Save**.
 
     ![alt text](assets/image_task08_step20.png)
 
@@ -670,7 +677,7 @@ In this task we will set up the Lakehouse that will contain additional informati
 
    ![alt text](assets/image_task09_step01.png)
 
-2. To create a Lakehouse we first have to return to the workspace where all other objects are in. To do so click on the icon **RTI Tutorial** in the left toolbar. If you are attending the FabCon Europe Precon this is the workspace that was provided to you.
+2. To create a Lakehouse we first have to return to the workspace where all other objects are in. To do so click on the icon **RTI Tutorial** in the left toolbar. If you are attending the dataMinds Connect Europe Precon this is the workspace that was provided to you.
 
    ![alt text](assets/image_task09_step02.png)
 
@@ -768,7 +775,7 @@ In this task we will make the Eventhouse tables form the KQL Database available 
 
    Now you can see the shortcuts to the tables **BronzeClicks** and **BronzeImpressions** under the folder **Tables** in the lakehouse **WebSalesData_LH**.
 
-   ![alt text](assets/image_task11_step05.png)
+   ![alt text](assets/image_task11_step05b.png)
 
    <div class="info" data-title="Note">
 
@@ -830,7 +837,7 @@ In this section we will create all the silver tables, functions and enable updat
 
    ![alt text](assets/image_task12_step08.png)
 
-9. Replace the text in the textbox **Explore your data** by the contents of the file [createAll.kql](../kql/createAll.kql). The easiest way to do this is to click in the textbox, press **CTRL**+**A** to select everything and then press **CTRL**+**V** to insert the contents from the clipboard. Then click on the Button **Run**
+9. On the left side in the pane **KQL Databases** underneath the node **WebEvents_EH** there is the automatically created queryset **WebEvents_EH_queryset**. Click on this queryset and replace the text in the tab **WebEvents_EH** by the contents of the file [createAll.kql](../kql/createAll.kql). The easiest way to do this is to click in the textbox, press **CTRL**+**A** to select everything and then press **CTRL**+**V** to insert the contents from the clipboard. Then click on the Button **Run**
 
    ![alt text](assets/image_task12_step09.png)
 
@@ -838,21 +845,17 @@ In this section we will create all the silver tables, functions and enable updat
 
    ![alt text](assets/image_task12_step09b.png)
 
-10. Click on the button **Save as KQL queryset**.
+   Click on the pencil at the tab **WebEvents_EH** and rename the tab to **createAll**.
 
-    ![alt text](assets/image_task12_step010.png)
-
-11. In the window **Save as KQL queryset** insert `createAll` as name of the Queryset and click the button **Create**.
-
-    ![alt text](assets/image_task12_step011.png)
+   ![alt text](assets/image_task12_step09c.png)
 
     <div class="info" data-title="Note">
 
-    > **You can add additional tabs in the KQL Queryset to add new queries.**
+   > **You can add additional tabs in the KQL Queryset to add new queries.**
 
     </div>
 
-12. Expand all folders in the database pane on the left. All tables and functions that have been created by the script can be found here.
+10. Expand all folders in the database pane on the left. All tables and functions that have been created by the script can be found here.
 
     ![alt text](assets/image_task12_step012.png)
 
@@ -864,14 +867,18 @@ In this section we will create all the silver tables, functions and enable updat
 
     ![alt text](assets/image_task12_step012b.png)
 
+    There are many samples from different usecases like IoT, weather analytics or Azure PlayFab game analytics.
+
+    ![alt text](assets/image_task12_step012c.png)
+
 ### 13. Real-Time Dashboard
 
-In this section, we will build a real-time dashboard to visualize the streaming data and set it to refresh every 30 seconds. (Optionally) A pre-built version of the dashboard is available to download [here](<https://github.com/microsoft/FabConRTITutorial/blob/main/docs/assets/RTIDashboard.json>), which can be imported and configured to your KQL Database data source.
+In this section, we will build a real-time dashboard to visualize the streaming data and set it to refresh every 30 seconds. (Optionally) A pre-built version of the dashboard is available to download [here](<https://github.com/microsoft/FabricRTIWorkshop/blob/main/dashboards/RTA%20dashboard/dashboard-RTA Dashboard.json>), which can be imported and configured to your KQL Database data source.
 
 - The Proctor Guide covers this process.
   ![Real-Time Dashboard](assets/RealTimeDashboard.png "Real-Time Dashboard")
 
-1. Change to the workspace. To do so click on the icon of your workspace on the left pane. In our example the workspace is named **RTI Tutorial**. If you do the Lab at FabCon Europe choose the workspace name that was provided to you.
+1. Change to the workspace. To do so click on the icon of your workspace on the left pane. In our example the workspace is named **RTI Tutorial**. If you do the Lab at dataMinds Connect Europe choose the workspace name that was provided to you.
 
    ![alt text](assets/image_task13_step01.png)
 
@@ -901,11 +908,11 @@ In this section, we will build a real-time dashboard to visualize the streaming 
 
 Proceed to paste each query below, add a visual, and apply changes. (Optionally) All queries are available in this script file [dashboard-RTA.kql](https://github.com/microsoft/FabricRTIWorkshop/blob/main/dashboards/RTA%20dashboard/dashboard-RTA.kql).
 
-    <div class="important" data-title="Note">
+   <div class="important" data-title="Note">
 
-    > **We will demo the steps for the very first Visual. From there on you can follow the exact same steps for all other visuals on your own.**
+> **We will demo the steps for the very first Visual. From there on you can follow the exact same steps for all other visuals on your own.**
 
-     </div>
+   </div>
 
 #### Clicks by hour
 
@@ -1100,7 +1107,7 @@ In this section we will enable auto-refresh so the dashboard will be automatical
 
    ![alt text](assets/image_task13_step19.png)
 
-2. In the pane **Auto refresh** set it to **Enabled** and set **Default refresh rate** to **30 seconds**. Then click on the button **Apply**
+2. In the pane **Auto refresh** set it to **Enabled** and set **Default refresh rate** to **Continous**. Then click on the button **Apply**
 
    ![alt text](assets/image_task13_step20.png)
 
@@ -1130,7 +1137,7 @@ In this section we will create a Reflex Alert that will send a Teams Message whe
 
    ![alt text](assets/image_task14_step02.png)
 
-3. In the combobox **Workspace** select the workspace. In our example the workspace is named **RTI Tutorial**. If you do the Lab at FabCon Europe choose the workspace name that was provided to you. Ensure that in the combobox **Item** the value **Create a new item** is selected. Insert `My Reflex` as value for the field **New item name**. Then click on the button **Create**.
+3. In the combobox **Workspace** select the workspace. In our example the workspace is named **RTI Tutorial**. If you do the Lab at dataMinds Connect Europe choose the workspace name that was provided to you. Ensure that in the combobox **Item** the value **Create a new item** is selected. Insert `My Reflex` as value for the field **New item name**. Then click on the button **Create**.
 
    ![alt text](assets/image_task14_step03.png)
 
