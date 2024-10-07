@@ -1,8 +1,9 @@
 .drop table <table-name>
 
-.create table BronzeClicks based-on rawEvents
+.create table BronzeClicks (eventType:string, eventID:guid, eventDate:datetime, productId:int, userAgent:dynamic, device:string, ip_address:string, extraPayload:dynamic, referer:dynamic, page_loading_seconds:real, EventProcessedUtcTime:datetime, PartitionId:int, EventEnqueuedUtcTime:datetime)
 
-.create table BronzeImpressions based-on rawEvents
+.create table BronzeImpressions (eventType:string, eventID:guid, eventDate:datetime, productId:int, userAgent:dynamic, device:string, ip_address:string, extraPayload:dynamic, referer:dynamic, page_loading_seconds:real, EventProcessedUtcTime:datetime, PartitionId:int, EventEnqueuedUtcTime:datetime)
+
 
 .create-or-alter function extractImpressionEvents()
 {
