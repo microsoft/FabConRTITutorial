@@ -1,0 +1,11 @@
+.drop table SilverClicks
+
+.drop table SilverImpressions
+
+.create table SilverImpressions (eventType:string, eventID:guid, eventDate:datetime, productId:int, userAgent:dynamic, device:string, ip_address:string, page_loading_seconds:real, relatedProductCategory:string, relatedProductId:string, relatedProductName:string)
+
+.create table SilverClicks (eventType:string, eventID:guid, eventDate:datetime, productId:int, userAgent:dynamic, device:string, ip_address:string, referer:dynamic, page_loading_seconds:real, clickType:string, clickPathTitle:string, clickPathUrl:string)
+
+.alter table SilverClicks policy update @'[{"Source": "BronzeClicks", "Query": "expandClickpath", "IsEnabled" : true, "IsTransactional": false }]'
+
+.alter table SilverImpressions policy update @'[{"Source": "BronzeImpressions", "Query": "expandRelatedProducts", "IsEnabled" : true, "IsTransactional": false }]'
