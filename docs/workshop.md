@@ -2,7 +2,7 @@
 published: true # Optional. Set to true to publish the workshop (default: false)
 type: workshop # Required.
 title: Building Fabric Real-Time Intelligence solution in a day # Required. Full title of the workshop
-short_title: dataMinds Connect 2024 Build A Fabric Real-Time Intelligence Solution in One Day # Optional. Short title displayed in the header
+short_title: Fabric Real-Time Intelligence Solution in One Day # Optional. Short title displayed in the header
 description: In this technical workshop, you will build a complete analytics platform with streaming data using Microsoft Fabric Real-Time Intelligence components and other features of Microsoft Fabric. This is a proctor led worksop in which each section is accompanied by a technical overview of Fabric RTI components. # Required.
 level: intermediate # Required. Can be 'beginner', 'intermediate' or 'advanced'
 authors: # Required. You can add as many authors as needed
