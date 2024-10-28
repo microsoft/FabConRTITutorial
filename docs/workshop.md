@@ -765,7 +765,7 @@ In this task we will make the Eventhouse tables form the KQL Database available 
 
    <div class="info" data-title="Note">
 
-   > **You may return to this step to create additional shortcuts, after running the [createAll.kql](../kql/createAll.kql) database script which will create additional tables. For now, you may proceed by selecting just the **BronzeClicks** and **BronzeImpressions** tables.**
+   > **You may return to this step to create additional shortcuts, after running the [createAll.kql](https://github.com/microsoft/FabConRTITutorial/blob/main/kql/createAll.kql) database script which will create additional tables. For now, you may proceed by selecting just the **BronzeClicks** and **BronzeImpressions** tables.**
 
    </div>
 
@@ -837,11 +837,11 @@ In this section we will create all the silver tables, functions and enable updat
 
    ![alt text](assets/image_task12_step08.png)
 
-9. On the left side in the pane **KQL Databases** underneath the node **WebEvents_EH** there is the automatically created queryset **WebEvents_EH_queryset**. Click on this queryset and replace the text in the tab **WebEvents_EH** by the contents of the file [createAll.kql](../kql/createAll.kql). The easiest way to do this is to click in the textbox, press **CTRL**+**A** to select everything and then press **CTRL**+**V** to insert the contents from the clipboard. Then click on the Button **Run**
+9. On the left side in the pane **KQL Databases** underneath the node **WebEvents_EH** there is the automatically created queryset **WebEvents_EH_queryset**. Click on this queryset and replace the text in the tab **WebEvents_EH** by the contents of the file [createAll.kql](https://github.com/microsoft/FabConRTITutorial/blob/main/kql/createAll.kql). The easiest way to do this is to click in the textbox, press **CTRL**+**A** to select everything and then press **CTRL**+**V** to insert the contents from the clipboard. Then click on the Button **Run**
 
    ![alt text](assets/image_task12_step09.png)
 
-   The status of the execution of the commands from the file [createAll.kql](../kql/createAll.kql) can be seen at the bottom of the pane. The result of each Command should be **Completed**.
+   The status of the execution of the commands from the file [createAll.kql](https://github.com/microsoft/FabConRTITutorial/blob/main/kql/createAll.kql) can be seen at the bottom of the pane. The result of each Command should be **Completed**.
 
    ![alt text](assets/image_task12_step09b.png)
 
