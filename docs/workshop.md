@@ -282,12 +282,6 @@ If you need a new Trial Tenant to complete the lab, suggest to register a new Ou
 4. The "LabAdmin" can have the pre-built lab items for Lab Users 01-24 to reference as a cheat-sheet. To do so, grant Users 01-24 viewer permission to the "LabAdmin" workspace.
    ![WorkspaceManageAccess](assets/WorkspaceManageAccess.png "Workspace Manage Access")
 
-### Enable Real-Time Dashboards (preview)
-
-1. While logged in as Tenant Admin or Capacity Admin to Fabric, click the gear icon on the top right of the page to open Admin Portal. Note, the "LabAdmin" account will have access to enable this for the Trial Tenant described above.
-2. In the [Tenant Settings](https://app.fabric.microsoft.com/admin-portal/tenantSettings?experience=kusto), search for "dashboards", click the toggle to **Enabled**, click **Apply**.
-   ![EnableRTDashboards](assets/EnableRTDashboards.png "Enable Real-Time Dashboards")
-
 ---
 
 ## Building the platform
@@ -814,6 +808,12 @@ In this section we will create all the silver tables, functions and enable updat
 5. Expand the folder **Tables**, select the table **products** table and click on the button **Create**. This will create a shortcut to the table **products** in your Lakehouse without copying the data from the Lakehouse to Eventhouse.
 
    ![alt text](assets/image_task12_step05.png)
+
+   The next window is a current preview feature. The Accelerate feature. This feature caches the data from the shortcut and drastically increases the performance of the queries which reads this data.
+
+   In this section, you can try to play with the feature (choose either to set in on or off), and see if you can spot the difference in the performance of the next steps.
+
+   ![alt text](assets/image_task12_step05-2.png)
 
    <div class="important" data-title="Note">
 
