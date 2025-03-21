@@ -87,7 +87,7 @@ The e-commerce store database entities are:
 
 ## Architecture
 
-### Components of Fabric's Real-Time Intelligence
+### Fabric Real-Time Intelligence Architecture
 
 ![RTIComponents](assets/RTIComponents.png "Components of Fabric's Real-Time Intelligence")
 
@@ -138,7 +138,7 @@ Now with Data Activator (Reflex), we can also set alerts on Real-time Dashboards
 | **SearchMediaCampaignClickstream** | Eventhouse gold function | Function showing clickstream originating due to campaigns on search engines |
 | **EmailCampaignClickstream**       | Eventhouse gold function | Function showing clickstream originating due to email campaigns             |
 
-### Fabric Real-Time Intelligence
+### Fabric Real-Time Intelligence Components
 
 Let's cover the key-features of Real-Time Intelligence and how we plan to use them for our architecture.
 
