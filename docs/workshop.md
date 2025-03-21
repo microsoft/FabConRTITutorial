@@ -61,6 +61,8 @@ This workshop/tutorial was originally written by the following authors and is av
 
 - If you'd like to contribute to this lab, report a bug or issue, please feel free to submit a Pull-Request to the [GitHub repo](https://github.com/microsoft/FabConRTITutorial/) for us to review or [submit Issues](https://github.com/microsoft/FabConRTITutorial/issues) you encounter.
 
+---
+
 ## The Lab Example - An e-commerce store
 
 The e-commerce store database entities are:
@@ -85,7 +87,7 @@ The e-commerce store database entities are:
 
 ## Architecture
 
-### Components of Fabric's Real-Time Intelligence
+### Fabric Real-Time Intelligence Architecture
 
 ![RTIComponents](assets/RTIComponents.png "Components of Fabric's Real-Time Intelligence")
 
@@ -128,7 +130,7 @@ Now with Data Activator (Reflex), we can also set alerts on Real-time Dashboards
 | **expandClickpath**       | Expands JSON array of dictonaries to transform into strongly typed columns. |
 | **expandRelatedProducts** | Expands JSON array of dictonaries to transform into strongly typed columns  |
 
-### Functions as Views
+#### Functions as Views
 
 | View                               | Origin                   | Description                                                                 |
 | ---------------------------------- | ------------------------ | --------------------------------------------------------------------------- |
@@ -136,7 +138,7 @@ Now with Data Activator (Reflex), we can also set alerts on Real-time Dashboards
 | **SearchMediaCampaignClickstream** | Eventhouse gold function | Function showing clickstream originating due to campaigns on search engines |
 | **EmailCampaignClickstream**       | Eventhouse gold function | Function showing clickstream originating due to email campaigns             |
 
-### Fabric Real-Time Intelligence
+### Fabric Real-Time Intelligence Components
 
 Let's cover the key-features of Real-Time Intelligence and how we plan to use them for our architecture.
 
