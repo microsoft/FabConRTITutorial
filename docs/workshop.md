@@ -63,7 +63,7 @@ This workshop/tutorial was originally written by the following authors and is av
 
 ---
 
-## The Lab Example - An e-commerce store
+## Lab Example: An e-commerce store
 
 The e-commerce store database entities are:
 
