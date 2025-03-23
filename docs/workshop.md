@@ -16,7 +16,8 @@ tags: fabric, kql, realtime, intelligence, event, stream, sql, data, analytics, 
 
 # Introduction
 
-Suppose you own an e-commerce website selling bike accessories. You have millions of visitors a month, you want to analyze the website traffic, consumer patterns and predict sales.
+Suppose you own an e-commerce website selling bike accessories. You have millions of
+visitors a month, you want to analyze the website traffic, consumer patterns and predict sales.
 
 This workshop will walk you through the process of building an end-to-end [Real-Time Intelligence](https://blog.fabric.microsoft.com/en-us/blog/introducing-real-time-intelligence-in-microsoft-fabric) Solution in MS Fabric, using the medallion architecture, for your e-commerce website.
 
@@ -64,6 +65,19 @@ This workshop/tutorial was originally written by the following authors and is av
 ---
 
 ## The Lab Example - An e-commerce store
+
+In todays data-driven world, understanding customer behavior is essential for optimizing the
+online shopping experience. This lab focuses on a simplified e-commerce store scenario that
+demonstrates how user interactions can be captured and analyzed using key data entities.
+
+You'll explore a data model consisting of products, product categories, and event
+tracking—specifically impressions and clicks. These interactions help uncover insights
+into customer preferences and product performance.
+
+The lab provides examples and real-world context to make the data more relatable and
+practical. By the end, you will gain hands-on experience in how to build a Fabric Real-Time
+end-to-end solution to analyze how customers engage with an online storefront—knowledge
+that is invaluable for making data-informed business decisions.
 
 The e-commerce store database entities are:
 
