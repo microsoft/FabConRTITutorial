@@ -16,7 +16,8 @@ tags: fabric, kql, realtime, intelligence, event, stream, sql, data, analytics, 
 
 # Introduction
 
-Suppose you own an e-commerce website selling bike accessories. You have millions of visitors a month, you want to analyze the website traffic, consumer patterns and predict sales.
+Suppose you own an e-commerce website selling bike accessories. You have millions of
+visitors a month, you want to analyze the website traffic, consumer patterns and predict sales.
 
 This workshop will walk you through the process of building an end-to-end [Real-Time Intelligence](https://blog.fabric.microsoft.com/en-us/blog/introducing-real-time-intelligence-in-microsoft-fabric) Solution in MS Fabric, using the medallion architecture, for your e-commerce website.
 
@@ -65,6 +66,19 @@ This workshop/tutorial was originally written by the following authors and is av
 
 ## Lab Example: An e-commerce store
 
+In todays data-driven world, understanding customer behavior is essential for optimizing the
+online shopping experience. This lab focuses on a simplified e-commerce store scenario that
+demonstrates how user interactions can be captured and analyzed using key data entities.
+
+You'll explore a data model consisting of products, product categories, and event
+tracking—specifically impressions and clicks. These interactions help uncover insights
+into customer preferences and product performance.
+
+The lab provides examples and real-world context to make the data more relatable and
+practical. By the end, you will gain hands-on experience in how to build a Fabric Real-Time
+end-to-end solution to analyze how customers engage with an online storefront—knowledge
+that is invaluable for making data-informed business decisions.
+
 The e-commerce store database entities are:
 
 - **Product:** the product catalogue.
@@ -89,17 +103,47 @@ The e-commerce store database entities are:
 
 ### Fabric Real-Time Intelligence Architecture
 
-![RTIComponents](assets/RTIComponents.png "Components of Fabric's Real-Time Intelligence")
+Real-Time Intelligence empowers organizations to ingest, process, analyze, and interact with their data using natural language. It enables seamless data transformation and automated action — all centralized through the Real-Time Hub, which provides easy access to and visualization of both internal and external streaming data, including first- and third-party sources:
 
-Real-Time Intelligence allows organizations to ingest, process, analyze and, questions over your data using natural language, transform and automatically act on data. All with a central hub (Real-Time Hub) to easily access and visualize all internal and external, first- and third-party streaming data.
+![RTIComponents](assets/FabricRTIArchitecture.png "Components of Fabric's Real-Time Intelligence")
+
+The image illustrates a comprehensive Real-Time Intelligence architecture built on Microsoft Fabric, showing how organizations can seamlessly ingest, process, analyze, and act on both streaming and batch data in real time.
+
+On the left side, we see a wide range of data sources feeding into the system. These include real-time streaming sources like sensors, Kafka instances (including Confluent Kafka and Amazon MSK Kafka), Event Hubs, IoT Hubs, and operational databases using change data capture (CDC). Alongside these, batch data sources such as Google Pub/Sub and reference data are also supported. This rich diversity of input ensures that organizations can integrate both high-velocity data and more traditional datasets into a unified architecture.
+
+Streaming data flows into the Eventstream component, which is responsible for capturing and routing real-time data. Simultaneously, batch data is ingested using Data Factory, which loads data into the system on a scheduled or on-demand basis.
+
+The heart of the architecture is the Eventhouse, a high-performance analytics engine optimized for real-time workloads. Within Eventhouse, data is processed through a multi-layered refinement structure: the Bronze layer captures raw input data, the Silver layer cleans and enriches it, and the Gold layer transforms it into business-ready formats. These layers are maintained using update policies and materialized views to ensure low latency and high efficiency.
+
+Eventhouse is tightly integrated with a Lakehouse, enabling storage and retrieval of structured and unstructured data. Both Eventhouse and Lakehouse are built on OneLake, Microsoft’s unified data storage layer, ensuring consistency, accessibility, and scalability across all components. Shortcuts between the components allow efficient data movement and sharing.
+
+Real-time data processing is further enhanced by integration with Azure Machine Learning and Apache Spark, which are used to build and train machine learning models. These models can be applied directly to streaming data for real-time scoring, allowing predictive and intelligent insights to be generated on the fly.
+
+The refined and analyzed data is then made accessible to users and systems through various interfaces. Power BI provides interactive reports and dashboards via direct query from Eventhouse. A specialized Real-Time Dashboard delivers instant visualization of streaming insights. For integration with external systems, a REST API is available, allowing programmatic access to real-time analytics.
+
+To close the loop from insight to action, the system includes an Activator component, which can trigger alerts and workflows based on rules or ML model outputs. These can result in automated notifications via Microsoft Teams, trigger flows in Power Automate, or send alerts through other channels.
+
+At the foundation of it all lies OneLake, which unifies all data assets, and Copilot with AI Skills, enabling users to interact with the system using natural language, generate insights, and perform complex queries without writing code.
+
+This architecture illustrates how Microsoft Fabric enables end-to-end, real-time data intelligence — from ingestion to insight to action — across a unified and scalable platform.
 
 Using Real-Time Intelligence enables faster, more accurate decision-making and accelerated time to insight.
 
 ### Lab Architecture
 
-![Architectural Diagram](assets/architecture.png "Architecture Diagram")
+In this lab, we won’t cover every aspect of a Real-Time Intelligence solution, but we will focus on the most essential components. By the end, you'll be equipped to build a complete end-to-end solution that incorporates all the key building blocks. These components are highlighted in the following architectural diagram:
 
-Now with Data Activator (Reflex), we can also set alerts on Real-time Dashboards to send a message in Teams with conditional thresholds or even more advanced actions.
+![Architectural Diagram](assets/rtiLabArchitecture.png "Architecture Diagram")
+
+The data we'll be working with originates from an Event Hub that streams simulated click and impression events, representing user activity in our fictional e-commerce scenario.
+
+This streaming data is ingested via Eventstream, which filters the incoming events and routes them into two separate tables within Eventhouse. Once inside Eventhouse, the data is enriched using additional contextual data sourced from a Lakehouse. To avoid unnecessary data duplication, the lakehouse tables are accessed directly via shortcuts, rather than being copied into Eventhouse.
+
+Within Eventhouse, data flows from bronze tables to silver tables using Update Policies, enabling automated refinement and transformation as the data evolves.
+
+To visualize this processed data, we will create a Real-Time Dashboard connected to Eventhouse. On top of this dashboard, we'll configure a Data Activator Reflex that monitors for specific conditions and automatically takes action when thresholds are met.
+
+With Data Activator (Reflex), you can define alerts based on real-time metrics and trigger notifications, such as sending a message in Microsoft Teams. This enables proactive responses to emerging trends or anomalies, and even more advanced automated workflows if needed.
 
 ### Data schema
 
@@ -295,13 +339,10 @@ If you need a new Trial Tenant to complete the lab, suggest to register a new Ou
 
 2. Login with provided credentials, if a trial fabric tenant was previously setup (reference Pre-reqs). You may also choose to run the lab in your own Fabric Tenant if you already have one.
 
-3. Click **Real-Time Intelligence**.
-
-   ![Fabric Home](assets/image_task01_step03.png "Real-Time Intelligence")
-
 ### 2. Fabric Workspace
 
 1. Click **Workspaces** on the left menu and open the Fabric Workspace **designated** to your login by the Fabric Trial Tenant.
+
 2. (Optional) If using your own Fabric Tenant, create a new workspace for this lab.
 
 3. To create a new Workspace click on **Workspaces** in the left pane and then click on **+ New Workspace** in the popup window.
@@ -337,7 +378,13 @@ If you need a new Trial Tenant to complete the lab, suggest to register a new Ou
 
    ![alt text](assets/image_task03_step03.png)
 
-   After the Eventhouse has been created it will be automatically opened.
+4. After the Eventhouse has been created it will be automatically opened. There will be some information Windows on how to proceed. Please close the window **You've just created your first eventhouse** by clicking on the button **Get started**.
+
+   ![alt text](assets/image_task03_step04.png)
+
+5. Close the window **Start by adding data** too.
+
+   ![alt text](assets/image_task03_step05.png)
 
 <div class="info" data-title="Note">
   
@@ -350,7 +397,7 @@ This feature is also called **"one logical copy"** and it automatically allows K
 
 When activated it will constantly copy the KQL data to your Fabric OneLake in delta format. It allows you to query KQL Database tables as delta tables using Spark or SQL endpoint on the Lakehouse. We recommend enabling this feature "before" we load the more data into our KQL Database. Also, consider this feature can be enabled/disabled per table if necessary. You can read more about this feature here: [Announcing Delta Lake support in Real-Time Intelligence KQL Database](https://support.fabric.microsoft.com/blog/announcing-delta-support-in-real-time-analytics-kql-db?ft=All).
 
-![alt text](assets/fabrta70.png)
+![alt text](assets/rtiLabArchitecture_workshop_1.png)
 
 #### Here's how to set this up
 
@@ -368,134 +415,65 @@ When activated it will constantly copy the KQL data to your Fabric OneLake in de
 
    </div>
 
-3. Now the dialog **Turn on OneLake availibility** is shown. Ensure that **Apply to existing tables** is checked and click on the button **Turn on**.
+3. Now the dialog **Enable OneLake Availibility** is shown. Ensure that **Apply to existing tables** is checked and click on the button **Enable**.
 
-   ![alt text](assets/image_task04_step03.png)
+   ![alt text](assets/image_task04_step03b.png)
 
 ### 5. Create a new Eventstream
 
-In this section we will be streaming events (impressions and clicks events) generated by a notebook. The events will be streamed into an eventstream and consumed by our Eventhouse KQL Database.
+In this section we will be streaming events (impressions and clicks events). The events will be streamed into an Eventstream and be written into our Eventhouse KQL Database.
 
-![alt text](assets/fabrta73.png)
+![alt text](assets/rtiLabArchitecture_workshop_2.png)
 
 1. Select your Workspace in the left pane. In our example it is **RTI Tutorial**. If you have been assigned a Workspace at the start of this lab, choose the workspace name that was provided to you. Then click on **+ New Item**. In the popout window scroll a little bit down and select **Eventstream**.
 
    ![alt text](assets/image_task05_step01.png)
 
-2. Give the Eventstream the name `WebEventsStream_ES`. Make sure that the checkbox **Enhanced Capabilites** is selected and click on **Create**.
+2. Give the Eventstream the name `WebEventsStream_ES` and click on **Create**.
 
-   ![alt text](assets/image_task05_step02.png)
+   ![alt text](assets/image_task05_step02b.png)
 
-3. On the Screen **Design a flow to ingest, transform, and route streaming events** click on **Use Custom Endpoint**. This will create an event hub connected to the Eventstream.
+3. On the Screen **Design a flow to ingest, transform, and route streaming events** click on **Use external source**.
 
-   ![alt text](assets/image_task05_step03.png)
+   ![alt text](assets/image_task05_step03b.png)
 
-4. Insert `WebEventsCustomSource` as the source name and the click on **Add**.
+4. A dialog with the name **You need to verify your identity** will be shown. Click on **Continue**.
 
-   ![alt text](assets/image_task05_step04.png)
+   ![alt text](assets/image_task05_step04b.png)
 
-5. Click on **Publish**.
+5. You have to authenticate again throgh your Authenticator App. Please do so.
 
-   ![alt text](assets/image_task05_step05.png)
+   <div class="important" data-title="Note">
 
-   Now the Eventstream will be published and the Event Hub will be created.
-
-6. To get the information we need for the Notebook, the name of the event hub and a connection string click on the Eventstream source named **WebEventsCustomSource**. In the area below the diagram click on **Keys**. Then click on the copy icon besides the **Event hub name**. Now the event hub name is copied to the clipborad.
-
-   ![alt text](assets/image_task05_step06.png)
-
-<div class="info" data-title="Note">
-  
->  The easiest way to record the needed values is to just copy them to a notepad window for later reference.
-</div>
-
-7. To copy the connection string you first have to click on the view icon. After the connection string is revealed click on the copy icon and copy the connection string to Notepad as well.
-
-   ![alt text](assets/image_task05_step07.png)
-
-<div class="info" data-title="Note">
-
-> It does not matter if you copy the primary or secondary connection string.
-
-</div>
-
-<div class="important" data-title="Note">
-
-> To copy the connection string it must be visible.
-
-</div>
-
-<div class="important" data-title="Note">
-
-> Eventstreams Custom-Endpoint/Custom-App sources also provide **Kafka** endpoints where data can be pushed to
-
-</div>
-
-### 6. Import Data Generator Notebook
-
-We use a python notebook to generate a stream of artificial click events. The notebook can be found in this GitHub repository [Generate_synthetic_web_events.ipynb](https://github.com/microsoft/FabConRTITutorial/blob/main/notebook/Generate_synthetic_web_events.ipynb).
-
-1. Open the notebook in Github by clicking on this [link](https://github.com/microsoft/FabConRTITutorial/blob/main/notebook/Generate_synthetic_web_events.ipynb). In GitHub click on the **Download raw file** icon on the top right.
-
-   ![alt text](assets/image_task06_step01.png)
-
-   Save the notebook on your local hard drive. By default it will be stored in the folder **Downloads**.
-
-   Now we have to import the notebook into our Fabric Workspace. To aceive this execute the following steps.
-
-2. To import the notebook into your workspace you first have to return to the workspace. To do so click on the icon of your workspace on the left pane. In our example the workspace is named **RTI Tutorial**. If you have been assigned a Workspace at the start of this lab, choose the workspace name that was provided to you. After changing to the workspace click on the menu **Import**, select **Notebook** and then the option **From this computer**.
-
-   ![alt text](assets/image_task06_step02.png)
-
-3. In the pane **Import status** on the right side select **Upload**
-
-   ![alt text](assets/image_task06_step03.png)
-
-4. Browse to the folder on your local computer where you saved the notebook and select the notebook and click on the button **Open**.
-
-   ![alt text](assets/image_task06_step04.png)
-
-   After the notebook has been uploaded Fabric will display a message that the notebook has been imported successfully.
-
-   ![alt text](assets/image_task06_step04b.png)
-
-### 7. Run the notebook
-
-Now we have to run the notebook to create the stream of artificial click events for our lab. In order for the Notebook to send the events to the correct Event Hub we have to insert the information we have saved in [Task 5 - Create Event Stream](#5-create-a-new-eventstream).To run the notebook and create our datastream please proceed with the following steps.
-
-<div class="warning" data-title="Note">
-
-> DO NOT use an InPrivate browser window. Recommend using a Personal browser window for the Notebook session to connect and run successfully.
-
-</div>
-
-1. Click on the Notebook **Generate_synthetic_web_events** in your Fabric Workspace to open it.
-
-   ![alt text](assets/image_task07_step01.png)
-
-2. Paste in the values your copied in [Task 5 - Create Event Stream](#5-create-a-new-eventstream) as values for `eventHubNameevents` and `eventHubConnString` into the notebook.
-
-   ![alt text](assets/image_task07_step02.png)
-
-3. Click **Run all** at the top left to start generating streaming events.
-
-   ![alt text](assets/image_task07_step03.png)
-
-   <div class="info" data-title="Note">
-
-   > It can happen that the notebook will throw some errors in cell 1. These errors are caused by libaries that already have been installed in the environment. You can safely ignore these errors. The notebook will execute successfully regardless of these errors.
+   > It can be that the dialog **You need to verify your identity** will be shown several times. Please click on **Continue** until the dialog does not appear again.
 
    </div>
 
-   ![alt text](assets/image_task07_errors.png)
+6. In the dialog **Select a data source** click on the button **Connect**.
 
-   Wait a few minutes for the first code cell to finish and it will proceed to next code cells automatically.
+   ![alt text](assets/image_task05_step05b.png)
 
-4. Scroll down to the last code cell and it should begin to print the generated synthetic events in JSON format. If you see an output similar to the following screenshot everything is set up and the notebooks streams artificial click data to the event hub.
+7. In the dialog **Configure connection settings** choose **FabConVegas2025EventHubConnection** for the combobox **Connection** and insert the name of the consumer group into the field **Consumer group** that aligns with the username that was provided to you. In my case this is `workshopuser49`. Ensure that the **Data format** is Json and click on the pencil icon next to **Source name**.
 
-   ![alt text](assets/image_task07_step04.png)
+   ![alt text](assets/image_task05_step06b.png)
 
-### 8. Define Eventstream topology
+8. Enter `WebEventsSource` as **Source name** and then click on the button **Next**
+
+   ![alt text](assets/image_task05_step08b.png)
+
+9. On the screen **Review + Connect** review all of the information and then click on the button **Add**
+
+   ![alt text](assets/image_task05_step09b.png)
+
+10. Click on **Publish** at the top of the screen.
+
+![alt text](assets/image_task05_step10b.png)
+
+11. After a short while (usually between 5 to 10 minutes) you should be able to see some data below the Eventstream in the tab **Test result**.
+
+![alt text](assets/image_task05_step11b.png)
+
+### 6. Define Eventstream topology
 
 Next we have to create the Eventstream topology that will insert the streamed data into our KQL Database. To aceive this please follow the following steps.
 
@@ -503,23 +481,23 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
    ![alt text](assets/image_task08_step01.png)
 
-2. Click on **Edit** in the top toolbar.
+2. Click on the button **Live** in the top toolbar and select **Edit** from the menu.
 
-   ![alt text](assets/image_task08_step02.png)
+   ![alt text](assets/image_task08_step02a.png)
 
 3. Click on the node **Transform events or add Destination** and select **Filter** from the menu.
 
-   ![alt text](assets/image_task08_step03.png)
+   ![alt text](assets/image_task08_step03a.png)
 
    <div class="info" data-title="Note">
 
-   > Pay attention to the table you can see at the bottom of the screen. Here you can see events that are streamed by notebook to the event already.
+   > Pay attention to the table you can see at the bottom of the screen. Here you can see events that are streamed to the Eventstream already.
 
    </div>
 
 4. Click on the pencil icon in the node **Filter1** to enter edit mode.
 
-   ![alt text](assets/image_task08_step04.png)
+   ![alt text](assets/image_task08_step04b.png)
 
 5. Provide the following values in the pane **Filter** on the left side. Then click on **Save**.
 
@@ -530,7 +508,7 @@ Next we have to create the Eventstream topology that will insert the streamed da
    | **Keep events when the value**  | **equals**          |
    | **value**                       | `CLICK`             |
 
-   ![alt text](assets/image_task08_step05.png)
+   ![alt text](assets/image_task08_step05b.png)
 
    <div class="important" data-title="Note">
 
@@ -546,23 +524,23 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
 6. Click on **+** icon next to the **ClickEventsFilter** node. and choose **Stream** from the context menu.
 
-   ![alt text](assets/image_task08_step06.png)
+   ![alt text](assets/image_task08_step06b.png)
 
 7. Coose **Stream** from the context menu.
 
-   ![alt text](assets/image_task08_step07.png)
+   ![alt text](assets/image_task08_step07b.png)
 
 8. Click on the pencil in node **Stream1** to go to edit mode. Enter `ClickEventsStream` as name of the Eventstream in the field **Stream name**. Ensure that the **Input data format** is **Json**. Click on the Button **Save**.
 
-   ![alt text](assets/image_task08_step08.png)
+   ![alt text](assets/image_task08_step08b.png)
 
 9. Click on **+** icon next to the node **ClickEventsStream**.
 
-   ![alt text](assets/image_task08_step09.png)
+   ![alt text](assets/image_task08_step09b.png)
 
 10. Select the option **Eventhouse** in the context menu.
 
-    ![alt text](assets/image_task08_step10.png)
+    ![alt text](assets/image_task08_step10b.png)
 
 11. Click the pencil in node **Eventhouse1** to enter edit mode. Provide the following values in the pane **Eventhouse**.
 
@@ -576,21 +554,27 @@ Next we have to create the Eventstream topology that will insert the streamed da
     | **Destination table**                 | Click on **Create new** and enter `BronzeClicks` as name for the new table and click on **Done**.                                            |
     | **Input data format**                 | Ensure that the option **Json** is selected.                                                                                                 |
 
-    ![alt text](assets/image_task08_step11.png)
+    ![alt text](assets/image_task08_step11b.png)
 
     Click the button **Save** after you entered all the values.
 
-12. Click on **+** sign next to the node **WebEventsStream_ES**.
+12. Click on **||** sign next to the node **WebEventsStream_ES**.
 
-    ![alt text](assets/image_task08_step12.png)
+    ![alt text](assets/image_task08_step12b.png)
 
 13. Choose the option **Filter** from the context menu.
 
-    ![alt text](assets/image_task08_step13.png)
+    ![alt text](assets/image_task08_step13b.png)
+
+    <div class="important" data-title="Note">
+
+    > Note: You may now see some errors in the subsequent steps of the Eventstream. This is because the input stream no longer matches the expected format for the Filter and the following elements. We’ll fix this in the next step.
+
+    </div>
 
 14. Delete the connection between the new filter node **Filter1** and the node **ClickEventsFilter** by clicking on the trashcan icon.
 
-    ![alt text](assets/image_task08_step14.png)
+    ![alt text](assets/image_task08_step14b.png)
 
 15. Connect the output of the node **WebEventsStream_ES** to the input of the node **ClickEventsFilter**.
 
@@ -649,25 +633,27 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
 21. Click on the button **Publish** that is located in the toolbar at the top of the screen.
 
-    ![alt text](assets/image_task08_step21.png)
+    ![alt text](assets/image_task08_step21d.png)
 
-    After a few minutes, you should see the nodes **ClickEventStore** and **ImpressionEventStore** change to mode **Streaming**.
+    After a few minutes, you should see the nodes **ClickEventStore** and **ImpressionEventStore** change to mode **Active** and the switches are green.
 
-    ![alt text](assets/image_task08_step21b.png)
+    ![alt text](assets/image_task08_step21e.png)
 
     In the end your Eventstream toplogy should look like the image below.
 
-    ![alt text](assets/image_task08_step21c.png)
+    ![alt text](assets/image_task08_step21f.png)
 
 ### 9. Setting up the Lakehouse
 
 In this task we will set up the Lakehouse that will contain additional information for our usecase and in which we will also make the data from the KQL Database accessible through the lakehouse.
 
+![alt text](assets/rtiLabArchitecture_workshop_3.png)
+
 1. Go to the folder [**ref_data**](https://github.com/microsoft/FabConRTITutorial/tree/main/ref_data) in the Github repo and download the **products.csv** and **productcategory.csv** files on your computer.
 
    ![alt text](assets/image_task09_step01.png)
 
-2. To create a Lakehouse we first have to return to the workspace where all other objects are in. To do so click on the icon **RTI Tutorial** in the left toolbar. If you have been assigned a Workspace at the start of this lab, choose the workspace name that was provided to you.
+2. To create a Lakehouse we first have to return to the workspace where all other objects are in. To do so click on the icon that represents your workspace in the left toolbar. If you have been assigned a Workspace at the start of this lab, choose the workspace name that was provided to you.
 
    ![alt text](assets/image_task09_step02.png)
 
@@ -731,6 +717,8 @@ After our lakehouse has been created the overview page of the lakehouse will be 
 
 In this task we will make the Eventhouse tables form the KQL Database available in our Lakehouse. This will be accomplished by creating _shortcuts_.
 
+![alt text](assets/rtiLabArchitecture_workshop_4.png)
+
 1. Click on the button **Get data** in the menu bar at the top. Choose **New shortcut** from the dropdown menu.
 
    ![alt text](assets/image_task11_step01.png)
@@ -777,7 +765,7 @@ In this task we will make the Eventhouse tables form the KQL Database available 
 
 In this section we will create all the silver tables, functions and enable update policies and in our Eventhouse KQL Database. Two of the tables (`product` and `productCategory`) are shortcuts to the lakehouse and the data is **NOT** being copied into our KQL Database.
 
-![alt text](assets/fabrta71.png)
+![alt text](assets/rtiLabArchitecture_workshop_5.png)
 
 1. Open the KQL Database **WebEvents_EH** in the Eventhouse of your Fabric Workspace. To do so click on the Icon of the Eventhouse in the left toolbar.
 
@@ -859,24 +847,25 @@ In this section we will create all the silver tables, functions and enable updat
 
     > While on the KQL Database details screen you may explore additional **Real-Time Intelligence Samples** by clicking the **drop-drop next to Get data** and selecting a desired sample. These samples give you the ability to learn more.
 
-     </div>
-
     ![alt text](assets/image_task12_step012b.png)
 
     There are many samples from different usecases like IoT, weather analytics or Azure PlayFab game analytics.
 
     ![alt text](assets/image_task12_step012c.png)
 
+     </div>
+
 ### 13. Real-Time Dashboard
 
 In this section, we will build a real-time dashboard to visualize the streaming data and set it to refresh every 30 seconds. (Optionally) A pre-built version of the dashboard is available to download [here](<https://github.com/microsoft/FabricRTIWorkshop/blob/main/dashboards/RTA%20dashboard/dashboard-RTA Dashboard.json>), which can be imported and configured to your KQL Database data source.
 
-    <div class="important" data-title="Note">
+![alt text](assets/rtiLabArchitecture_workshop_6.png)
+
+   <div class="important" data-title="Note">
       > The Proctor Guide covers this process.
+   </div>
 
 ![Real-Time Dashboard](assets/RealTimeDashboard.png "Real-Time Dashboard")
-
-</div>
 
 1. Change to the workspace. To do so click on the icon of your workspace on the left pane. In our example the workspace is named **RTI Tutorial**. If you have been assigned a Workspace at the start of this lab, choose the workspace name that was provided to you.
 
@@ -937,7 +926,7 @@ SilverClicks
 
     <div class="important" data-title="Note">
 
-   > When you click on **Apply changes** the value of the range parameter will jump back to one hour. Ignore this for now as we will fix this later.
+   > When you click on **Apply changes** the value of the range parameter will jump back to one hour. Ignore this for now as we will fix this in the next step.
 
      </div>
 
@@ -1030,9 +1019,9 @@ SilverImpressions
 
    ![alt text](assets/image_task13_step16.png)
 
-3. Click the 3-dots (**...**) at the top right of the tile you just created and select **Duplicate** from the context menu to duplicate it two more times.
+3. Click the 3-dots (**...**) at the top right of the tile you just created and select the submenu **Tile Options** then select the menu option **Duplicate** from the context menu to duplicate it two more times.
 
-   ![alt text](assets/image_task13_step17.png)
+   ![alt text](assets/image_task13_step17d.png)
 
 4. Name the 2nd one `Clicks`, set the Data value column to **clicks (long)**, then click on the button **Apply changes**.
 
@@ -1119,6 +1108,8 @@ In this section we will enable auto-refresh so the dashboard will be automatical
 
 In this section we will create a Reflex Alert that will send a Teams Message when a value meets a certain threshold.
 
+![alt text](assets/rtiLabArchitecture_workshop_7.png)
+
 1. While editing the dashboard, click on the three dots (**...**) of the tile **Click by hour**. Select **Set alert** from the context menu. This will open the pane **Set alert** at the right side in the browser.
 
    ![alt text](assets/image_task14_step01.png)
@@ -1160,18 +1151,6 @@ Using the Fabric Events in Real-Time hub, build a pipeline that sends link to th
 
 Add Reflex as a destination to your Eventstream and create an email alert everytime number of impressions exceed a value of your choice 3 times every 10 minutes.
 
-### 16. Stop the notebook
-
-At this point you've completed the lab, so you may stop running the notebook.
-
-1. Open the notebook **Generate synthetic events** from your workspace and click the button **Cancel all** in the toolbar at the top.
-
-   ![alt text](assets/image_task15_step01.png)
-
-## THAT's ALL FOLKS !!
-
-![alt text](assets/_0e5f9cfb-de2e-42fd-aff4-73fba140a5d3.jpg)
-
 ---
 
 # Continue your learning
@@ -1182,6 +1161,7 @@ At this point you've completed the lab, so you may stop running the notebook.
 - [Get started with Microsoft Fabric](https://aka.ms/fabric-learn)
 - [The mechanics of Real-Time Intelligence in Microsoft Fabric](https://youtube.com/watch?v=4h6Wnc294gA)
 - [Real-Time Intelligence in Microsoft Fabric](https://youtube.com/watch?v=ugb_w3BTZGE)
+- [Kusto Detective Agency](https://detective.kusto.io/)
 
 ### Thank you!
 
