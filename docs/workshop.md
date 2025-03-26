@@ -131,9 +131,7 @@ Using Real-Time Intelligence enables faster, more accurate decision-making and a
 
 ### Lab Architecture
 
-In this lab, we won’t cover every aspect of a Real-Time Intelligence solution, but we will focus on the most essential components. By the end, you'll be equipped to build a complete end-to-end solution that incorporates all the key building blocks. These components are highlighted in the following architectural diagram:
-
-![Architectural Diagram](assets/rtiLabArchitecture.png "Architecture Diagram")
+In this lab, we won’t cover every aspect of a Real-Time Intelligence solution, but we will focus on the most essential components. By the end, you'll be equipped to build a complete end-to-end solution that incorporates all the key building blocks.
 
 The data we'll be working with originates from an Event Hub that streams simulated click and impression events, representing user activity in our fictional e-commerce scenario.
 
@@ -403,8 +401,6 @@ This feature is also called **"one logical copy"** and it automatically allows K
 
 When activated it will constantly copy the KQL data to your Fabric OneLake in delta format. It allows you to query KQL Database tables as delta tables using Spark or SQL endpoint on the Lakehouse. We recommend enabling this feature "before" we load the more data into our KQL Database. Also, consider this feature can be enabled/disabled per table if necessary. You can read more about this feature here: [Announcing Delta Lake support in Real-Time Intelligence KQL Database](https://support.fabric.microsoft.com/blog/announcing-delta-support-in-real-time-analytics-kql-db?ft=All).
 
-![alt text](assets/rtiLabArchitecture_workshop_1.png)
-
 #### Here's how to set this up
 
 1. When an Eventhouse is created, a KQL Database with the same name is created as well. To open the KQL Database click on the Database **WebEvents_EH** in the section **KQL Databases**.
@@ -428,8 +424,6 @@ When activated it will constantly copy the KQL data to your Fabric OneLake in de
 ### 5. Create a new Eventstream
 
 In this section we will be streaming events (impressions and clicks events). The events will be streamed into an Eventstream and be written into our Eventhouse KQL Database.
-
-![alt text](assets/rtiLabArchitecture_workshop_2.png)
 
 1. Select your Workspace in the left pane. In our example it is **RTI Tutorial**. If you have been assigned a Workspace at the start of this lab, choose the workspace name that was provided to you. Then click on **+ New Item**. In the popout window scroll a little bit down and select **Eventstream**.
 
@@ -653,8 +647,6 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
 In this task we will set up the Lakehouse that will contain additional information for our usecase and in which we will also make the data from the KQL Database accessible through the lakehouse.
 
-![alt text](assets/rtiLabArchitecture_workshop_3.png)
-
 1. Go to the folder [**ref_data**](https://github.com/microsoft/FabConRTITutorial/tree/main/ref_data) in the Github repo and download the **products.csv** and **productcategory.csv** files on your computer.
 
    ![alt text](assets/image_task09_step01.png)
@@ -723,8 +715,6 @@ After our lakehouse has been created the overview page of the lakehouse will be 
 
 In this task we will make the Eventhouse tables form the KQL Database available in our Lakehouse. This will be accomplished by creating _shortcuts_.
 
-![alt text](assets/rtiLabArchitecture_workshop_4.png)
-
 1. Click on the button **Get data** in the menu bar at the top. Choose **New shortcut** from the dropdown menu.
 
    ![alt text](assets/image_task11_step01.png)
@@ -770,8 +760,6 @@ In this task we will make the Eventhouse tables form the KQL Database available 
 ### 12. Build the KQL DB schema
 
 In this section we will create all the silver tables, functions and enable update policies and in our Eventhouse KQL Database. Two of the tables (`product` and `productCategory`) are shortcuts to the lakehouse and the data is **NOT** being copied into our KQL Database.
-
-![alt text](assets/rtiLabArchitecture_workshop_5.png)
 
 1. Open the KQL Database **WebEvents_EH** in the Eventhouse of your Fabric Workspace. To do so click on the Icon of the Eventhouse in the left toolbar.
 
@@ -858,8 +846,6 @@ In this section we will create all the silver tables, functions and enable updat
 ### 13. Real-Time Dashboard
 
 In this section, we will build a real-time dashboard to visualize the streaming data and set it to refresh every 30 seconds. (Optionally) A pre-built version of the dashboard is available to download [here](<https://github.com/microsoft/FabricRTIWorkshop/blob/main/dashboards/RTA%20dashboard/dashboard-RTA Dashboard.json>), which can be imported and configured to your KQL Database data source.
-
-![alt text](assets/rtiLabArchitecture_workshop_6.png)
 
    <div class="important" data-title="Note">
       > The Proctor Guide covers this process.
@@ -1107,8 +1093,6 @@ In this section we will enable auto-refresh so the dashboard will be automatical
 ### 14. Data Activator
 
 In this section we will create a Reflex Alert that will send a Teams Message when a value meets a certain threshold.
-
-![alt text](assets/rtiLabArchitecture_workshop_7.png)
 
 1. While editing the dashboard, click on the three dots (**...**) of the tile **Click by hour**. Select **Set alert** from the context menu. This will open the pane **Set alert** at the right side in the browser.
 
