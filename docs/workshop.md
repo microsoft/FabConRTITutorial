@@ -536,7 +536,7 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
    ![alt text](assets/image_task08_step06b.png)
 
-7. Coose **Stream** from the context menu.
+7. Choose **Stream** from the context menu.
 
    ![alt text](assets/image_task08_step07b.png)
 
@@ -552,7 +552,7 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
     ![alt text](assets/image_task08_step10b.png)
 
-11. Click the pencil in node **Eventhouse1** to enter edit mode. Provide the following values in the pane **Eventhouse**.
+11. Click the pencil in node **Eventhouse** to enter edit mode. Provide the following values in the pane **Eventhouse**.
 
     | Field                                 | Value                                                                                                                                        |
     | :------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -813,13 +813,13 @@ In this section we will create all the silver tables, functions and enable updat
 
    ![alt text](assets/image_task12_step06.png)
 
-7. Click on the button **Explore your Data** at the top of the screen.
+7. Click on the button **Query with code** at the top of the screen.
 
-   ![alt text](assets/image_task12_step07.png)
+   ![alt text](assets/image_task12_step07c.png)
 
-   The popin window **Explore your data** will be shown.
+   This will open the **Webevents_EH queryset** queryset.
 
-   ![alt text](assets/image_task12_step07b.png)
+   ![alt text](assets/image_task12_step07d.png)
 
 8. Open the file [createAll.kql](https://github.com/microsoft/FabConRTITutorial/blob/main/kql/createAll.kql) in GitHub and click copy icon at the top right to copy the entire file content. This will copy the file contents to the Windows Clipboard.
 
@@ -887,9 +887,9 @@ In this section, we will build a real-time dashboard to visualize the streaming 
 
    ![alt text](assets/image_task13_step04.png)
 
-5. Click on the Button **+ Data source**.
+5. Click on the Button **Data source** and select **Eventhouse/KQL Database** from the menu.
 
-   ![alt text](assets/image_task13_step05.png)
+   ![alt text](assets/image_task13_step05b.png)
 
 6. In the Window **One Lake Data Hub** select the Eventhouse **WebEvents_EH**. Then click on **Connect**.
 
