@@ -105,7 +105,7 @@ The e-commerce store database entities are:
 
 Real-Time Intelligence empowers organizations to ingest, process, analyze, and interact with their data using natural language. It enables seamless data transformation and automated action — all centralized through the Real-Time Hub, which provides easy access to and visualization of both internal and external streaming data, including first- and third-party sources:
 
-![RTIComponents](assets/FabricRTIArchitecture.png "Components of Fabric's Real-Time Intelligence")
+![RTIComponents](assets/rtiLabArchitecture.png "Components of Fabric's Real-Time Intelligence")
 
 The image illustrates a comprehensive Real-Time Intelligence architecture built on Microsoft Fabric, showing how organizations can seamlessly ingest, process, analyze, and act on both streaming and batch data in real time.
 
@@ -153,12 +153,12 @@ With Data Activator (Reflex), you can define alerts based on real-time metrics a
 
 #### Tables
 
-| Table                 | Origin           | Description                                                                                                                                                                                                                                 |
-| --------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **BronzeClicks**      | Eventhouse table | Streaming events representing the product being seen or clicked by the customer. Will be streamed into Fabric Eventhouse from an eventstream. We'll use a Fabric Notebook to simulate and push synthetic data (fake data) into an endpoint. |
-| **BronzeImpressions** | Eventhouse table | Streaming events representing the product being seen or clicked by the customer. Will be streamed into Fabric Eventhouse from an eventstream. We'll use a Fabric Notebook to simulate and push synthetic data (fake data) into an endpoint. |
-| **SilverClicks**      | EventHouse table | Table created based on an update policy with **transformed data**.                                                                                                                                                                          |
-| **SilverImpressions** | EventHouse table | Table created based on an update policy with **transformed data**.                                                                                                                                                                          |
+| Table                 | Origin           | Description                                                                                                                                                                                                                         |
+| --------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **BronzeClicks**      | Eventhouse table | Streaming events representing the product being clicked by the customer. Will be streamed into Fabric Eventhouse from an eventstream. We'll use a Fabric Notebook to simulate and push synthetic data (fake data) into an endpoint. |
+| **BronzeImpressions** | Eventhouse table | Streaming events representing the product being seen by the customer. Will be streamed into Fabric Eventhouse from an eventstream. We'll use a Fabric Notebook to simulate and push synthetic data (fake data) into an endpoint.    |
+| **SilverClicks**      | EventHouse table | Table created based on an update policy with **transformed data**.                                                                                                                                                                  |
+| **SilverImpressions** | EventHouse table | Table created based on an update policy with **transformed data**.                                                                                                                                                                  |
 
 #### External Tables
 
@@ -441,39 +441,27 @@ In this section we will be streaming events (impressions and clicks events). The
 
    ![alt text](assets/image_task05_step03b.png)
 
-4. A dialog with the name **You need to verify your identity** will be shown. Click on **Continue**.
-
-   ![alt text](assets/image_task05_step04b.png)
-
-5. You have to authenticate again throgh your Authenticator App. Please do so.
-
-   <div class="important" data-title="Note">
-
-   > It can be that the dialog **You need to verify your identity** will be shown several times. Please click on **Continue** until the dialog does not appear again.
-
-   </div>
-
-6. In the dialog **Select a data source** click on the button **Connect**.
+4. In the dialog **Select a data source** click on the button **Connect**.
 
    ![alt text](assets/image_task05_step05b.png)
 
-7. In the dialog **Configure connection settings** choose **FabConVegas2025EventHubConnection** for the combobox **Connection** and insert the name of the consumer group into the field **Consumer group** that aligns with the username that was provided to you. In my case this is `workshopuser49`. Ensure that the **Data format** is Json and click on the pencil icon next to **Source name**.
+5. In the dialog **Configure connection settings** choose **FabConVegas2025EventHubConnection** for the combobox **Connection** and insert the name of the consumer group into the field **Consumer group** that aligns with the username that was provided to you. In my case this is `workshopuser49`. Ensure that the **Data format** is Json and click on the pencil icon next to **Source name**.
 
    ![alt text](assets/image_task05_step06b.png)
 
-8. Enter `WebEventsSource` as **Source name** and then click on the button **Next**
+6. Enter `WebEventsSource` as **Source name** and then click on the button **Next**
 
    ![alt text](assets/image_task05_step08b.png)
 
-9. On the screen **Review + Connect** review all of the information and then click on the button **Add**
+7. On the screen **Review + Connect** review all of the information and then click on the button **Add**
 
    ![alt text](assets/image_task05_step09b.png)
 
-10. Click on **Publish** at the top of the screen.
+8. Click on **Publish** at the top of the screen.
 
-![alt text](assets/image_task05_step10b.png)
+   ![alt text](assets/image_task05_step10b.png)
 
-11. After a short while (usually between 5 to 10 minutes) you should be able to see some data below the Eventstream in the tab **Test result**.
+9. If it is working ok, you should be able to see some test data below the Eventstream in the tab **Test result**.
 
 ![alt text](assets/image_task05_step11b.png)
 
