@@ -641,7 +641,7 @@ Next we have to create the Eventstream topology that will insert the streamed da
 
     ![alt text](assets/image_task08_step21f.png)
 
-### 9. Setting up the Lakehouse
+### 7. Setting up the Lakehouse
 
 In this task we will set up the Lakehouse that will contain additional information for our usecase and in which we will also make the data from the KQL Database accessible through the lakehouse.
 
@@ -663,7 +663,7 @@ In this task we will set up the Lakehouse that will contain additional informati
 
    ![alt text](assets/image_task09_step04.png)
 
-### 10. Uploading reference data files and creating delta tables in the lakehouse
+### 8. Uploading reference data files and creating delta tables in the lakehouse
 
 After our lakehouse has been created the overview page of the lakehouse will be displayed. Next task we have to accomplish is to load static data into our new lakehouse. To do so please execute the following steps.
 
@@ -711,7 +711,7 @@ After our lakehouse has been created the overview page of the lakehouse will be 
 
    ![alt text](assets/image_task10_step07.png)
 
-### 11. Accessing Eventhouse data from the lakehouse
+### 9. Accessing Eventhouse data from the lakehouse
 
 In this task we will make the Eventhouse tables form the KQL Database available in our Lakehouse. This will be accomplished by creating _shortcuts_.
 
@@ -759,7 +759,7 @@ In this task we will make the Eventhouse tables form the KQL Database available 
 
    </div>
 
-### 12. Build the KQL DB schema
+### 10. Build the KQL DB schema
 
 In this section we will create all the silver tables, functions and enable update policies and in our Eventhouse KQL Database. Two of the tables (`product` and `productCategory`) are shortcuts to the lakehouse and the data is **NOT** being copied into our KQL Database.
 
@@ -847,7 +847,7 @@ In this section we will create all the silver tables, functions and enable updat
 
      </div>
 
-### 13. Real-Time Dashboard
+### 11. Real-Time Dashboard
 
 In this section, we will build a real-time dashboard to visualize the streaming data and set it to refresh every 30 seconds. (Optionally) A pre-built version of the dashboard is available to download [here](<https://github.com/microsoft/FabricRTIWorkshop/blob/main/dashboards/RTA%20dashboard/dashboard-RTA Dashboard.json>), which can be imported and configured to your KQL Database data source.
 
@@ -1096,7 +1096,7 @@ In this section we will enable auto-refresh so the dashboard will be automatical
 
    ![alt text](assets/image_task13_step21.png)
 
-### 14. Data Activator
+### 12. Data Activator
 
 In this section we will create a Reflex Alert that will send a Teams Message when a value meets a certain threshold.
 
@@ -1129,7 +1129,7 @@ In this section we will create a Reflex Alert that will send a Teams Message whe
 > The Reflex item will appear in your workspace and you can edit the Reflex trigger action. The same Reflex item can also trigger multiple actions. 
 </div>
 
-### 15. Bonus Challenges
+### 13. Bonus Challenges
 
 #### Build Power BI report using the data in Eventhouse
 
