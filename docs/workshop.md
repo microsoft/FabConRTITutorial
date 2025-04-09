@@ -42,6 +42,12 @@ All the **code** in this tutorial can be found here:
 - Each section is accompanied with technical explanation of the Fabric Real-Time Intelligence component being used in the tutorial.
 - Without the accompanied explanation, the tutorial can be completed in 1-2 hours.
 
+<div class="important" data-title="Note">
+
+> There are two versions of this lab. One version is dependent on a given Eventhub that streams the Clickstream Data, in the otherone you can use a notebook to create the datastream.
+
+</div>
+
 ## Original Creators
 
 This workshop/tutorial was originally written by the following authors and is available at [Fabric-RTI-Workshop](https://aka.ms/fabricrtiworkshop)
@@ -324,7 +330,7 @@ If you need a new Trial Tenant to complete the lab, suggest to register a new Ou
 
 ---
 
-## Building the platform
+## Building the platform - Eventhub
 
 ### 1. Login to Lab Environment
 
@@ -1144,6 +1150,892 @@ Using the Fabric Events in Real-Time hub, build a pipeline that sends link to th
 Add Reflex as a destination to your Eventstream and create an email alert everytime number of impressions exceed a value of your choice 3 times every 10 minutes.
 
 ---
+
+## Building the platform - Notebook
+
+### 1. Login to Lab Environment
+
+<div class="info" data-title="Note">
+  
+> Do **not** use an InPrivate browser window. Recommend using a Personal browser window to successfully run this lab.
+</div>
+
+1. Open [app.fabric.microsoft.com](https://app.fabric.microsoft.com/) in your browser.
+
+   ![FabricURL](assets/image_task01_step01.png "Fabric URL")
+
+2. Login with provided credentials, if a trial fabric tenant was previously setup (reference Pre-reqs). You may also choose to run the lab in your own Fabric Tenant if you already have one.
+
+3. Click **Real-Time Intelligence**.
+
+   ![Fabric Home](assets/image_task01_step03.png "Real-Time Intelligence")
+
+### 2. Fabric Workspace
+
+1. Click **Workspaces** on the left menu and open the Fabric Workspace **designated** to your login by the Fabric Trial Tenant.
+2. (Optional) If using your own Fabric Tenant, create a new workspace for this lab.
+
+3. To create a new Workspace click on **Workspaces** in the left pane and then click on **+ New Workspace** in the popup window.
+
+   ![alt text](assets/image_task02_step01.png)
+
+4. Enter `RTI Tutorial` as name for the new Workspace. Then extend **Advanced**
+
+   ![alt text](assets/image_task02_step02.png)
+
+<div class="info" data-title="Note">
+  
+> If the name that you would like to use for your workspace is still available this will be shown below the input box for **Name**. Workspace Names have to be unique in a Fabric tenant.
+</div>
+
+3. Check if the option **Trial** is checked. If so click on **Apply**.
+
+   ![alt text](assets/image_task02_step03.png)
+
+   After you clicked on **Apply** the workspace will be created. This can take up to a minute. The workspace will be opened automatically.
+
+### 3. Create a new Eventhouse
+
+1. To create an Eventhouse click on the button **+ New Item**.
+
+   ![alt text](assets/image_task03_step01.png)
+
+2. In the popup window **New item** select **Eventhouse**
+
+   ![alt text](assets/image_task03_step02.png)
+
+3. In the dialog **New Eventhouse** insert `WebEvents_EH` as name and click on **Create**
+
+   ![alt text](assets/image_task03_step03.png)
+
+   After the Eventhouse has been created it will be automatically opened.
+
+<div class="info" data-title="Note">
+  
+> The [Eventhouse](https://learn.microsoft.com/en-us/fabric/real-time-intelligence/eventhouse) is designed to handle real-time data streams efficiently, which lets organizations ingest, process, and analyze data in near real-time. Eventhouses are particularly useful for scenarios where **timely insights are crucial**. Eventhouses are **specifically tailored** to time-based, streaming events with multiple data formats. This data is automatically indexed and partitioned based on ingestion time.
+</div>
+
+### 4. Enable OneLake Availability
+
+This feature is also called **"one logical copy"** and it automatically allows KQL Database tables to be accessed from a Lakehouse, Notebooks, etc in delta-parquet format via OneLake.
+
+When activated it will constantly copy the KQL data to your Fabric OneLake in delta format. It allows you to query KQL Database tables as delta tables using Spark or SQL endpoint on the Lakehouse. We recommend enabling this feature "before" we load the more data into our KQL Database. Also, consider this feature can be enabled/disabled per table if necessary. You can read more about this feature here: [Announcing Delta Lake support in Real-Time Intelligence KQL Database](https://support.fabric.microsoft.com/blog/announcing-delta-support-in-real-time-analytics-kql-db?ft=All).
+
+![alt text](assets/fabrta70.png)
+
+#### Here's how to set this up
+
+1. When an Eventhouse is created, a KQL Database with the same name is created as well. To open the KQL Database click on the Database **WebEvents_EH** in the section **KQL Databases**.
+
+   ![alt text](assets/image_task04_step01.png)
+
+2. After selecting the KQL Database click on the switch **availibility** to activate the OneLake availibility as shown in the screenshot.
+
+   ![alt text](assets/image_task04_step02.png)
+
+   <div class="info" data-title="Note">
+
+   > **Newly created tables will automatically inherit the "OneLake availability" setting from the Database level**
+
+   </div>
+
+3. Now the dialog **Turn on OneLake availibility** is shown. Ensure that **Apply to existing tables** is checked and click on the button **Turn on**.
+
+   ![alt text](assets/image_task04_step03.png)
+
+### 5. Create a new Eventstream
+
+In this section we will be streaming events (impressions and clicks events) generated by a notebook. The events will be streamed into an eventstream and consumed by our Eventhouse KQL Database.
+
+![alt text](assets/fabrta73.png)
+
+1. Select your Workspace in the left pane. In our example it is **RTI Tutorial**. If you have been assigned a Workspace at the start of this lab, choose the workspace name that was provided to you. Then click on **+ New Item**. In the popout window scroll a little bit down and select **Eventstream**.
+
+   ![alt text](assets/image_task05_step01.png)
+
+2. Give the Eventstream the name `WebEventsStream_ES`. Make sure that the checkbox **Enhanced Capabilites** is selected and click on **Create**.
+
+   ![alt text](assets/image_task05_step02.png)
+
+3. On the Screen **Design a flow to ingest, transform, and route streaming events** click on **Use Custom Endpoint**. This will create an event hub connected to the Eventstream.
+
+   ![alt text](assets/image_task05_step03.png)
+
+4. Insert `WebEventsCustomSource` as the source name and the click on **Add**.
+
+   ![alt text](assets/image_task05_step04.png)
+
+5. Click on **Publish**.
+
+   ![alt text](assets/image_task05_step05.png)
+
+   Now the Eventstream will be published and the Event Hub will be created.
+
+6. To get the information we need for the Notebook, the name of the event hub and a connection string click on the Eventstream source named **WebEventsCustomSource**. In the area below the diagram click on **Keys**. Then click on the copy icon besides the **Event hub name**. Now the event hub name is copied to the clipborad.
+
+   ![alt text](assets/image_task05_step06.png)
+
+<div class="info" data-title="Note">
+  
+>  The easiest way to record the needed values is to just copy them to a notepad window for later reference.
+</div>
+
+7. To copy the connection string you first have to click on the view icon. After the connection string is revealed click on the copy icon and copy the connection string to Notepad as well.
+
+   ![alt text](assets/image_task05_step07.png)
+
+<div class="info" data-title="Note">
+
+> It does not matter if you copy the primary or secondary connection string.
+
+</div>
+
+<div class="important" data-title="Note">
+
+> To copy the connection string it must be visible.
+
+</div>
+
+<div class="important" data-title="Note">
+
+> Eventstreams Custom-Endpoint/Custom-App sources also provide **Kafka** endpoints where data can be pushed to
+
+</div>
+
+### 6. Import Data Generator Notebook
+
+We use a python notebook to generate a stream of artificial click events. The notebook can be found in this GitHub repository [Generate_synthetic_web_events.ipynb](https://github.com/microsoft/FabConRTITutorial/blob/main/notebook/Generate_synthetic_web_events.ipynb).
+
+1. Open the notebook in Github by clicking on this [link](https://github.com/microsoft/FabConRTITutorial/blob/main/notebook/Generate_synthetic_web_events.ipynb). In GitHub click on the **Download raw file** icon on the top right.
+
+   ![alt text](assets/image_task06_step01.png)
+
+   Save the notebook on your local hard drive. By default it will be stored in the folder **Downloads**.
+
+   Now we have to import the notebook into our Fabric Workspace. To aceive this execute the following steps.
+
+2. To import the notebook into your workspace you first have to return to the workspace. To do so click on the icon of your workspace on the left pane. In our example the workspace is named **RTI Tutorial**. If you have been assigned a Workspace at the start of this lab, choose the workspace name that was provided to you. After changing to the workspace click on the menu **Import**, select **Notebook** and then the option **From this computer**.
+
+   ![alt text](assets/image_task06_step02.png)
+
+3. In the pane **Import status** on the right side select **Upload**
+
+   ![alt text](assets/image_task06_step03.png)
+
+4. Browse to the folder on your local computer where you saved the notebook and select the notebook and click on the button **Open**.
+
+   ![alt text](assets/image_task06_step04.png)
+
+   After the notebook has been uploaded Fabric will display a message that the notebook has been imported successfully.
+
+   ![alt text](assets/image_task06_step04b.png)
+
+### 7. Run the notebook
+
+Now we have to run the notebook to create the stream of artificial click events for our lab. In order for the Notebook to send the events to the correct Event Hub we have to insert the information we have saved in [Task 5 - Create Event Stream](#5-create-a-new-eventstream).To run the notebook and create our datastream please proceed with the following steps.
+
+<div class="warning" data-title="Note">
+
+> DO NOT use an InPrivate browser window. Recommend using a Personal browser window for the Notebook session to connect and run successfully.
+
+</div>
+
+1. Click on the Notebook **Generate_synthetic_web_events** in your Fabric Workspace to open it.
+
+   ![alt text](assets/image_task07_step01.png)
+
+2. Paste in the values your copied in [Task 5 - Create Event Stream](#5-create-a-new-eventstream) as values for `eventHubNameevents` and `eventHubConnString` into the notebook.
+
+   ![alt text](assets/image_task07_step02.png)
+
+3. Click **Run all** at the top left to start generating streaming events.
+
+   ![alt text](assets/image_task07_step03.png)
+
+   <div class="info" data-title="Note">
+
+   > It can happen that the notebook will throw some errors in cell 1. These errors are caused by libaries that already have been installed in the environment. You can safely ignore these errors. The notebook will execute successfully regardless of these errors.
+
+   </div>
+
+   ![alt text](assets/image_task07_errors.png)
+
+   Wait a few minutes for the first code cell to finish and it will proceed to next code cells automatically.
+
+4. Scroll down to the last code cell and it should begin to print the generated synthetic events in JSON format. If you see an output similar to the following screenshot everything is set up and the notebooks streams artificial click data to the event hub.
+
+   ![alt text](assets/image_task07_step04.png)
+
+### 8. Define Eventstream topology
+
+Next we have to create the Eventstream topology that will insert the streamed data into our KQL Database. To aceive this please follow the following steps.
+
+1. Open your Eventstream in your Fabric Workspace. To do so click on the icon of your workspace on the left pane. In our example the workspace is named **RTI Tutorial**. If you have been assigned a Workspace at the start of this lab, choose the workspace name that was provided to you. After changing to the workspace click on the Eventstream **WebEventStream_ES**.
+
+   ![alt text](assets/image_task08_step01.png)
+
+2. Click on **Edit** in the top toolbar.
+
+   ![alt text](assets/image_task08_step02.png)
+
+3. Click on the node **Transform events or add Destination** and select **Filter** from the menu.
+
+   ![alt text](assets/image_task08_step03.png)
+
+   <div class="info" data-title="Note">
+
+   > Pay attention to the table you can see at the bottom of the screen. Here you can see events that are streamed by notebook to the event already.
+
+   </div>
+
+4. Click on the pencil icon in the node **Filter1** to enter edit mode.
+
+   ![alt text](assets/image_task08_step04.png)
+
+5. Provide the following values in the pane **Filter** on the left side. Then click on **Save**.
+
+   | Field                           | Value               |
+   | :------------------------------ | :------------------ |
+   | **Operation name**              | `ClickEventsFilter` |
+   | **Select a field to filter on** | **eventType**       |
+   | **Keep events when the value**  | **equals**          |
+   | **value**                       | `CLICK`             |
+
+   ![alt text](assets/image_task08_step05.png)
+
+   <div class="important" data-title="Note">
+
+   > Note: `CLICK` is in **ALL CAPS**.
+
+   </div>
+
+   <div class="important" data-title="Note">
+
+   > It is normal that the node **ClickEventsFilter** is shown with an error. The error indicates that there is no target for the datastream coming out of the filter. We will fix this in the next step.
+
+   </div>
+
+6. Click on **+** icon next to the **ClickEventsFilter** node. and choose **Stream** from the context menu.
+
+   ![alt text](assets/image_task08_step06.png)
+
+7. Coose **Stream** from the context menu.
+
+   ![alt text](assets/image_task08_step07.png)
+
+8. Click on the pencil in node **Stream1** to go to edit mode. Enter `ClickEventsStream` as name of the Eventstream in the field **Stream name**. Ensure that the **Input data format** is **Json**. Click on the Button **Save**.
+
+   ![alt text](assets/image_task08_step08.png)
+
+9. Click on **+** icon next to the node **ClickEventsStream**.
+
+   ![alt text](assets/image_task08_step09.png)
+
+10. Select the option **Eventhouse** in the context menu.
+
+    ![alt text](assets/image_task08_step10.png)
+
+11. Click the pencil in node **Eventhouse1** to enter edit mode. Provide the following values in the pane **Eventhouse**.
+
+    | Field                                 | Value                                                                                                                                        |
+    | :------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------- |
+    | **Event processing before ingestion** | Ensure that this option is selected.                                                                                                         |
+    | **Destionation name**                 | `ClickEventStore`                                                                                                                            |
+    | **Workspace**                         | Select **RTI Tutorial**. If you have been assigned a Workspace at the start of this lab, choose the workspace name that was provided to you. |
+    | **Eventhouse**                        | Select the Eventhouse **WebEvents_EH**                                                                                                       |
+    | **KQL Database**                      | Select the KQL Database **WebEvents_EH**                                                                                                     |
+    | **Destination table**                 | Click on **Create new** and enter `BronzeClicks` as name for the new table and click on **Done**.                                            |
+    | **Input data format**                 | Ensure that the option **Json** is selected.                                                                                                 |
+
+    ![alt text](assets/image_task08_step11.png)
+
+    Click the button **Save** after you entered all the values.
+
+12. Click on **+** sign next to the node **WebEventsStream_ES**.
+
+    ![alt text](assets/image_task08_step12.png)
+
+13. Choose the option **Filter** from the context menu.
+
+    ![alt text](assets/image_task08_step13.png)
+
+14. Delete the connection between the new filter node **Filter1** and the node **ClickEventsFilter** by clicking on the trashcan icon.
+
+    ![alt text](assets/image_task08_step14.png)
+
+15. Connect the output of the node **WebEventsStream_ES** to the input of the node **ClickEventsFilter**.
+
+    ![alt text](assets/image_task08_step15.gif)
+
+16. Click on the pencil icon of the new node **Filter1** to enter edit mode. Provide the following values in the pane **Filter** on the left side. Then click on **Save**.
+
+    | Field                           | Value                    |
+    | :------------------------------ | :----------------------- |
+    | **Operation name**              | `ImpressionEventsFilter` |
+    | **Select a field to filter on** | **eventType**            |
+    | **Keep events when the value**  | **equals**               |
+    | **value**                       | `IMPRESSION`             |
+
+    ![alt text](assets/image_task08_step16.png)
+
+    <div class="important" data-title="Note">
+
+    > Note: `IMPRESSION` is in **ALL CAPS**.
+
+    </div>
+
+    <div class="important" data-title="Note">
+
+    > It is normal that the node **ImpressionEventsFilter** is shown with an error. The error indicates that there is no target for the datastream coming out of the filter. We will fix this in the next step.
+
+    </div>
+
+17. Click on **+** sign next to the **ImpressionEventsFilter** node and choose **Stream** from the context menu.
+
+    ![alt text](assets/image_task08_step17.png)
+
+18. Click on the pencil icon in the node **Stream1** to enter edit mode. Enter `ImpressionsEventsStream` as name of the Eventstream in the field **Stream name**. Ensure that the **Input data format** is **Json**. Click on the Button **Save**.
+
+    ![alt text](assets/image_task08_step18.png)
+
+19. Click on **+** icon next to the node **ImpressionEventsStream** and select **Eventhouse** from the context menu.
+
+    ![alt text](assets/image_task08_step19.png)
+
+20. Click the pencil in node **Eventhouse1** to enter edit mode. Provide the following values in the pane **Eventhouse**.
+
+    | Field                                 | Value                                                                                                                                        |
+    | :------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------- |
+    | **Event processing before ingestion** | Ensure that this option is selected.                                                                                                         |
+    | **Destionation name**                 | `ImpressionEventStore`                                                                                                                       |
+    | **Workspace**                         | Select **RTI Tutorial**. If you have been assigned a Workspace at the start of this lab, choose the workspace name that was provided to you. |
+    | **Eventhouse**                        | Select the Eventhouse **WebEvents_EH**                                                                                                       |
+    | **KQL Database**                      | Select the KQL Database **WebEvents_EH**                                                                                                     |
+    | **Destination table**                 | Click on **Create new** and enter `BronzeImpressions` as name for the new table and click on **Done**.                                       |
+    | **Input data format**                 | Ensure that the option **Json** is selected.                                                                                                 |
+
+    After providing these values click on the button **Save**.
+
+    ![alt text](assets/image_task08_step20.png)
+
+21. Click on the button **Publish** that is located in the toolbar at the top of the screen.
+
+    ![alt text](assets/image_task08_step21.png)
+
+    After a few minutes, you should see the nodes **ClickEventStore** and **ImpressionEventStore** change to mode **Streaming**.
+
+    ![alt text](assets/image_task08_step21b.png)
+
+    In the end your Eventstream toplogy should look like the image below.
+
+    ![alt text](assets/image_task08_step21c.png)
+
+### 9. Setting up the Lakehouse
+
+In this task we will set up the Lakehouse that will contain additional information for our usecase and in which we will also make the data from the KQL Database accessible through the lakehouse.
+
+1. Go to the folder [**ref_data**](https://github.com/microsoft/FabConRTITutorial/tree/main/ref_data) in the Github repo and download the **products.csv** and **productcategory.csv** files on your computer.
+
+   ![alt text](assets/image_task09_step01.png)
+
+2. To create a Lakehouse we first have to return to the workspace where all other objects are in. To do so click on the icon **RTI Tutorial** in the left toolbar. If you have been assigned a Workspace at the start of this lab, choose the workspace name that was provided to you.
+
+   ![alt text](assets/image_task09_step02.png)
+
+3. Click on the button **+ New Item** in the toolbar and in the popin window click on the tile **Lakehouse**.
+
+   ![alt text](assets/image_task09_step03.png)
+
+4. In the dialog **New lakehouse** enter `WebSalesData_LH` as name for the new lakehouse. Ensure that the checkbox **Lakehouse schemas (Public Preview)** is not checked. Then click on the button **Create**
+
+   ![alt text](assets/image_task09_step04.png)
+
+### 10. Uploading reference data files and creating delta tables in the lakehouse
+
+After our lakehouse has been created the overview page of the lakehouse will be displayed. Next task we have to accomplish is to load static data into our new lakehouse. To do so please execute the following steps.
+
+1. Click on the button **Get data** in the toolbar and select **Upload Files** from the dropdown menu.
+
+   ![alt text](assets/image_task10_step01.png)
+
+2. To upload the two files click on the folder symbol under **Files/**. Select the two files **products.csv** and **productcategory.csv**. Then click on the button **Open**.
+
+   ![alt text](assets/image_task10_step02.png)
+
+   <div class="info" data-title="Note">
+
+   > To select the two files at once you can just hold the key **CTRL** while you click the two files.
+
+   </div>
+
+3. In the popin window **Upload files** click on the button **Upload**. Now the files will be uploaded.
+
+   ![alt text](assets/image_task10_step03.png)
+
+4. To check that the files have been uploaded successfully, click on the folder **Files** in the pane **Explorer**. You should see the files in the list **Files** in the right part of the window.
+
+   ![alt text](assets/image_task10_step04.png)
+
+5. Next we have to create delta tables in our Lakehouse from the files we uploaded. To do this access the context menu by clicking on the three dots (**...**). Select **Load to tables** from the context menu.
+
+   ![alt text](assets/image_task10_step05.png)
+
+   In the submenu click on **New table**
+
+   ![alt text](assets/image_task10_step05b.png)
+
+6. Retain all default values and click on the button **Load**.
+
+   ![alt text](assets/image_task10_step06.png)
+
+   <div class="info" data-title="Note">
+
+   > This steps have to be executed for the file **productcategory.csv** as well as for the file **product.csv**.
+
+   </div>
+
+7. Ensure that both files **products.csv** and **productcategory.csv** are available as delta tables in your lakehouse. Your lakehouse should look like this:
+
+   ![alt text](assets/image_task10_step07.png)
+
+### 11. Accessing Eventhouse data from the lakehouse
+
+In this task we will make the Eventhouse tables form the KQL Database available in our Lakehouse. This will be accomplished by creating _shortcuts_.
+
+1. Click on the button **Get data** in the menu bar at the top. Choose **New shortcut** from the dropdown menu.
+
+   ![alt text](assets/image_task11_step01.png)
+
+   <div class="important" data-title="Note">
+
+   > If your Lakehouse is using Schemas you will see the schema **dbo** under the folder **Tables**. right-click the schema **dbo** and select the option **New table shortcut** from the context menu.
+
+   </div>
+
+2. Select Microsoft OneLake.
+
+   ![alt text](assets/image_task11_step02.png)
+
+3. Select the KQL Database **WebEvents_EH** in the Window **Select a data source type** and click on the button **Next**.
+
+   ![alt text](assets/image_task11_step03.png)
+
+4. Expand the folder **Tables** under **WebEvents_EH** in the window **New shortcut** and check both tables **BronzeClicks** and **BronzeImpressions**. Click on **Next**.
+
+   ![alt text](assets/image_task11_step04.png)
+
+   <div class="info" data-title="Note">
+
+   > You may return to this step to create additional shortcuts, after running the [createAll.kql](https://github.com/microsoft/FabConRTITutorial/blob/main/kql/createAll.kql) database script which will create additional tables. For now, you may proceed by selecting just the **BronzeClicks** and **BronzeImpressions** tables.
+
+   </div>
+
+5. Click on the button **Create**.
+
+   ![alt text](assets/image_task11_step05.png)
+
+   Now you can see the shortcuts to the tables **BronzeClicks** and **BronzeImpressions** under the folder **Tables** in the lakehouse **WebSalesData_LH**.
+
+   ![alt text](assets/image_task11_step05b.png)
+
+   <div class="info" data-title="Note">
+
+   > Note that the shortcuts have another icon than the regular delta tables.
+
+   </div>
+
+### 12. Build the KQL DB schema
+
+In this section we will create all the silver tables, functions and enable update policies and in our Eventhouse KQL Database. Two of the tables (`product` and `productCategory`) are shortcuts to the lakehouse and the data is **NOT** being copied into our KQL Database.
+
+![alt text](assets/fabrta71.png)
+
+1. Open the KQL Database **WebEvents_EH** in the Eventhouse of your Fabric Workspace. To do so click on the Icon of the Eventhouse in the left toolbar.
+
+   ![alt text](assets/image_task12_step01.png)
+
+2. Click on the button **+ New** in the top toolbar and choose **OneLake shortcut** from the drop down menu.
+
+   ![alt text](assets/image_task12_step02.png)
+
+   <div class="info" data-title="Note">
+
+   > By now data has already streamed into you KQL-Database. You can see this by looking at the dashborad that is provided on the overview page of the KQL-Database ![alt text](assets/image_task12_step02b.png)
+
+   </div>
+
+3. Select **Microsoft OneLake**..
+
+   ![alt text](assets/image_task12_step03.png)
+
+4. Select the lakehouse **WebSalesData_LH** and click on the button **Next**.
+
+   ![alt text](assets/image_task12_step04.png)
+
+5. Expand the folder **Tables**, select the table **products** table and click on the button **Create**. This will create a shortcut to the table **products** in your Lakehouse without copying the data from the Lakehouse to Eventhouse.
+
+   ![alt text](assets/image_task12_step05.png)
+
+   <div class="important" data-title="Note">
+
+   > Repeat the steps above for the table **productcategory** to create a shortcut for this table as well.
+
+   </div>
+
+6. Expand the folder **Shortcuts** in the tree of your Eventhouse **WebEvents_EH** to verify if the 2 shortcuts have been created correctly.
+
+   ![alt text](assets/image_task12_step06.png)
+
+7. Click on the button **Explore your Data** at the top of the screen.
+
+   ![alt text](assets/image_task12_step07.png)
+
+   The popin window **Explore your data** will be shown.
+
+   ![alt text](assets/image_task12_step07b.png)
+
+8. Open the file [createAll.kql](https://github.com/microsoft/FabConRTITutorial/blob/main/kql/createAll.kql) in GitHub and click copy icon at the top right to copy the entire file content. This will copy the file contents to the Windows Clipboard.
+
+   ![alt text](assets/image_task12_step08.png)
+
+9. On the left side in the pane **KQL Databases** underneath the node **WebEvents_EH** there is the automatically created queryset **WebEvents_EH_queryset**. Click on this queryset and replace the text in the tab **WebEvents_EH** by the contents of the file [createAll.kql](https://github.com/microsoft/FabConRTITutorial/blob/main/kql/createAll.kql). The easiest way to do this is to click in the textbox, press **CTRL**+**A** to select everything and then press **CTRL**+**V** to insert the contents from the clipboard. Then click on the Button **Run**
+
+   ![alt text](assets/image_task12_step09.png)
+
+   The status of the execution of the commands from the file [createAll.kql](https://github.com/microsoft/FabConRTITutorial/blob/main/kql/createAll.kql) can be seen at the bottom of the pane. The result of each Command should be **Completed**.
+
+   ![alt text](assets/image_task12_step09b.png)
+
+   Click on the pencil at the tab **WebEvents_EH** and rename the tab to **createAll**.
+
+   ![alt text](assets/image_task12_step09c.png)
+
+    <div class="info" data-title="Note">
+
+   > You can add additional tabs in the KQL Queryset to add new queries.
+
+    </div>
+
+10. Expand all folders in the database pane on the left. All tables and functions that have been created by the script can be found here.
+
+    ![alt text](assets/image_task12_step012.png)
+
+    <div class="important" data-title="Note">
+
+    > While on the KQL Database details screen you may explore additional **Real-Time Intelligence Samples** by clicking the **drop-drop next to Get data** and selecting a desired sample. These samples give you the ability to learn more.
+
+     </div>
+
+    ![alt text](assets/image_task12_step012b.png)
+
+    There are many samples from different usecases like IoT, weather analytics or Azure PlayFab game analytics.
+
+    ![alt text](assets/image_task12_step012c.png)
+
+### 13. Real-Time Dashboard
+
+In this section, we will build a real-time dashboard to visualize the streaming data and set it to refresh every 30 seconds. (Optionally) A pre-built version of the dashboard is available to download [here](<https://github.com/microsoft/FabricRTIWorkshop/blob/main/dashboards/RTA%20dashboard/dashboard-RTA Dashboard.json>), which can be imported and configured to your KQL Database data source.
+
+    <div class="important" data-title="Note">
+      > The Proctor Guide covers this process.
+
+![Real-Time Dashboard](assets/RealTimeDashboard.png "Real-Time Dashboard")
+
+</div>
+
+1. Change to the workspace. To do so click on the icon of your workspace on the left pane. In our example the workspace is named **RTI Tutorial**. If you have been assigned a Workspace at the start of this lab, choose the workspace name that was provided to you.
+
+   ![alt text](assets/image_task13_step01.png)
+
+2. To create a new realtime dashboard click on the button **+ New Item** and the select **Real-Time Dashboard**
+
+   ![alt text](assets/image_task13_step02.png)
+
+3. Enter the name `Web Events Dashboard` in the field **New Real-Time Dashboard**. Then click on **Create**.
+
+   ![alt text](assets/image_task13_step03.png)
+
+4. An empty dashboard will be displayed. To add a visualisation click on the button **+ Add tile**.
+
+   ![alt text](assets/image_task13_step04.png)
+
+5. Click on the Button **+ Data source**.
+
+   ![alt text](assets/image_task13_step05.png)
+
+6. In the Window **One Lake Data Hub** select the Eventhouse **WebEvents_EH**. Then click on **Connect**.
+
+   ![alt text](assets/image_task13_step06.png)
+
+7. As name keep the given name `WebEvents_EH`. Set the **Database** to **WebEvents_EH** and click on the button **Add**.
+
+   ![alt text](assets/image_task13_step07.png)
+
+Proceed to paste each query below, add a visual, and apply changes. (Optionally) All queries are available in this script file [dashboard-RTA.kql](https://github.com/microsoft/FabricRTIWorkshop/blob/main/dashboards/RTA%20dashboard/dashboard-RTA.kql).
+
+   <div class="important" data-title="Note">
+
+> We will demo the steps for the very first Visual. From there on you can follow the exact same steps for all other visuals on your own.
+
+   </div>
+
+#### Clicks by hour
+
+This visual will show the clicks by hour. It will use the following query.
+
+```kusto
+//Clicks by hour
+SilverClicks
+| where eventDate between (_startTime.._endTime)
+| summarize date_count = count() by bin(eventDate, 1h)
+| render timechart
+| top 30 by date_count
+```
+
+1. Replace the content of the textbox by the code above. Click on the time range parameter at the top of the screen and set it to **Last 7 days**. This parameter is referenced by the query in the `where` clause by using fields `_startTime` and `_endTime`. Click on the button **Run**. The query will be executed and the results will be shown in the table at the bottom. To create a visualisation click on the button **+ Add Visual**. This will open a pane at the right side of the browser.
+
+   ![alt text](assets/image_task13_step08.png)
+
+2. Format the visual by entering `Click by hour` in the field **Title**. Select **Area chart** in the combobox **Visual type**. Then click on the button **Apply changes**.
+
+   ![alt text](assets/image_task13_step09.png)
+
+    <div class="important" data-title="Note">
+
+   > When you click on **Apply changes** the value of the range parameter will jump back to one hour. Ignore this for now as we will fix this later.
+
+     </div>
+
+3. While editing the dashboard, click on the tab **Manage** on the top left then click on the button **Parameters**.
+
+   ![alt text](assets/image_task13_step10.png)
+
+4. To edit the parameter **Time range** click on the pencil icon. This will enter the edit mode for this parameter.
+
+   ![alt text](assets/image_task13_step11.png)
+
+5. Select **Last 7 Days** in the combo box **Default value**. Then click on **Done**.
+
+   ![alt text](assets/image_task13_step12.png)
+
+6. In the parameter pane click on the button **Close**.
+
+   ![alt text](assets/image_task13_step13.png)
+
+7. Click on the tab **Home** and then click on the button **New tile** again to proceed with the next visuals.
+
+   ![alt text](assets/image_task13_step14.png)
+
+#### Impressions by hour
+
+- Visual type: **Area chart**.
+
+```kusto
+  //Impressions by hour
+  SilverImpressions
+  | where eventDate between (_startTime.._endTime)
+  | summarize date_count = count() by bin(eventDate, 1h)
+  | render timechart
+  | top 30 by date_count
+```
+
+![alt text](assets/fabrta53.png)
+
+#### Impressions by location
+
+- Visual type: **Map**.
+
+```kusto
+//Impressions by location
+SilverImpressions
+| where eventDate  between (_startTime.._endTime)
+| join external_table('products') on $left.productId == $right.ProductID
+| project lon = toreal(geo_info_from_ip_address(ip_address).longitude), lat = toreal(geo_info_from_ip_address(ip_address).latitude), Name
+| render scatterchart with (kind = map) //, xcolumn=lon, ycolumns=lat)
+```
+
+![alt text](assets/fabrta54.png)
+
+#### Average Page Load time
+
+- Visual type: **Timechart**.
+
+```kusto
+//Average Page Load time
+SilverImpressions
+| where eventDate   between (_startTime.._endTime)
+//| summarize average_loadtime = avg(page_loading_seconds) by bin(eventDate, 1h)
+| make-series average_loadtime = avg(page_loading_seconds) on eventDate from _startTime to _endTime+4h step 1h
+| extend forecast = series_decompose_forecast(average_loadtime, 4)
+| render timechart
+```
+
+![alt text](assets/AvgPageLoadTime.png)
+
+#### Impressions, Clicks & CTR
+
+1. Add a tile & paste the query below once. Note, this is a multi-statement query that uses multiple let statements & a query combined by semicolons.
+
+   ```kusto
+   //Clicks, Impressions, CTR
+   let imp =  SilverImpressions
+   | where eventDate  between (_startTime.._endTime)
+   | extend dateOnly = substring(todatetime(eventDate).tostring(), 0, 10)
+   | summarize imp_count = count() by dateOnly;
+   let clck = SilverClicks
+   | where eventDate  between (_startTime.._endTime)
+   | extend dateOnly = substring(todatetime(eventDate).tostring(), 0, 10)
+   | summarize clck_count = count() by dateOnly;
+   imp
+   | join clck on $left.dateOnly == $right.dateOnly
+   | project selected_date = dateOnly , impressions = imp_count , clicks = clck_count, CTR = clck_count * 100 / imp_count
+   ```
+
+2. Enter `Impressions` in the field **Tile name**. Select **Stat** in the combobox **Visual type**. In combobox **Data Value column** select **impressions (long)**. Then click on the button **Apply changes**.
+
+   ![alt text](assets/image_task13_step16.png)
+
+3. Click the 3-dots (**...**) at the top right of the tile you just created and select **Duplicate** from the context menu to duplicate it two more times.
+
+   ![alt text](assets/image_task13_step17.png)
+
+4. Name the 2nd one `Clicks`, set the Data value column to **clicks (long)**, then click on the button **Apply changes**.
+
+   ![alt text](assets/fabrta57.png)
+
+5. Name the 3rd `Click Through Rate`, set the Data value column to **CTR**, then click on the button **Apply changes**.
+
+   ![alt text](assets/fabrta58.png)
+
+6. (Optional) On the **Visual formatting** pane, scroll down and adjust the **Conditional formatting** as desired by clicking **+ Add rule**.
+
+#### Average Page Load Time Anomalies
+
+- Visual type: **Anomalychart**
+
+  ```kusto
+  //Avg Page Load Time Anomalies
+  SilverImpressions
+  | where eventDate   between (_startTime.._endTime)
+  | make-series average_loadtime = avg(page_loading_seconds) on eventDate from _startTime to _endTime+4h step 1h
+  | extend anomalies = series_decompose_anomalies(average_loadtime)
+  | render anomalychart
+  ```
+
+  ![alt text](assets/pageloadanomalies.png)
+
+#### Strong Anomalies
+
+- Visual type: **Table**
+
+  ```kusto
+  //Strong Anomalies
+  SilverImpressions
+  | where eventDate between (_startTime.._endTime)
+  | make-series average_loadtime = avg(page_loading_seconds) on eventDate from _startTime to _endTime+4h step 1h
+  | extend anomalies = series_decompose_anomalies(average_loadtime,2.5)
+  | mv-expand eventDate, average_loadtime, anomalies
+  | where anomalies <> 0
+  | project-away anomalies
+  ```
+
+#### Logo (Markdown Text Tile)
+
+1. Click on the button **New text tile** in the toolbar at the top.
+
+   ![alt text](assets/image_task13_step17b.png)
+
+2. Paste the following code in the text area and click on the button **Apply changes**
+
+   ```
+   //Logo (Markdown Text Tile)
+   ![AdventureWorks](https://vikasrajput.github.io/resources/PBIRptDev/AdventureWorksLogo.jpg "AdventureWorks")
+   ```
+
+   ![alt text](assets/image_task13_step17c.png)
+
+   <div class="info" data-title="Note">
+
+   > **The title can be resized on the dashboard canvas directly, rather than writing code.**
+
+    </div>
+
+After you added all the visuals and moved them to thier appropiate places your dashboard should look similar to this.
+
+![alt text](assets/image_task13_step18.png)
+
+#### Auto-refresh
+
+In this section we will enable auto-refresh so the dashboard will be automatically updated while it is shown on screen.
+
+1. While editing the dashboard, click on the tab **Manage** and then click on the button **Auto refresh**. This will open a pane on the right side of the browser.
+
+   ![alt text](assets/image_task13_step19.png)
+
+2. In the pane **Auto refresh** set it to **Enabled** and set **Default refresh rate** to **Continous**. Then click on the button **Apply**
+
+   ![alt text](assets/image_task13_step20.png)
+
+3. Click on the tab **Home** and then click on the button **Save**.
+
+   ![alt text](assets/image_task13_step21.png)
+
+### 14. Data Activator
+
+In this section we will create a Reflex Alert that will send a Teams Message when a value meets a certain threshold.
+
+1. While editing the dashboard, click on the three dots (**...**) of the tile **Click by hour**. Select **Set alert** from the context menu. This will open the pane **Set alert** at the right side in the browser.
+
+   ![alt text](assets/image_task14_step01.png)
+
+2. In the pane **Set alert** set the values as stated in the following table
+
+   | Field              | Value                        |
+   | :----------------- | :--------------------------- |
+   | **Check**          | **On each event grouped by** |
+   | **Grouping field** | **event_date**               |
+   | **When**           | **date_count**               |
+   | **Condition**      | **Becomes greater than**     |
+   | **Value**          | `250`                        |
+
+   Select **Message me in teams** as **Action**.
+
+   ![alt text](assets/image_task14_step02.png)
+
+3. In the combobox **Workspace** select the workspace. In our example the workspace is named **RTI Tutorial**. If you have been assigned a Workspace at the start of this lab, choose the workspace name that was provided to you. Ensure that in the combobox **Item** the value **Create a new item** is selected. Insert `My Reflex` as value for the field **New item name**. Then click on the button **Create**.
+
+   ![alt text](assets/image_task14_step03.png)
+
+<div class="info" data-title="Note">
+  
+> The Reflex item will appear in your workspace and you can edit the Reflex trigger action. The same Reflex item can also trigger multiple actions. 
+</div>
+
+### 15. Bonus Challenges
+
+#### Build Power BI report using the data in Eventhouse
+
+Using the Gold Layer functions, build a Power BI report that shows statistics from the different campaign types
+
+#### Build Fabric events streaming pipeline
+
+Using the Fabric Events in Real-Time hub, build a pipeline that sends link to the documentation of Real-Time Dashobard when someone tried to create a new Real-Time Dashboard.
+
+#### Alerting directly on Eventstream
+
+Add Reflex as a destination to your Eventstream and create an email alert everytime number of impressions exceed a value of your choice 3 times every 10 minutes.
+
+### 16. Stop the notebook
+
+At this point you've completed the lab, so you may stop running the notebook.
+
+1. Open the notebook **Generate synthetic events** from your workspace and click the button **Cancel all** in the toolbar at the top.
+
+   ![alt text](assets/image_task15_step01.png)
+
+## THAT's ALL FOLKS !!
+
+![alt text](assets/_0e5f9cfb-de2e-42fd-aff4-73fba140a5d3.jpg)
 
 # Continue your learning
 
