@@ -1157,6 +1157,11 @@ Add Reflex as a destination to your Eventstream and create an email alert everyt
 
 ## Building the platform - Notebook
 
+<div class="info" data-title="Note">
+
+> Use this section if you're doing lab independently in your own environment, skip this section and move to Section 5 if you are doing an instructor led lab where lab environment is provided by the instructor.
+</div>
+
 ### 1. Login to Lab Environment
 
 <div class="info" data-title="Note">
