@@ -331,6 +331,10 @@ If you need a new Trial Tenant to complete the lab, suggest to register a new Ou
 ---
 
 ## Building the platform - Eventhub
+<div class="info" data-title="Note">
+
+> Use this section if you're participating in the guided lab with an environment provided by the lab instructors. If you're doing lab independently in your own environment, skip this section and proceed to Section 6.
+</div>
 
 ### 1. Login to Lab Environment
 
