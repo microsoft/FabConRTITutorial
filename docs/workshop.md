@@ -2316,7 +2316,7 @@ Read about [Window Operations on Event Time](https://spark.apache.org/docs/lates
 Create a new lakehouse or use existing.
 
 
-8. 4.1 Bronze Layer Ingestion
+8. Bronze Layer Ingestion
 
 This statement turns the cleaned `parsed_stream` into a continuously-appended Delta Lake table called `bronze_events`: by invoking `writeStream.format("delta")` Spark chooses the Delta sink, `option("checkpointLocation", "Files/checkpoints/bronze")` stores offsets and transaction logs in Lakehouse storage so the job can resume exactly where it left off after a restart, `outputMode("append")` ensures only newly arriving records are committed (no rewrites of prior rows), and `trigger(processingTime="1 minute")` schedules a micro-batch every sixty seconds for near-real-time latency; the call to `.toTable("bronze_events")` completes the setup, registering or updating the Delta table while returning a `StreamingQuery` handle (`bronze_write`) that Spark uses to run and monitor the stream until you stop it.
 
@@ -2369,19 +2369,19 @@ Production recipe:
    * Parameterise source, checkpoint, and Lakehouse paths so the same script runs in DEV/TEST/PROD.
    * Add a thin `main()` with `spark = SparkSession.builder…`.
 
-   2. Create the Spark Job Definition
-      * Workspace -> New item -> Spark Job Definition → upload the script and point it at the default Lakehouse.
-      * In Settings ▸ Optimization turn on Retry Policy (unlimited retries, 30–60 s back-off). Fabric keeps the stream alive even through maintenance windows; the catch is the policy stops after 90 days, so schedule rolling restarts.
-      * Optional: set Schedule = Continuous to let Fabric auto-restart on failure.
+2. Create the Spark Job Definition
+   * Workspace -> New item -> Spark Job Definition → upload the script and point it at the default Lakehouse.
+   * In Settings ▸ Optimization turn on Retry Policy (unlimited retries, 30–60 s back-off). Fabric keeps the stream alive even through maintenance windows; the catch is the policy stops after 90 days, so schedule rolling restarts.
+   * Optional: set Schedule = Continuous to let Fabric auto-restart on failure.
 
-   3. Orchestrate with Data Factory (only if you need it)
-      * A 24/7 stream can run stand-alone; add a Data Factory pipeline only when you need dependencies, parameters, or SLAs. The Spark Job Definition activity makes the wiring trivial.
-   4. Observability
-      * SJD Monitoring page → streaming UI (input rate, batch duration, watermarks). 
-      * Forward driver/executor logs to Log Analytics; surface custom lag metrics and wire alerts.
-   5. CI/CD
-      * Turn on Git integration for the SJD item; PR builds run unit tests with spark-submit --dry-run. 
-      * Promote via Fabric REST/CLI into TEST and PROD workspaces; parameters flow through pipeline variables.
+3. Orchestrate with Data Factory (only if you need it)
+   * A 24/7 stream can run stand-alone; add a Data Factory pipeline only when you need dependencies, parameters, or SLAs. The Spark Job Definition activity makes the wiring trivial.
+4. Observability
+   * SJD Monitoring page → streaming UI (input rate, batch duration, watermarks). 
+   * Forward driver/executor logs to Log Analytics; surface custom lag metrics and wire alerts.
+5. CI/CD
+   * Turn on Git integration for the SJD item; PR builds run unit tests with spark-submit --dry-run. 
+   * Promote via Fabric REST/CLI into TEST and PROD workspaces; parameters flow through pipeline variables.
 
 
 ## THAT's ALL FOLKS !!
