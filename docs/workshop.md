@@ -2011,7 +2011,174 @@ In this section we will create a Reflex Alert that will send a Teams Message whe
 > The Reflex item will appear in your workspace and you can edit the Reflex trigger action. The same Reflex item can also trigger multiple actions. 
 </div>
 
-### 15. Bonus Challenges
+### 15. Fabric Apache Spark Diagnostic Emitter for Logs and Metrics
+
+Within this part you will learn how to build a centralized Spark monitoring solution, leveraging Fabric Real-Time Intelligence capabilities. We are going to integrate Fabric Spark data emitter with Fabric Eventstream and Eventhouse to create a final Spark monitoring solution.
+
+Below you can find an example of workspace with deployed all artifacts needed for that:
+
+![alt text](assets/spark_monitoring_1.png)
+
+1. Create new item “Environment” and call it “env_logging_eventstream"
+
+![alt text](assets/spark_monitoring_7.png)
+
+2. Setup "Spark properties" of created environment and save it.
+
+![alt text](assets/spark_monitoring_6.png)
+
+ ```kusto
+  //Spark Properties
+  - spark.fabric.pools.skipStarterPools: 'true'
+  - spark.synapse.diagnostic.emitters: eventhouse
+  - spark.synapse.diagnostic.emitter.eventhouse.type: AzureEventHub
+  - spark.synapse.diagnostic.emitter.eventhouse.secret: INSERT_THERE
+  - spark.synapse.diagnostic.emitter.eventhouse.categories: Log,EventLog,Metrics,DriverLog  
+ ```
+
+3. Create new item “Evenstream” and call it “es_sparklogging"
+
+![alt text](assets/spark_monitoring_8.png)
+
+4. Choose source as "Custom endpoint"
+
+![alt text](assets/spark_monitoring_2.png)
+
+5. Enter source name as "Input" 
+
+![alt text](assets/spark_monitoring_3.png)
+
+6. Publish created eventstream
+
+![alt text](assets/spark_monitoring_4.png)
+
+7. Once eventstream is published, please copy connection string-primary key (refer to below screen)
+
+![alt text](assets/spark_monitoring_5.png)
+
+8. Go back to item Evnironment which you called "env_logging_evenstream" and paste copied key into below field
+
+![alt text](assets/spark_monitoring_16.png)
+
+9. Once you did it, let's publish changes in "Environment" artifact
+
+![alt text](assets/spark_monitoring_11.png)
+
+10. Create new item in workspace, "Notebook" and call it "nb_log_generator"
+
+![alt text](assets/spark_monitoring_9.png)
+
+11. Within created notebook please add below two command lines.
+
+![alt text](assets/spark_monitoring_10.png)
+
+ ```kusto
+  //Command 1
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, avg
+
+# Sample data
+data = [
+    ("Electronics", 1000),
+    ("Electronics", 1500),
+    ("Furniture", 800),
+    ("Furniture", 1200),
+    ("Clothing", 300),
+    ("Clothing", 500)
+]
+
+# Create DataFrame
+df = spark.createDataFrame(data, ["category", "revenue"])
+
+# Calculate average revenue per category
+avg_revenue_df = df.groupBy("category") \
+    .agg(avg("revenue").alias("avg_revenue"))
+
+# Filter categories with average revenue above 900
+high_performers = avg_revenue_df.filter(col("avg_revenue") > 900)
+
+# Order by average revenue descending
+result = high_performers.orderBy(col("avg_revenue").desc())
+
+# Show result
+result.show() 
+ ```
+ ```kusto
+  //Command 2
+# Sample data
+data = [
+    ("Electronics", 1000),
+    ("Electronics", 1500),
+    ("Furniture", 800),
+    ("Furniture", 1200),
+    ("Clothing", 300),
+    ("Clothing", 500)
+]
+
+# Create DataFrame
+df = spark.createDataFrame(data, ["category", "revenue"])
+
+# Calculate average revenue per category
+avg_revenue_df = df.groupBy("category") \
+    .agg(avg("revenue").alias("avg_revenue"))
+
+# Filter categories with average revenue below 900
+low_performers = avg_revenue_df.filter(col("avg_revenue") < 900)
+
+# Order by average revenue descending
+result = low_performers.orderBy(col("avg_revenue").desc())
+
+# Show result
+result.show()
+ ``` 
+12. Go to Eventhouse in your workspace and within "Query with code" option, create a table where Spark logs will be stored. To do it you can run below code.
+
+ ```kusto
+// Create table command
+////////////////////////////////////////////////////////////
+.create table SparkLogs (
+    timestamp:datetime,
+    category:string,
+    fabricLivyId:string,
+    applicationId:string,
+    applicationName:string,
+    executorId:string,
+    userId:string,
+    fabricTenantId:string,
+    capacityId:string,
+    artifactType:string,
+    artifactId:string,
+    ArtifactName:string,
+    fabricWorkspaceId:string,
+    fabricEnvId:string,
+    executorMin:int,
+    executorMax:int,
+    isHighConcurrencyEnabled:boolean,
+    properties:string,
+    EventProcessedUtcTime:datetime,
+    PartitionId:int,
+    EventEnqueuedUtcTime:datetime
+)
+ ``` 
+![alt text](assets/spark_monitoring_17.png)
+
+13. Go to Evenstream "es_sparklogging" and setup final destination for Spark logs
+
+![alt text](assets/spark_monitoring_13.png)
+
+![alt text](assets/spark_monitoring_14.png)
+
+Once it is done, save and publish changes in Evenstream "es_sparklogging"
+
+14. Go to Notebook "nb_log_generator" and assign it to created evinronment.
+
+![alt text](assets/spark_monitoring_12.png)
+
+15. Solution is ready, run all commands in Notebook and verify logged results in your KQL Database
+
+![alt text](assets/spark_monitoring_15.png)
+
+### 16. Bonus Challenges
 
 #### Build Power BI report using the data in Eventhouse
 
@@ -2025,7 +2192,7 @@ Using the Fabric Events in Real-Time hub, build a pipeline that sends link to th
 
 Add Reflex as a destination to your Eventstream and create an email alert everytime number of impressions exceed a value of your choice 3 times every 10 minutes.
 
-### 16. Stop the notebook
+### 17. Stop the notebook
 
 At this point you've completed the lab, so you may stop running the notebook.
 
