@@ -2200,6 +2200,190 @@ At this point you've completed the lab, so you may stop running the notebook.
 
    ![alt text](assets/image_task15_step01.png)
 
+### 18. Spark Structured Streaming in Fabric
+
+The following exercise extends the workshop by adding a  module on Spark Structured Streaming. This exercise is designed to be integrated with the existing workshop flow while providing practical experience in implementing real-time data processing pipelines using Fabric's Data Engineering Apache Spark-based natural capabilities.
+
+Spark Structured Streaming represents a paradigm for processing real-time data within Microsoft Fabric. It treats a live data stream as a continuously appended table, enabling developers to use familiar batch-like queries while Spark handles the incremental processing behind the scenes. This approach significantly simplifies building real-time data pipelines while maintaining scalability and fault tolerance.
+
+Spark Structured Streaming operates on a micro-batch processing model by default, treating streaming data as small batches to achieve low latencies (as low as 100ms) with exactly-once fault-tolerance guarantees. This model aligns with the medallion architecture used in Microsoft Fabric data engineering workflows, where data flows through bronze (raw), silver (validated/transformed), and gold (business-ready) layers.
+
+1. Environment Setup - New Notebook
+
+Create a New Notebook named e.g. `Spark Structured Streaming` and install required libraries:
+
+```shell
+! python --version
+
+! pip install azure-eventhub==5.11.5 faker==24.2.0 pyodbc==5.1.0 --upgrade --force --quiet
+```
+
+2. Environment Setup - Event Hub Configuration
+
+Use the same Event Hub Connection Names and String as previously (exercise 7).
+
+```python
+from azure.eventhub import EventHubProducerClient
+
+# Configure Event Hub connection
+eventHubNameevents = "your-event-hub-name"
+eventHubConnString = "Endpoint=sb://..."  
+
+producer_events = EventHubProducerClient.from_connection_string(
+    conn_str=eventHubConnString, 
+    eventhub_name=eventHubNameevents
+)
+```
+
+3. Stream Ingestion Configuration - Event Hubs Connection
+
+In the snippet below, we first assemble a Python dictionary ehConf that tells Spark how to connect to Azure Event Hubs: the `eventhubs.connectionString` carries the SAS key–based connection string needed for authentication and routing, `eventhubs.consumerGroup` specifies the consumer group whose offset checkpoints Spark will maintain (here the default), `maxEventsPerTrigger` throttles ingestion by limiting each micro-batch to 1 000 events so the downstream logic is not overwhelmed, and `startingPosition`—wrapped in `json.dumps` because the connector expects JSON—declares where in the Event Hubs partition log to begin reading, with the special offset "-1" meaning “start at the earliest available event.” We then create raw_stream by invoking spark.readStream with the eventhubs format, injecting the configuration via `.options(**ehConf)`, and calling `.load()`, which returns an unbounded streaming DataFrame whose rows contain the raw message payload and associated metadata; this DataFrame can now be transformed or written out to Delta tables (Bronze) while Spark continuously tails the hub, honoring the consumer-group checkpoints and the throughput cap set in the configuration.
+
+```python
+ehConf = {
+    "eventhubs.connectionString": eventHubConnString,
+    "eventhubs.consumerGroup": "$Default",
+    "maxEventsPerTrigger": 1000,  # Throughput control - limits how many events Spark will read per trigger cycle, helping control throughput and avoid overwhelming your application.
+    "startingPosition": json.dumps({"offset": "-1"}) # Defines where in the stream Spark starts reading. Here, "-1" means start from the earliest available event.
+}
+
+raw_stream = spark.readStream \
+    .format("eventhubs") \
+    .options(**ehConf) \
+    .load()
+```
+
+4. Stream Processing Pipeline
+The code below declares a precise Spark SQL schema (`event_schema`) that mirrors the nested structure of the JSON arriving in each Event Hub message: at the top level the event has simple string fields (`eventType`, `eventID`, `productId`), a struct field `userAgent` with its own `platform` and `browser` strings, and an array of structs `extraPayload`, each element holding a `relatedProductId` and its `relatedProductCategory`. With this blueprint in place, the stream’s binary `body` column is cast to a string and fed to `from_json`, which deserialises each payload into the strongly-typed `StructType`; the call to `.alias("data")` wraps the result in a single column named `data`. 
+
+A second `select` immediately flattens the structure by expanding `data.*` into individual columns and adds `processing_time`, copied from Event Hub’s `enqueuedTime`, so every record now arrives in a tabular form that downstream transformations or Delta Lake writes can consume without further parsing or schema inference.
+
+
+5. Schema Definition & Parsing
+```python
+# Define schema for nested JSON structure
+from pyspark.sql.types import *
+from pyspark.sql.functions import from_json, col
+
+event_schema = StructType([
+    StructField("eventType", StringType()),
+    StructField("eventID", StringType()),
+    StructField("productId", StringType()),
+    StructField("userAgent", StructType([
+        StructField("platform", StringType()),
+        StructField("browser", StringType())
+    ])),
+    StructField("extraPayload", ArrayType(
+        StructType([
+            StructField("relatedProductId", StringType()),
+            StructField("relatedProductCategory", StringType())
+        ])
+    ))
+])
+
+# Parse JSON payload
+parsed_stream = raw_stream.select(
+    from_json(col("body").cast("string"), event_schema).alias("data"),
+    col("enqueuedTime").alias("processing_time")
+).select("data.*", "processing_time")
+```
+
+6. Real-Time Aggregations
+
+In this step the stream is aggregated in five-minute, event-time windows with late-data tolerance. The `withWatermark("processing_time", "10 minutes")` line tells Spark Structured Streaming to treat `processing_time` as the event-time column and to keep state for each window only until data that are more than ten minutes late might still arrive—after that bound, late records for an already-emitted window will be dropped. The subsequent `groupBy` forms tumbling windows of exactly five minutes (`window("processing_time", "5 minutes")`) and partitions the events further by `eventType` and the nested field `userAgent.platform`. For every such (window, eventType, platform) bucket Spark computes two metrics: `event_count`, a simple `count(*)` of all events falling into the bucket, and `unique_products`, a `countDistinct("productId")` capturing how many distinct products appeared in that slice. The result, stored in `windowed_agg`, is still a streaming DataFrame whose rows emit continuously at the end of each five-minute interval (or when late data arrive within the watermark threshold), providing ready-to-query aggregates for dashboards or downstream sinks without retaining unbounded per-key state.
+
+
+```python
+from pyspark.sql.functions import window, count, countDistinct
+
+# Windowed aggregations
+windowed_agg = parsed_stream \
+    .withWatermark("processing_time", "10 minutes") \
+    .groupBy(
+        window("processing_time", "5 minutes"),
+        "eventType",
+        "userAgent.platform"
+    ).agg(
+        count("*").alias("event_count"),
+        countDistinct("productId").alias("unique_products")
+    )
+```
+
+Read about [Window Operations on Event Time](https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#window-operations-on-event-time).
+
+7. Delta Lake Integration
+
+Create a new lakehouse or use existing.
+
+
+8. 4.1 Bronze Layer Ingestion
+
+This statement turns the cleaned `parsed_stream` into a continuously-appended Delta Lake table called `bronze_events`: by invoking `writeStream.format("delta")` Spark chooses the Delta sink, `option("checkpointLocation", "Files/checkpoints/bronze")` stores offsets and transaction logs in Lakehouse storage so the job can resume exactly where it left off after a restart, `outputMode("append")` ensures only newly arriving records are committed (no rewrites of prior rows), and `trigger(processingTime="1 minute")` schedules a micro-batch every sixty seconds for near-real-time latency; the call to `.toTable("bronze_events")` completes the setup, registering or updating the Delta table while returning a `StreamingQuery` handle (`bronze_write`) that Spark uses to run and monitor the stream until you stop it.
+
+```python
+bronze_write = parsed_stream.writeStream \
+    .format("delta") \
+    .option("checkpointLocation", "Files/checkpoints/bronze") \
+    .outputMode("append") \
+    .trigger(processingTime="1 minute") \
+    .toTable("bronze_events")
+```
+If you seek checkpoint explanation, check the theory part.
+
+
+9. Silver Layer Processing
+
+In the Silver layer step, we promote the raw Bronze data to a more query-friendly shape: `spark.readStream.table("bronze_events")` tails the continuously growing Delta table created earlier, turning it back into a live DataFrame; `.withColumn("clickpath", explode("extraPayload"))` denormalises the array `extraPayload` so each related‐product element becomes its own row while inheriting the parent event fields—ideal for path-analysis or recommendation models. The resulting `silver_stream` is then written out with `writeStream.format("delta")`, checkpointed at `Files/checkpoints/silver` for exactly-once guarantees, emitted in pure append mode, and triggered every five minutes (`processingTime="5 minutes"`), striking a balance between freshness and cost. The call to `.toTable("silver_events")` materialises this refined stream as a managed Delta table, giving downstream consumers a clean, exploded schema without touching the raw Bronze records.
+
+
+```python
+# Create Silver table view
+silver_stream = spark.readStream \
+    .table("bronze_events") \
+    .withColumn("clickpath", explode("extraPayload"))
+
+# Write to Silver Delta table
+silver_write = silver_stream.writeStream \
+    .format("delta") \
+    .option("checkpointLocation", "Files/checkpoints/silver") \
+    .outputMode("append") \
+    .trigger(processingTime="5 minutes") \
+    .toTable("silver_events")
+```
+
+Similar you can continue for Gold Layer. 
+
+
+10. Production Deployment in Fabric
+Spark notebooks are excellent source to test the logic of your code and address all the business requirements. However to keep it running in a production scenario, Spark job definitions with Retry Policy enabled are the best solution. Why? Package the streaming code as a Spark Job Definition, enable the built-in retry policy, and—when orchestration or promotion is needed—wrap it in a Data Factory pipeline. That combo gives you 24/7 reliability, CI/CD friendliness, and the operational transparency a production system demands. 
+
+Read more [about it](https://learn.microsoft.com/en-us/fabric/data-engineering/lakehouse-streaming-data).
+
+11. Spark Job Definition (SJD)
+
+Production recipe:
+
+1. Extract the logic from the notebook
+   * Export the notebook as `rta_workshop_stream.py` (or compile to `.jar` for Scala/Java).
+   * Remove interactive clutter e.g. `display()`, `%python`, etc.
+   * Parameterise source, checkpoint, and Lakehouse paths so the same script runs in DEV/TEST/PROD.
+   * Add a thin `main()` with `spark = SparkSession.builder…`.
+
+   2. Create the Spark Job Definition
+      * Workspace -> New item -> Spark Job Definition → upload the script and point it at the default Lakehouse.
+      * In Settings ▸ Optimization turn on Retry Policy (unlimited retries, 30–60 s back-off). Fabric keeps the stream alive even through maintenance windows; the catch is the policy stops after 90 days, so schedule rolling restarts.
+      * Optional: set Schedule = Continuous to let Fabric auto-restart on failure.
+
+   3. Orchestrate with Data Factory (only if you need it)
+      * A 24/7 stream can run stand-alone; add a Data Factory pipeline only when you need dependencies, parameters, or SLAs. The Spark Job Definition activity makes the wiring trivial.
+   4. Observability
+      * SJD Monitoring page → streaming UI (input rate, batch duration, watermarks). 
+      * Forward driver/executor logs to Log Analytics; surface custom lag metrics and wire alerts.
+   5. CI/CD
+      * Turn on Git integration for the SJD item; PR builds run unit tests with spark-submit --dry-run. 
+      * Promote via Fabric REST/CLI into TEST and PROD workspaces; parameters flow through pipeline variables.
+
+
 ## THAT's ALL FOLKS !!
 
 ![alt text](assets/_0e5f9cfb-de2e-42fd-aff4-73fba140a5d3.jpg)
