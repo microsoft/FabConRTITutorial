@@ -1135,22 +1135,7 @@ In this section we will create a Reflex Alert that will send a Teams Message whe
 > The Reflex item will appear in your workspace and you can edit the Reflex trigger action. The same Reflex item can also trigger multiple actions. 
 </div>
 
-### 13. Bonus Challenges
-
-#### Build Power BI report using the data in Eventhouse
-
-Using the Gold Layer functions, build a Power BI report that shows statistics from the different campaign types
-
-#### Build Fabric events streaming pipeline
-
-Using the Fabric Events in Real-Time hub, build a pipeline that sends link to the documentation of Real-Time Dashobard when someone tried to create a new Real-Time Dashboard.
-
-#### Alerting directly on Eventstream
-
-Add Reflex as a destination to your Eventstream and create an email alert everytime number of impressions exceed a value of your choice 3 times every 10 minutes.
-
-
-### 14. Fabric Apache Spark Diagnostic Emitter for Logs and Metrics
+### 13. Fabric Apache Spark Diagnostic Emitter for Logs and Metrics
 
 Within this part you will learn how to build a centralized Spark monitoring solution, leveraging Fabric Real-Time Intelligence capabilities. We are going to integrate Fabric Spark data emitter with Fabric Eventstream and Eventhouse to create a final Spark monitoring solution.
 
@@ -1317,7 +1302,22 @@ Once it is done, save and publish changes in Evenstream "es_sparklogging"
 
 ![alt text](assets/spark_monitoring_15.png)
 
-### 15. Spark Structured Streaming in Fabric
+
+### 14. Bonus Challenges
+
+#### Build Power BI report using the data in Eventhouse
+
+Using the Gold Layer functions, build a Power BI report that shows statistics from the different campaign types
+
+#### Build Fabric events streaming pipeline
+
+Using the Fabric Events in Real-Time hub, build a pipeline that sends link to the documentation of Real-Time Dashobard when someone tried to create a new Real-Time Dashboard.
+
+#### Alerting directly on Eventstream
+
+Add Reflex as a destination to your Eventstream and create an email alert everytime number of impressions exceed a value of your choice 3 times every 10 minutes.
+
+#### Spark Structured Streaming in Fabric
 
 The following exercise extends the workshop by adding a  module on Spark Structured Streaming. This exercise is designed to be integrated with the existing workshop flow while providing practical experience in implementing real-time data processing pipelines using Fabric's Data Engineering Apache Spark-based natural capabilities.
 
@@ -1501,7 +1501,7 @@ Production recipe:
    * Promote via Fabric REST/CLI into TEST and PROD workspaces; parameters flow through pipeline variables.
 
 
-### 16. Stop the notebook
+### 15. Stop the notebook
 
 At this point you've completed the lab, so you may stop running the notebook.
 
@@ -2539,7 +2539,16 @@ Once it is done, save and publish changes in Evenstream "es_sparklogging"
 
 ![alt text](assets/spark_monitoring_15.png)
 
-### 16. Bonus Challenges
+### 16. Stop the notebook
+
+At this point you've completed the lab, so you may stop running the notebook.
+
+1. Open the notebook **Generate synthetic events** from your workspace and click the button **Cancel all** in the toolbar at the top.
+
+   ![alt text](assets/image_task15_step01.png)
+
+
+### 17. Bonus Challenges
 
 #### Build Power BI report using the data in Eventhouse
 
@@ -2553,15 +2562,7 @@ Using the Fabric Events in Real-Time hub, build a pipeline that sends link to th
 
 Add Reflex as a destination to your Eventstream and create an email alert everytime number of impressions exceed a value of your choice 3 times every 10 minutes.
 
-### 17. Stop the notebook
-
-At this point you've completed the lab, so you may stop running the notebook.
-
-1. Open the notebook **Generate synthetic events** from your workspace and click the button **Cancel all** in the toolbar at the top.
-
-   ![alt text](assets/image_task15_step01.png)
-
-### 18. Spark Structured Streaming in Fabric
+#### Spark Structured Streaming in Fabric
 
 The following exercise extends the workshop by adding a  module on Spark Structured Streaming. This exercise is designed to be integrated with the existing workshop flow while providing practical experience in implementing real-time data processing pipelines using Fabric's Data Engineering Apache Spark-based natural capabilities.
 
