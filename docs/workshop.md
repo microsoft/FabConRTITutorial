@@ -1139,7 +1139,175 @@ In this section we will create a Reflex Alert that will send a Teams Message whe
 > The Reflex item will appear in your workspace and you can edit the Reflex trigger action. The same Reflex item can also trigger multiple actions. 
 </div>
 
-### 13. Bonus Challenges
+### 13. Fabric Apache Spark Diagnostic Emitter for Logs and Metrics
+
+Within this part you will learn how to build a centralized Spark monitoring solution, leveraging Fabric Real-Time Intelligence capabilities. We are going to integrate Fabric Spark data emitter with Fabric Eventstream and Eventhouse to create a final Spark monitoring solution.
+
+Below you can find an example of workspace with deployed all artifacts needed for that:
+
+![alt text](assets/spark_monitoring_1.png)
+
+1. Create new item “Environment” and call it “env_logging_eventstream"
+
+![alt text](assets/spark_monitoring_7.png)
+
+2. Setup "Spark properties" of created environment and save it.
+
+![alt text](assets/spark_monitoring_6.png)
+
+ ```kusto
+  //Spark Properties
+  - spark.fabric.pools.skipStarterPools: 'true'
+  - spark.synapse.diagnostic.emitters: eventhouse
+  - spark.synapse.diagnostic.emitter.eventhouse.type: AzureEventHub
+  - spark.synapse.diagnostic.emitter.eventhouse.secret: INSERT_THERE
+  - spark.synapse.diagnostic.emitter.eventhouse.categories: Log,EventLog,Metrics,DriverLog  
+ ```
+
+3. Create new item “Evenstream” and call it “es_sparklogging"
+
+![alt text](assets/spark_monitoring_8.png)
+
+4. Choose source as "Custom endpoint"
+
+![alt text](assets/spark_monitoring_2.png)
+
+5. Enter source name as "Input" 
+
+![alt text](assets/spark_monitoring_3.png)
+
+6. Publish created eventstream
+
+![alt text](assets/spark_monitoring_4.png)
+
+7. Once eventstream is published, please copy connection string-primary key (refer to below screen)
+
+![alt text](assets/spark_monitoring_5.png)
+
+8. Go back to item Evnironment which you called "env_logging_evenstream" and paste copied key into below field
+
+![alt text](assets/spark_monitoring_16.png)
+
+9. Once you did it, let's publish changes in "Environment" artifact
+
+![alt text](assets/spark_monitoring_11.png)
+
+10. Create new item in workspace, "Notebook" and call it "nb_log_generator"
+
+![alt text](assets/spark_monitoring_9.png)
+
+11. Within created notebook please add below two command lines.
+
+![alt text](assets/spark_monitoring_10.png)
+
+ ```kusto
+  //Command 1
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, avg
+
+# Sample data
+data = [
+    ("Electronics", 1000),
+    ("Electronics", 1500),
+    ("Furniture", 800),
+    ("Furniture", 1200),
+    ("Clothing", 300),
+    ("Clothing", 500)
+]
+
+# Create DataFrame
+df = spark.createDataFrame(data, ["category", "revenue"])
+
+# Calculate average revenue per category
+avg_revenue_df = df.groupBy("category") \
+    .agg(avg("revenue").alias("avg_revenue"))
+
+# Filter categories with average revenue above 900
+high_performers = avg_revenue_df.filter(col("avg_revenue") > 900)
+
+# Order by average revenue descending
+result = high_performers.orderBy(col("avg_revenue").desc())
+
+# Show result
+result.show() 
+ ```
+ ```kusto
+  //Command 2
+# Sample data
+data = [
+    ("Electronics", 1000),
+    ("Electronics", 1500),
+    ("Furniture", 800),
+    ("Furniture", 1200),
+    ("Clothing", 300),
+    ("Clothing", 500)
+]
+
+# Create DataFrame
+df = spark.createDataFrame(data, ["category", "revenue"])
+
+# Calculate average revenue per category
+avg_revenue_df = df.groupBy("category") \
+    .agg(avg("revenue").alias("avg_revenue"))
+
+# Filter categories with average revenue below 900
+low_performers = avg_revenue_df.filter(col("avg_revenue") < 900)
+
+# Order by average revenue descending
+result = low_performers.orderBy(col("avg_revenue").desc())
+
+# Show result
+result.show()
+ ``` 
+12. Go to Eventhouse in your workspace and within "Query with code" option, create a table where Spark logs will be stored. To do it you can run below code.
+
+ ```kusto
+// Create table command
+////////////////////////////////////////////////////////////
+.create table SparkLogs (
+    timestamp:datetime,
+    category:string,
+    fabricLivyId:string,
+    applicationId:string,
+    applicationName:string,
+    executorId:string,
+    userId:string,
+    fabricTenantId:string,
+    capacityId:string,
+    artifactType:string,
+    artifactId:string,
+    ArtifactName:string,
+    fabricWorkspaceId:string,
+    fabricEnvId:string,
+    executorMin:int,
+    executorMax:int,
+    isHighConcurrencyEnabled:boolean,
+    properties:string,
+    EventProcessedUtcTime:datetime,
+    PartitionId:int,
+    EventEnqueuedUtcTime:datetime
+)
+ ``` 
+![alt text](assets/spark_monitoring_17.png)
+
+13. Go to Evenstream "es_sparklogging" and setup final destination for Spark logs
+
+![alt text](assets/spark_monitoring_13.png)
+
+![alt text](assets/spark_monitoring_14.png)
+
+Once it is done, save and publish changes in Evenstream "es_sparklogging"
+
+14. Go to Notebook "nb_log_generator" and assign it to created evinronment.
+
+![alt text](assets/spark_monitoring_12.png)
+
+15. Solution is ready, run all commands in Notebook and verify logged results in your KQL Database
+
+![alt text](assets/spark_monitoring_15.png)
+
+
+### 14. Bonus Challenges
 
 #### Build Power BI report using the data in Eventhouse
 
@@ -1152,6 +1320,199 @@ Using the Fabric Events in Real-Time hub, build a pipeline that sends link to th
 #### Alerting directly on Eventstream
 
 Add Reflex as a destination to your Eventstream and create an email alert everytime number of impressions exceed a value of your choice 3 times every 10 minutes.
+
+#### Spark Structured Streaming in Fabric
+
+The following exercise extends the workshop by adding a  module on Spark Structured Streaming. This exercise is designed to be integrated with the existing workshop flow while providing practical experience in implementing real-time data processing pipelines using Fabric's Data Engineering Apache Spark-based natural capabilities.
+
+Spark Structured Streaming represents a paradigm for processing real-time data within Microsoft Fabric. It treats a live data stream as a continuously appended table, enabling developers to use familiar batch-like queries while Spark handles the incremental processing behind the scenes. This approach significantly simplifies building real-time data pipelines while maintaining scalability and fault tolerance.
+
+Spark Structured Streaming operates on a micro-batch processing model by default, treating streaming data as small batches to achieve low latencies (as low as 100ms) with exactly-once fault-tolerance guarantees. This model aligns with the medallion architecture used in Microsoft Fabric data engineering workflows, where data flows through bronze (raw), silver (validated/transformed), and gold (business-ready) layers.
+
+1. Environment Setup - New Notebook
+
+Create a New Notebook named e.g. `Spark Structured Streaming` and install required libraries:
+
+```shell
+! python --version
+
+! pip install azure-eventhub==5.11.5 faker==24.2.0 pyodbc==5.1.0 --upgrade --force --quiet
+```
+
+2. Environment Setup - Event Hub Configuration
+
+Use the same Event Hub Connection Names and String as previously (exercise 7).
+
+```python
+from azure.eventhub import EventHubProducerClient
+
+# Configure Event Hub connection
+eventHubNameevents = "your-event-hub-name"
+eventHubConnString = "Endpoint=sb://..."  
+
+producer_events = EventHubProducerClient.from_connection_string(
+    conn_str=eventHubConnString, 
+    eventhub_name=eventHubNameevents
+)
+```
+
+3. Stream Ingestion Configuration - Event Hubs Connection
+
+In the snippet below, we first assemble a Python dictionary ehConf that tells Spark how to connect to Azure Event Hubs: the `eventhubs.connectionString` carries the SAS key–based connection string needed for authentication and routing, `eventhubs.consumerGroup` specifies the consumer group whose offset checkpoints Spark will maintain (here the default), `maxEventsPerTrigger` throttles ingestion by limiting each micro-batch to 1 000 events so the downstream logic is not overwhelmed, and `startingPosition`—wrapped in `json.dumps` because the connector expects JSON—declares where in the Event Hubs partition log to begin reading, with the special offset "-1" meaning “start at the earliest available event.” We then create raw_stream by invoking spark.readStream with the eventhubs format, injecting the configuration via `.options(**ehConf)`, and calling `.load()`, which returns an unbounded streaming DataFrame whose rows contain the raw message payload and associated metadata; this DataFrame can now be transformed or written out to Delta tables (Bronze) while Spark continuously tails the hub, honoring the consumer-group checkpoints and the throughput cap set in the configuration.
+
+```python
+ehConf = {
+    "eventhubs.connectionString": eventHubConnString,
+    "eventhubs.consumerGroup": "$Default",
+    "maxEventsPerTrigger": 1000,  # Throughput control - limits how many events Spark will read per trigger cycle, helping control throughput and avoid overwhelming your application.
+    "startingPosition": json.dumps({"offset": "-1"}) # Defines where in the stream Spark starts reading. Here, "-1" means start from the earliest available event.
+}
+
+raw_stream = spark.readStream \
+    .format("eventhubs") \
+    .options(**ehConf) \
+    .load()
+```
+
+4. Stream Processing Pipeline
+The code below declares a precise Spark SQL schema (`event_schema`) that mirrors the nested structure of the JSON arriving in each Event Hub message: at the top level the event has simple string fields (`eventType`, `eventID`, `productId`), a struct field `userAgent` with its own `platform` and `browser` strings, and an array of structs `extraPayload`, each element holding a `relatedProductId` and its `relatedProductCategory`. With this blueprint in place, the stream’s binary `body` column is cast to a string and fed to `from_json`, which deserialises each payload into the strongly-typed `StructType`; the call to `.alias("data")` wraps the result in a single column named `data`. 
+
+A second `select` immediately flattens the structure by expanding `data.*` into individual columns and adds `processing_time`, copied from Event Hub’s `enqueuedTime`, so every record now arrives in a tabular form that downstream transformations or Delta Lake writes can consume without further parsing or schema inference.
+
+
+5. Schema Definition & Parsing
+```python
+# Define schema for nested JSON structure
+from pyspark.sql.types import *
+from pyspark.sql.functions import from_json, col
+
+event_schema = StructType([
+    StructField("eventType", StringType()),
+    StructField("eventID", StringType()),
+    StructField("productId", StringType()),
+    StructField("userAgent", StructType([
+        StructField("platform", StringType()),
+        StructField("browser", StringType())
+    ])),
+    StructField("extraPayload", ArrayType(
+        StructType([
+            StructField("relatedProductId", StringType()),
+            StructField("relatedProductCategory", StringType())
+        ])
+    ))
+])
+
+# Parse JSON payload
+parsed_stream = raw_stream.select(
+    from_json(col("body").cast("string"), event_schema).alias("data"),
+    col("enqueuedTime").alias("processing_time")
+).select("data.*", "processing_time")
+```
+
+6. Real-Time Aggregations
+
+In this step the stream is aggregated in five-minute, event-time windows with late-data tolerance. The `withWatermark("processing_time", "10 minutes")` line tells Spark Structured Streaming to treat `processing_time` as the event-time column and to keep state for each window only until data that are more than ten minutes late might still arrive—after that bound, late records for an already-emitted window will be dropped. The subsequent `groupBy` forms tumbling windows of exactly five minutes (`window("processing_time", "5 minutes")`) and partitions the events further by `eventType` and the nested field `userAgent.platform`. For every such (window, eventType, platform) bucket Spark computes two metrics: `event_count`, a simple `count(*)` of all events falling into the bucket, and `unique_products`, a `countDistinct("productId")` capturing how many distinct products appeared in that slice. The result, stored in `windowed_agg`, is still a streaming DataFrame whose rows emit continuously at the end of each five-minute interval (or when late data arrive within the watermark threshold), providing ready-to-query aggregates for dashboards or downstream sinks without retaining unbounded per-key state.
+
+
+```python
+from pyspark.sql.functions import window, count, countDistinct
+
+# Windowed aggregations
+windowed_agg = parsed_stream \
+    .withWatermark("processing_time", "10 minutes") \
+    .groupBy(
+        window("processing_time", "5 minutes"),
+        "eventType",
+        "userAgent.platform"
+    ).agg(
+        count("*").alias("event_count"),
+        countDistinct("productId").alias("unique_products")
+    )
+```
+
+Read about [Window Operations on Event Time](https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#window-operations-on-event-time).
+
+7. Delta Lake Integration
+
+Create a new lakehouse or use existing.
+
+
+8. Bronze Layer Ingestion
+
+This statement turns the cleaned `parsed_stream` into a continuously-appended Delta Lake table called `bronze_events`: by invoking `writeStream.format("delta")` Spark chooses the Delta sink, `option("checkpointLocation", "Files/checkpoints/bronze")` stores offsets and transaction logs in Lakehouse storage so the job can resume exactly where it left off after a restart, `outputMode("append")` ensures only newly arriving records are committed (no rewrites of prior rows), and `trigger(processingTime="1 minute")` schedules a micro-batch every sixty seconds for near-real-time latency; the call to `.toTable("bronze_events")` completes the setup, registering or updating the Delta table while returning a `StreamingQuery` handle (`bronze_write`) that Spark uses to run and monitor the stream until you stop it.
+
+```python
+bronze_write = parsed_stream.writeStream \
+    .format("delta") \
+    .option("checkpointLocation", "Files/checkpoints/bronze") \
+    .outputMode("append") \
+    .trigger(processingTime="1 minute") \
+    .toTable("bronze_events")
+```
+If you seek checkpoint explanation, check the theory part.
+
+
+9. Silver Layer Processing
+
+In the Silver layer step, we promote the raw Bronze data to a more query-friendly shape: `spark.readStream.table("bronze_events")` tails the continuously growing Delta table created earlier, turning it back into a live DataFrame; `.withColumn("clickpath", explode("extraPayload"))` denormalises the array `extraPayload` so each related‐product element becomes its own row while inheriting the parent event fields—ideal for path-analysis or recommendation models. The resulting `silver_stream` is then written out with `writeStream.format("delta")`, checkpointed at `Files/checkpoints/silver` for exactly-once guarantees, emitted in pure append mode, and triggered every five minutes (`processingTime="5 minutes"`), striking a balance between freshness and cost. The call to `.toTable("silver_events")` materialises this refined stream as a managed Delta table, giving downstream consumers a clean, exploded schema without touching the raw Bronze records.
+
+
+```python
+# Create Silver table view
+silver_stream = spark.readStream \
+    .table("bronze_events") \
+    .withColumn("clickpath", explode("extraPayload"))
+
+# Write to Silver Delta table
+silver_write = silver_stream.writeStream \
+    .format("delta") \
+    .option("checkpointLocation", "Files/checkpoints/silver") \
+    .outputMode("append") \
+    .trigger(processingTime="5 minutes") \
+    .toTable("silver_events")
+```
+
+Similar you can continue for Gold Layer. 
+
+
+10. Production Deployment in Fabric
+Spark notebooks are excellent source to test the logic of your code and address all the business requirements. However to keep it running in a production scenario, Spark job definitions with Retry Policy enabled are the best solution. Why? Package the streaming code as a Spark Job Definition, enable the built-in retry policy, and—when orchestration or promotion is needed—wrap it in a Data Factory pipeline. That combo gives you 24/7 reliability, CI/CD friendliness, and the operational transparency a production system demands. 
+
+Read more [about it](https://learn.microsoft.com/en-us/fabric/data-engineering/lakehouse-streaming-data).
+
+11. Spark Job Definition (SJD)
+
+Production recipe:
+
+1. Extract the logic from the notebook
+   * Export the notebook as `rta_workshop_stream.py` (or compile to `.jar` for Scala/Java).
+   * Remove interactive clutter e.g. `display()`, `%python`, etc.
+   * Parameterise source, checkpoint, and Lakehouse paths so the same script runs in DEV/TEST/PROD.
+   * Add a thin `main()` with `spark = SparkSession.builder…`.
+
+2. Create the Spark Job Definition
+   * Workspace -> New item -> Spark Job Definition → upload the script and point it at the default Lakehouse.
+   * In Settings ▸ Optimization turn on Retry Policy (unlimited retries, 30–60 s back-off). Fabric keeps the stream alive even through maintenance windows; the catch is the policy stops after 90 days, so schedule rolling restarts.
+   * Optional: set Schedule = Continuous to let Fabric auto-restart on failure.
+
+3. Orchestrate with Data Factory (only if you need it)
+   * A 24/7 stream can run stand-alone; add a Data Factory pipeline only when you need dependencies, parameters, or SLAs. The Spark Job Definition activity makes the wiring trivial.
+4. Observability
+   * SJD Monitoring page → streaming UI (input rate, batch duration, watermarks). 
+   * Forward driver/executor logs to Log Analytics; surface custom lag metrics and wire alerts.
+5. CI/CD
+   * Turn on Git integration for the SJD item; PR builds run unit tests with spark-submit --dry-run. 
+   * Promote via Fabric REST/CLI into TEST and PROD workspaces; parameters flow through pipeline variables.
+
+
+### 15. Stop the notebook
+
+At this point you've completed the lab, so you may stop running the notebook.
+
+1. Open the notebook **Generate synthetic events** from your workspace and click the button **Cancel all** in the toolbar at the top.
+
+   ![alt text](assets/image_task15_step01.png)
+
 
 ---
 
@@ -2020,7 +2381,183 @@ In this section we will create a Reflex Alert that will send a Teams Message whe
 > The Reflex item will appear in your workspace and you can edit the Reflex trigger action. The same Reflex item can also trigger multiple actions. 
 </div>
 
-### 15. Bonus Challenges
+### 15. Fabric Apache Spark Diagnostic Emitter for Logs and Metrics
+
+Within this part you will learn how to build a centralized Spark monitoring solution, leveraging Fabric Real-Time Intelligence capabilities. We are going to integrate Fabric Spark data emitter with Fabric Eventstream and Eventhouse to create a final Spark monitoring solution.
+
+Below you can find an example of workspace with deployed all artifacts needed for that:
+
+![alt text](assets/spark_monitoring_1.png)
+
+1. Create new item “Environment” and call it “env_logging_eventstream"
+
+![alt text](assets/spark_monitoring_7.png)
+
+2. Setup "Spark properties" of created environment and save it.
+
+![alt text](assets/spark_monitoring_6.png)
+
+ ```kusto
+  //Spark Properties
+  - spark.fabric.pools.skipStarterPools: 'true'
+  - spark.synapse.diagnostic.emitters: eventhouse
+  - spark.synapse.diagnostic.emitter.eventhouse.type: AzureEventHub
+  - spark.synapse.diagnostic.emitter.eventhouse.secret: INSERT_THERE
+  - spark.synapse.diagnostic.emitter.eventhouse.categories: Log,EventLog,Metrics,DriverLog  
+ ```
+
+3. Create new item “Evenstream” and call it “es_sparklogging"
+
+![alt text](assets/spark_monitoring_8.png)
+
+4. Choose source as "Custom endpoint"
+
+![alt text](assets/spark_monitoring_2.png)
+
+5. Enter source name as "Input" 
+
+![alt text](assets/spark_monitoring_3.png)
+
+6. Publish created eventstream
+
+![alt text](assets/spark_monitoring_4.png)
+
+7. Once eventstream is published, please copy connection string-primary key (refer to below screen)
+
+![alt text](assets/spark_monitoring_5.png)
+
+8. Go back to item Evnironment which you called "env_logging_evenstream" and paste copied key into below field
+
+![alt text](assets/spark_monitoring_16.png)
+
+9. Once you did it, let's publish changes in "Environment" artifact
+
+![alt text](assets/spark_monitoring_11.png)
+
+10. Create new item in workspace, "Notebook" and call it "nb_log_generator"
+
+![alt text](assets/spark_monitoring_9.png)
+
+11. Within created notebook please add below two command lines.
+
+![alt text](assets/spark_monitoring_10.png)
+
+ ```kusto
+  //Command 1
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, avg
+
+# Sample data
+data = [
+    ("Electronics", 1000),
+    ("Electronics", 1500),
+    ("Furniture", 800),
+    ("Furniture", 1200),
+    ("Clothing", 300),
+    ("Clothing", 500)
+]
+
+# Create DataFrame
+df = spark.createDataFrame(data, ["category", "revenue"])
+
+# Calculate average revenue per category
+avg_revenue_df = df.groupBy("category") \
+    .agg(avg("revenue").alias("avg_revenue"))
+
+# Filter categories with average revenue above 900
+high_performers = avg_revenue_df.filter(col("avg_revenue") > 900)
+
+# Order by average revenue descending
+result = high_performers.orderBy(col("avg_revenue").desc())
+
+# Show result
+result.show() 
+ ```
+ ```kusto
+  //Command 2
+# Sample data
+data = [
+    ("Electronics", 1000),
+    ("Electronics", 1500),
+    ("Furniture", 800),
+    ("Furniture", 1200),
+    ("Clothing", 300),
+    ("Clothing", 500)
+]
+
+# Create DataFrame
+df = spark.createDataFrame(data, ["category", "revenue"])
+
+# Calculate average revenue per category
+avg_revenue_df = df.groupBy("category") \
+    .agg(avg("revenue").alias("avg_revenue"))
+
+# Filter categories with average revenue below 900
+low_performers = avg_revenue_df.filter(col("avg_revenue") < 900)
+
+# Order by average revenue descending
+result = low_performers.orderBy(col("avg_revenue").desc())
+
+# Show result
+result.show()
+ ``` 
+12. Go to Eventhouse in your workspace and within "Query with code" option, create a table where Spark logs will be stored. To do it you can run below code.
+
+ ```kusto
+// Create table command
+////////////////////////////////////////////////////////////
+.create table SparkLogs (
+    timestamp:datetime,
+    category:string,
+    fabricLivyId:string,
+    applicationId:string,
+    applicationName:string,
+    executorId:string,
+    userId:string,
+    fabricTenantId:string,
+    capacityId:string,
+    artifactType:string,
+    artifactId:string,
+    ArtifactName:string,
+    fabricWorkspaceId:string,
+    fabricEnvId:string,
+    executorMin:int,
+    executorMax:int,
+    isHighConcurrencyEnabled:boolean,
+    properties:string,
+    EventProcessedUtcTime:datetime,
+    PartitionId:int,
+    EventEnqueuedUtcTime:datetime
+)
+ ``` 
+![alt text](assets/spark_monitoring_17.png)
+
+13. Go to Evenstream "es_sparklogging" and setup final destination for Spark logs
+
+![alt text](assets/spark_monitoring_13.png)
+
+![alt text](assets/spark_monitoring_14.png)
+
+Once it is done, save and publish changes in Evenstream "es_sparklogging"
+
+14. Go to Notebook "nb_log_generator" and assign it to created evinronment.
+
+![alt text](assets/spark_monitoring_12.png)
+
+15. Solution is ready, run all commands in Notebook and verify logged results in your KQL Database
+
+![alt text](assets/spark_monitoring_15.png)
+
+### 16. Stop the notebook
+
+At this point you've completed the lab, so you may stop running the notebook.
+
+1. Open the notebook **Generate synthetic events** from your workspace and click the button **Cancel all** in the toolbar at the top.
+
+   ![alt text](assets/image_task15_step01.png)
+
+
+### 17. Bonus Challenges
 
 #### Build Power BI report using the data in Eventhouse
 
@@ -2034,13 +2571,189 @@ Using the Fabric Events in Real-Time hub, build a pipeline that sends link to th
 
 Add Reflex as a destination to your Eventstream and create an email alert everytime number of impressions exceed a value of your choice 3 times every 10 minutes.
 
-### 16. Stop the notebook
+#### Spark Structured Streaming in Fabric
 
-At this point you've completed the lab, so you may stop running the notebook.
+The following exercise extends the workshop by adding a  module on Spark Structured Streaming. This exercise is designed to be integrated with the existing workshop flow while providing practical experience in implementing real-time data processing pipelines using Fabric's Data Engineering Apache Spark-based natural capabilities.
 
-1. Open the notebook **Generate synthetic events** from your workspace and click the button **Cancel all** in the toolbar at the top.
+Spark Structured Streaming represents a paradigm for processing real-time data within Microsoft Fabric. It treats a live data stream as a continuously appended table, enabling developers to use familiar batch-like queries while Spark handles the incremental processing behind the scenes. This approach significantly simplifies building real-time data pipelines while maintaining scalability and fault tolerance.
 
-   ![alt text](assets/image_task15_step01.png)
+Spark Structured Streaming operates on a micro-batch processing model by default, treating streaming data as small batches to achieve low latencies (as low as 100ms) with exactly-once fault-tolerance guarantees. This model aligns with the medallion architecture used in Microsoft Fabric data engineering workflows, where data flows through bronze (raw), silver (validated/transformed), and gold (business-ready) layers.
+
+1. Environment Setup - New Notebook
+
+Create a New Notebook named e.g. `Spark Structured Streaming` and install required libraries:
+
+```shell
+! python --version
+
+! pip install azure-eventhub==5.11.5 faker==24.2.0 pyodbc==5.1.0 --upgrade --force --quiet
+```
+
+2. Environment Setup - Event Hub Configuration
+
+Use the same Event Hub Connection Names and String as previously (exercise 7).
+
+```python
+from azure.eventhub import EventHubProducerClient
+
+# Configure Event Hub connection
+eventHubNameevents = "your-event-hub-name"
+eventHubConnString = "Endpoint=sb://..."  
+
+producer_events = EventHubProducerClient.from_connection_string(
+    conn_str=eventHubConnString, 
+    eventhub_name=eventHubNameevents
+)
+```
+
+3. Stream Ingestion Configuration - Event Hubs Connection
+
+In the snippet below, we first assemble a Python dictionary ehConf that tells Spark how to connect to Azure Event Hubs: the `eventhubs.connectionString` carries the SAS key–based connection string needed for authentication and routing, `eventhubs.consumerGroup` specifies the consumer group whose offset checkpoints Spark will maintain (here the default), `maxEventsPerTrigger` throttles ingestion by limiting each micro-batch to 1 000 events so the downstream logic is not overwhelmed, and `startingPosition`—wrapped in `json.dumps` because the connector expects JSON—declares where in the Event Hubs partition log to begin reading, with the special offset "-1" meaning “start at the earliest available event.” We then create raw_stream by invoking spark.readStream with the eventhubs format, injecting the configuration via `.options(**ehConf)`, and calling `.load()`, which returns an unbounded streaming DataFrame whose rows contain the raw message payload and associated metadata; this DataFrame can now be transformed or written out to Delta tables (Bronze) while Spark continuously tails the hub, honoring the consumer-group checkpoints and the throughput cap set in the configuration.
+
+```python
+ehConf = {
+    "eventhubs.connectionString": eventHubConnString,
+    "eventhubs.consumerGroup": "$Default",
+    "maxEventsPerTrigger": 1000,  # Throughput control - limits how many events Spark will read per trigger cycle, helping control throughput and avoid overwhelming your application.
+    "startingPosition": json.dumps({"offset": "-1"}) # Defines where in the stream Spark starts reading. Here, "-1" means start from the earliest available event.
+}
+
+raw_stream = spark.readStream \
+    .format("eventhubs") \
+    .options(**ehConf) \
+    .load()
+```
+
+4. Stream Processing Pipeline
+The code below declares a precise Spark SQL schema (`event_schema`) that mirrors the nested structure of the JSON arriving in each Event Hub message: at the top level the event has simple string fields (`eventType`, `eventID`, `productId`), a struct field `userAgent` with its own `platform` and `browser` strings, and an array of structs `extraPayload`, each element holding a `relatedProductId` and its `relatedProductCategory`. With this blueprint in place, the stream’s binary `body` column is cast to a string and fed to `from_json`, which deserialises each payload into the strongly-typed `StructType`; the call to `.alias("data")` wraps the result in a single column named `data`. 
+
+A second `select` immediately flattens the structure by expanding `data.*` into individual columns and adds `processing_time`, copied from Event Hub’s `enqueuedTime`, so every record now arrives in a tabular form that downstream transformations or Delta Lake writes can consume without further parsing or schema inference.
+
+
+5. Schema Definition & Parsing
+```python
+# Define schema for nested JSON structure
+from pyspark.sql.types import *
+from pyspark.sql.functions import from_json, col
+
+event_schema = StructType([
+    StructField("eventType", StringType()),
+    StructField("eventID", StringType()),
+    StructField("productId", StringType()),
+    StructField("userAgent", StructType([
+        StructField("platform", StringType()),
+        StructField("browser", StringType())
+    ])),
+    StructField("extraPayload", ArrayType(
+        StructType([
+            StructField("relatedProductId", StringType()),
+            StructField("relatedProductCategory", StringType())
+        ])
+    ))
+])
+
+# Parse JSON payload
+parsed_stream = raw_stream.select(
+    from_json(col("body").cast("string"), event_schema).alias("data"),
+    col("enqueuedTime").alias("processing_time")
+).select("data.*", "processing_time")
+```
+
+6. Real-Time Aggregations
+
+In this step the stream is aggregated in five-minute, event-time windows with late-data tolerance. The `withWatermark("processing_time", "10 minutes")` line tells Spark Structured Streaming to treat `processing_time` as the event-time column and to keep state for each window only until data that are more than ten minutes late might still arrive—after that bound, late records for an already-emitted window will be dropped. The subsequent `groupBy` forms tumbling windows of exactly five minutes (`window("processing_time", "5 minutes")`) and partitions the events further by `eventType` and the nested field `userAgent.platform`. For every such (window, eventType, platform) bucket Spark computes two metrics: `event_count`, a simple `count(*)` of all events falling into the bucket, and `unique_products`, a `countDistinct("productId")` capturing how many distinct products appeared in that slice. The result, stored in `windowed_agg`, is still a streaming DataFrame whose rows emit continuously at the end of each five-minute interval (or when late data arrive within the watermark threshold), providing ready-to-query aggregates for dashboards or downstream sinks without retaining unbounded per-key state.
+
+
+```python
+from pyspark.sql.functions import window, count, countDistinct
+
+# Windowed aggregations
+windowed_agg = parsed_stream \
+    .withWatermark("processing_time", "10 minutes") \
+    .groupBy(
+        window("processing_time", "5 minutes"),
+        "eventType",
+        "userAgent.platform"
+    ).agg(
+        count("*").alias("event_count"),
+        countDistinct("productId").alias("unique_products")
+    )
+```
+
+Read about [Window Operations on Event Time](https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#window-operations-on-event-time).
+
+7. Delta Lake Integration
+
+Create a new lakehouse or use existing.
+
+
+8. Bronze Layer Ingestion
+
+This statement turns the cleaned `parsed_stream` into a continuously-appended Delta Lake table called `bronze_events`: by invoking `writeStream.format("delta")` Spark chooses the Delta sink, `option("checkpointLocation", "Files/checkpoints/bronze")` stores offsets and transaction logs in Lakehouse storage so the job can resume exactly where it left off after a restart, `outputMode("append")` ensures only newly arriving records are committed (no rewrites of prior rows), and `trigger(processingTime="1 minute")` schedules a micro-batch every sixty seconds for near-real-time latency; the call to `.toTable("bronze_events")` completes the setup, registering or updating the Delta table while returning a `StreamingQuery` handle (`bronze_write`) that Spark uses to run and monitor the stream until you stop it.
+
+```python
+bronze_write = parsed_stream.writeStream \
+    .format("delta") \
+    .option("checkpointLocation", "Files/checkpoints/bronze") \
+    .outputMode("append") \
+    .trigger(processingTime="1 minute") \
+    .toTable("bronze_events")
+```
+If you seek checkpoint explanation, check the theory part.
+
+
+9. Silver Layer Processing
+
+In the Silver layer step, we promote the raw Bronze data to a more query-friendly shape: `spark.readStream.table("bronze_events")` tails the continuously growing Delta table created earlier, turning it back into a live DataFrame; `.withColumn("clickpath", explode("extraPayload"))` denormalises the array `extraPayload` so each related‐product element becomes its own row while inheriting the parent event fields—ideal for path-analysis or recommendation models. The resulting `silver_stream` is then written out with `writeStream.format("delta")`, checkpointed at `Files/checkpoints/silver` for exactly-once guarantees, emitted in pure append mode, and triggered every five minutes (`processingTime="5 minutes"`), striking a balance between freshness and cost. The call to `.toTable("silver_events")` materialises this refined stream as a managed Delta table, giving downstream consumers a clean, exploded schema without touching the raw Bronze records.
+
+
+```python
+# Create Silver table view
+silver_stream = spark.readStream \
+    .table("bronze_events") \
+    .withColumn("clickpath", explode("extraPayload"))
+
+# Write to Silver Delta table
+silver_write = silver_stream.writeStream \
+    .format("delta") \
+    .option("checkpointLocation", "Files/checkpoints/silver") \
+    .outputMode("append") \
+    .trigger(processingTime="5 minutes") \
+    .toTable("silver_events")
+```
+
+Similar you can continue for Gold Layer. 
+
+
+10. Production Deployment in Fabric
+Spark notebooks are excellent source to test the logic of your code and address all the business requirements. However to keep it running in a production scenario, Spark job definitions with Retry Policy enabled are the best solution. Why? Package the streaming code as a Spark Job Definition, enable the built-in retry policy, and—when orchestration or promotion is needed—wrap it in a Data Factory pipeline. That combo gives you 24/7 reliability, CI/CD friendliness, and the operational transparency a production system demands. 
+
+Read more [about it](https://learn.microsoft.com/en-us/fabric/data-engineering/lakehouse-streaming-data).
+
+11. Spark Job Definition (SJD)
+
+Production recipe:
+
+1. Extract the logic from the notebook
+   * Export the notebook as `rta_workshop_stream.py` (or compile to `.jar` for Scala/Java).
+   * Remove interactive clutter e.g. `display()`, `%python`, etc.
+   * Parameterise source, checkpoint, and Lakehouse paths so the same script runs in DEV/TEST/PROD.
+   * Add a thin `main()` with `spark = SparkSession.builder…`.
+
+2. Create the Spark Job Definition
+   * Workspace -> New item -> Spark Job Definition → upload the script and point it at the default Lakehouse.
+   * In Settings ▸ Optimization turn on Retry Policy (unlimited retries, 30–60 s back-off). Fabric keeps the stream alive even through maintenance windows; the catch is the policy stops after 90 days, so schedule rolling restarts.
+   * Optional: set Schedule = Continuous to let Fabric auto-restart on failure.
+
+3. Orchestrate with Data Factory (only if you need it)
+   * A 24/7 stream can run stand-alone; add a Data Factory pipeline only when you need dependencies, parameters, or SLAs. The Spark Job Definition activity makes the wiring trivial.
+4. Observability
+   * SJD Monitoring page → streaming UI (input rate, batch duration, watermarks). 
+   * Forward driver/executor logs to Log Analytics; surface custom lag metrics and wire alerts.
+5. CI/CD
+   * Turn on Git integration for the SJD item; PR builds run unit tests with spark-submit --dry-run. 
+   * Promote via Fabric REST/CLI into TEST and PROD workspaces; parameters flow through pipeline variables.
+
 
 ## THAT's ALL FOLKS !!
 
