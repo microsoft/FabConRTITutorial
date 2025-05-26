@@ -455,7 +455,7 @@ In this section we will be streaming events (impressions and clicks events). The
 
    ![alt text](assets/image_task05_step05b.png)
 
-5. In the dialog **Configure connection settings** choose **FabConVegas2025EventHubConnection** for the combobox **Connection** and insert the name of the consumer group into the field **Consumer group** that aligns with the username that was provided to you. In my case this is `workshopuser49`. Ensure that the **Data format** is Json and click on the pencil icon next to **Source name**.
+5. In the dialog **Configure connection settings** choose **ClickStreamEventhub** for the combobox **Connection** and insert the name of the consumer group into the field **Consumer group** that aligns with the username that was provided to you. In my case this is `workshopuser49`. Ensure that the **Data format** is Json and click on the pencil icon next to **Source name**.
 
    ![alt text](assets/image_task05_step06b.png)
 
